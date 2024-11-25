@@ -8,7 +8,7 @@ insert into Badge (Name, PointsWorth) values ('Gym Rat', 32);
 insert into Badge (Name, PointsWorth) values ('Tech Enthusiast', 15);
 insert into Badge (Name, PointsWorth) values ('Foodie', 15);
 insert into Badge (Name, PointsWorth) values ('Fashionista', 17);
-INSERT INTO Badge (BadgeId, Name, PointsWorth)
+INSERT INTO Badge (Name, PointsWorth)
 VALUES
-(1, 'Community Builder', 70),
-(2, 'Event Enthusiast', 50);
+('Community Builder', 70),
+('Event Enthusiast', 50);
