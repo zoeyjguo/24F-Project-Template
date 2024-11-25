@@ -8,7 +8,7 @@ from flask import request
 from flask import jsonify
 from flask import make_response
 from flask import current_app
-from backend.db_connection import db
+from backend.db_connection import db 
 
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
@@ -206,3 +206,31 @@ def update_product():
     current_app.logger.info(product_info)
 
     return "Success"
+
+# ------------------------------------------------------------
+@products.route('/mostOrderedProducts', methods=['GET'])
+def get_most_ordered_products():
+    query = '''
+        SELECT p.product_name, s.supplier_name, COUNT(o.id) AS order_count
+        FROM products p
+        JOIN order_details od ON p.id = od.product_id
+        JOIN orders o ON od.order_id = o.id
+        JOIN suppliers s ON p.supplier_id = s.id
+        GROUP BY p.id, p.product_name, s.supplier_name
+        ORDER BY COUNT(o.id) DESC, p.product_name ASC
+        LIMIT 8
+    '''
+
+    # Get a cursor object from the database
+    cursor = db.get_db().cursor()
+
+    # Execute the query
+    cursor.execute(query)
+
+    # Fetch all results
+    theData = cursor.fetchall()
+
+    # Create a response object and return it to the client
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
