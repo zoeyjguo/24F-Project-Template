@@ -1,18 +1,30 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
 from modules.nav import SideBarLinks
 
+st.set_page_config(layout = 'wide')
+
+# Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
-st.write("# About this App")
+st.title(f"Welcome Data Analyst {st.session_state['first_name']}.")
+st.write('')
+st.write('')
+st.write('### What would you like to do today?')
 
-st.markdown (
-    """
-    This is a demo app for CS 3200 Course Project.  
+if st.button('View user interests data', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/32_User_Interests.py')
 
-    The goal of this demo is to provide information on the tech stack 
-    being used as well as demo some of the features of the various platforms. 
+if st.button('View user badge rankings', 
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/35_User_Badges.py')
 
-    Stay tuned for more information and features to come!
-    """
-        )
+if st.button("View the rank of a specific user",
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/36_Specific_User_Rank.py')
