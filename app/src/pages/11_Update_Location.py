@@ -5,12 +5,26 @@ from streamlit_extras.app_logo import add_logo
 import pandas as pd
 import pydeck as pdk
 from urllib.error import URLError
-from modules.nav import SideBarLinks
 
-SideBarLinks()
+from modules.nav import get_nav_config
+from streamlit_navigation_bar import st_navbar
 
-# add the logo
-add_logo("assets/logo.png", height=400)
+pages, styles, logo, options = get_nav_config(show_home=False)
+page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
+
+if page == "Update Location":
+  st.switch_page('pages/11_Update_Location.py')
+
+if page == "Calendar":
+  st.switch_page('pages/13_Personal_Calendar.py')
+
+if page == "Group Chat":
+  st.switch_page('pages/14_GroupChat.py')
+
+if page == "Logout":
+  del st.session_state["role"]
+  del st.session_state["authenticated"]
+  st.switch_page("Home.py")
 
 # set up the page
 st.markdown("# Mapping Demo")

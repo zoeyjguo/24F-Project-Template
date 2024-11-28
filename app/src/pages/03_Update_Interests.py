@@ -5,9 +5,8 @@ from streamlit_extras.app_logo import add_logo
 import numpy as np
 import random
 import time
-from modules.nav import SideBarLinks
-
-SideBarLinks()
+from modules.nav import get_nav_config
+from streamlit_navigation_bar import st_navbar
 
 def response_generator():
   response = random.choice (
@@ -23,7 +22,22 @@ def response_generator():
 #-----------------------------------------------------------------------
 
 st.set_page_config (page_title="Sample Chat Bot", page_icon="🤖")
-add_logo("assets/logo.png", height=400)
+pages, styles, logo, options = get_nav_config(show_home=False)
+page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
+
+if page == "Feed":
+  st.switch_page('pages/02_Interest_Feed.py')
+
+if page == "Update Interests":
+  st.switch_page('pages/03_Update_Interests.py')
+
+if page == "View Other Profile":
+  st.switch_page('pages/04_View_Other_Profile.py')
+
+if page == "Logout":
+  del st.session_state["role"]
+  del st.session_state["authenticated"]
+  st.switch_page("Home.py")
 
 st.title("Echo Bot 🤖")
 

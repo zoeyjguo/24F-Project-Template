@@ -1,11 +1,31 @@
 import streamlit as st
 from streamlit_navigation_bar import st_navbar
 
-def get_nav_config():
-    pages = ["Home", "Kali", "Winston", "Chloe", "Joey"]
+def get_nav_config(show_home=False):
+    if "authenticated" not in st.session_state or show_home:
+        st.session_state.authenticated = False
+        pages = ["Home", "Kali", "Winston", "Chloe", "Joey"]
+
+    if st.session_state["authenticated"]:
+        if st.session_state["role"] == "us_coop_student":
+            pages = ["Feed", "Update Interests", "View Other Profile", "Logout"]
+        
+        if st.session_state["role"] == "abroad_coop_student":
+            pages = ["Update Location", "Calendar", "Group Chat", "Logout"]
+
+        if st.session_state["role"] == "administrator":
+            pages = ["Delete Group Chat", "Flag Message", "Reports", "Logout"]
+
+        if st.session_state["role"] == "data_analyst":
+            pages = ["Interests", "Badges", "User Rank", "Logout"]
+        
+        #if st.session_state["role"] == "us_coop_student_feed":
+            #pages = ["Pets", "Photography", "LGBTQ+"]
+
     styles = {
         "nav": {
             "background-color": "rgb(198,169,249)",
+            "justify-content": "right"
         },
         "div": {
             "max-width": "32rem",

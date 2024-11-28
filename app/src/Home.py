@@ -29,7 +29,7 @@ st.session_state['authenticated'] = False
 # showSidebarNavigation = false in the [client] section
 #SideBarLinks(show_home=True)
 
-pages, styles, logo, options = get_nav_config()
+pages, styles, logo, options = get_nav_config(show_home=True)
 page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
 
 # ***************************************************
@@ -40,7 +40,7 @@ page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
 logger.info("Loading the Home page of the app")
 st.title('CoLink')
 st.write('\n\n')
-st.write('### HI! As which user would you like to log in?')
+st.write('### Hello! As which user would you like to log in?')
 
 # For each of the user personas for which we are implementing
 # functionality, we put a button on the screen that the user 
