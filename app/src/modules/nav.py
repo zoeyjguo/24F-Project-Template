@@ -4,7 +4,7 @@ from streamlit_navigation_bar import st_navbar
 def get_nav_config(show_home=False):
     if "authenticated" not in st.session_state or show_home:
         st.session_state.authenticated = False
-        pages = ["Home", "Kali", "Winston", "Chloe", "Joey"]
+        pages = ["Kali", "Winston", "Chloe", "Joey"]
 
     if st.session_state["authenticated"]:
         if st.session_state["role"] == "us_coop_student":
