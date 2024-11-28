@@ -8,10 +8,7 @@ import requests
 
 st.set_page_config(layout = 'wide')
 pages, styles, logo, options = get_nav_config(show_home=False)
-page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
-
-if page == "Delete Group Chat":
-  st.switch_page('pages/23_Delete_GroupChat.py')
+page = st_navbar(pages, selected="Delete Group Chat", styles=styles, logo_path=logo, options=options)
 
 if page == "Flag Message":
   st.switch_page('pages/25_Flag_Message.py')
