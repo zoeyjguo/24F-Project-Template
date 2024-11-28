@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 # import the main streamlit library as well
 # as SideBarLinks function from src/modules folder
 import streamlit as st
-from modules.nav import page
+from modules.nav import get_nav_config
+from streamlit_navigation_bar import st_navbar
 
 # streamlit supports reguarl and wide layout (how the controls
 # are organized/displayed on the screen).
@@ -28,13 +29,15 @@ st.session_state['authenticated'] = False
 # showSidebarNavigation = false in the [client] section
 #SideBarLinks(show_home=True)
 
+pages, styles, logo, options = get_nav_config()
+page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
+
 # ***************************************************
 #    The major content of this page
 # ***************************************************
 
 # set the title of the page and provide a simple prompt. 
 logger.info("Loading the Home page of the app")
-st.write(page())
 st.title('CoLink')
 st.write('\n\n')
 st.write('### HI! As which user would you like to log in?')
@@ -45,7 +48,7 @@ st.write('### HI! As which user would you like to log in?')
 
 if st.button("Act as Kali, a student co-oping in the US", 
             type = 'primary', 
-            use_container_width=True):
+            use_container_width=True) or page == "Kali":
     # when user clicks the button, they are now considered authenticated
     st.session_state['authenticated'] = True
     # we set the role of the current user
@@ -60,7 +63,7 @@ if st.button("Act as Kali, a student co-oping in the US",
 
 if st.button('Act as Winston, a student co-oping abroad', 
             type = 'primary', 
-            use_container_width=True):
+            use_container_width=True) or page == "Winston":
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'abroad_coop_student'
     st.session_state['first_name'] = 'Winston'
@@ -68,7 +71,7 @@ if st.button('Act as Winston, a student co-oping abroad',
 
 if st.button('Act as Chloe, a System Administrator', 
             type = 'primary', 
-            use_container_width=True):
+            use_container_width=True) or page == "Chloe":
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'Chloe'
@@ -76,7 +79,7 @@ if st.button('Act as Chloe, a System Administrator',
 
 if st.button('Act as Joey, a Data Analyst',
              type = 'primary',
-             use_container_width = True):
+             use_container_width = True) or page == "Joey":
         st.session_state['authenticated'] = True
         st.session_state['role'] = 'data_analyst'
         st.session_state['first_name'] = 'Joey'

@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_navigation_bar import st_navbar
 
-def page():
+def get_nav_config():
     pages = ["Home", "Kali", "Winston", "Chloe", "Joey"]
     styles = {
         "nav": {
@@ -23,10 +23,9 @@ def page():
             "background-color": "rgba(255, 255, 255, 0.35)",
         },
     }
-
+    logo = "/appcode/assets/logo.svg"
     options = {
         "show_menu": False,
         "show_sidebar": False,
     }
-
-    return st_navbar(pages, styles=styles, logo_path="/appcode/assets/logo.svg", options=options)
+    return pages, styles, logo, options
