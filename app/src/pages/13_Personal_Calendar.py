@@ -31,17 +31,42 @@ st.markdown(
     """
     <style>
     .group-chat {
-        margin-bottom: 15px;
+        margin-top: 1px;
+        padding: 1px;
     }
     .group-chat h3 {
         font-size: 1.5rem;
         font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .group-chat-search {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border-radius: 20px;
+        box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
         margin-bottom: 15px;
+    }
+    .group-chat-search input {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        flex: 1;
+        padding-left: 10px;
+    }
+    .group-chat-search img {
+        height: 20px;
+        width: 20px;
     }
     .group-chat-item {
         display: flex;
         align-items: center;
-        margin-bottom: 15px;
+        margin-bottom: 15px; /* Adjusted spacing between chat items */
+        padding: 10px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
     }
     .group-chat-item img {
         border-radius: 10px;
@@ -51,6 +76,7 @@ st.markdown(
     }
     .group-chat-item div {
         font-size: 14px;
+        flex: 1;
     }
     .group-chat-item div strong {
         display: block;
@@ -61,24 +87,37 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# create columns for layout of group chat and calendar
-col1, col2 = st.columns([1, 4])
+# create columns for layout
+col1, col2 = st.columns([1.3, 4])
 
-# group chats on the left section
+# Group Chats Section in Left Column
 with col1:
-    st.markdown("<h2>Group chats</h2>", unsafe_allow_html=True)
+    # group chat title
+    st.markdown("<h3>Group Chats</h3>", unsafe_allow_html=True)
+
+    # search Bar
+    st.markdown(
+        """
+        <div class="group-chat-search">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnPWyKosZe-ytzAr3D130bkyo_KVrD05c0sg&s">
+            <input type="text" placeholder="Search Messages">
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     # data for group chats
     group_chats = [
-        {"name": "The Huntingt--", "last_message": "You: I'm coming!", "image": "https://via.placeholder.com/60?text=H"},
-        {"name": "USC Pacific As--", "last_message": "John: I'm excited", "image": "https://via.placeholder.com/60?text=U"},
-        {"name": "Wrigley Mans--", "last_message": "Jenny: Slay", "image": "https://via.placeholder.com/60?text=W"},
-        {"name": "Norton Simon--", "last_message": "Jenny: Slay", "image": "https://via.placeholder.com/60?text=N"},
-        {"name": "The Gamble --", "last_message": "You: What does everyone think?", "image": "https://via.placeholder.com/60?text=G"},
-        {"name": "Explore Pasa--", "last_message": "You joined the group chat", "image": "https://via.placeholder.com/60?text=E"},
+        {"name": "Teatro Carcano El Bella E L...", "last_message": "You: I'm coming!", "image": "https://carlotomeoteatro.com/wp-content/uploads/2023/04/bb1.jpeg?w=1024"},
+        {"name": "Agevolazioni Orchestra Fila...", "last_message": "John: I'm excited", "image": "https://santacecilia.it/wp-content/uploads/2024/11/HARDING_KANG_023-1920x1281.jpg"},
+        {"name": "Collaborazione con Ponder", "last_message": "Abby: Works for me!", "image": "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"},
+        {"name": "Agevolazioni Serate Musica...", "last_message": "Jenny: Slay", "image": "https://www.fsnews.it/content/dam/fs_news/focus-2022/giugno/servizi/21_06_2022_concerto_apertura.jpg"},
+        {"name": "Agevolazioni Fondazione S...", "last_message": "You: What does everyone think?", "image": "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"},
+        {"name": "Cinete Camilano Cloud", "last_message": "You: I can do Friday", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF4mVorkXgFOVKVuXYQRU-rJ2MQAM6Y6q4xA&s"},
+        {"name": "Explore Pavia", "last_message": "You joined the group chat", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHezNTGIPOQOqTY2ZowLW34Kk1TurBKojfdg&s"},
     ]
 
-    # render the items in group chat
+    # render group chat items
     for chat in group_chats:
         st.markdown(
             f"""
