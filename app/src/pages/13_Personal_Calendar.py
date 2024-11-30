@@ -1,13 +1,14 @@
 import logging
 logger = logging.getLogger(__name__)
 import streamlit as st
-import pandas as pd
-from sklearn import datasets
-from sklearn.ensemble import RandomForestClassifier
-
+import requests
+from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
+from datetime import datetime
+import calendar
 
+# navigation bar
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
 
@@ -24,50 +25,72 @@ if page == "Logout":
   del st.session_state["role"]
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
-  
-st.write("""
-# Simple Iris Flower Prediction App
 
-This example is borrowed from [The Data Professor](https://github.com/dataprofessor/streamlit_freecodecamp/tree/main/app_7_classification_iris)
-         
-This app predicts the **Iris flower** type!
-""")
+# group chat box styling size
+st.markdown(
+    """
+    <style>
+    .group-chat {
+        margin-bottom: 15px;
+    }
+    .group-chat h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .group-chat-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .group-chat-item img {
+        border-radius: 10px;
+        height: 60px;
+        width: 60px;
+        margin-right: 15px;
+    }
+    .group-chat-item div {
+        font-size: 14px;
+    }
+    .group-chat-item div strong {
+        display: block;
+        font-size: 16px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-st.sidebar.header('User Input Parameters')
+# create columns for layout of group chat and calendar
+col1, col2 = st.columns([1, 4])
 
-def user_input_features():
-    sepal_length = st.sidebar.slider('Sepal length', 4.3, 7.9, 5.4)
-    sepal_width = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
-    petal_length = st.sidebar.slider('Petal length', 1.0, 6.9, 1.3)
-    petal_width = st.sidebar.slider('Petal width', 0.1, 2.5, 0.2)
-    data = {'sepal_length': sepal_length,
-            'sepal_width': sepal_width,
-            'petal_length': petal_length,
-            'petal_width': petal_width}
-    features = pd.DataFrame(data, index=[0])
-    return features
+# group chats on the left section
+with col1:
+    st.markdown("<h2>Group chats</h2>", unsafe_allow_html=True)
 
-df = user_input_features()
+    # data for group chats
+    group_chats = [
+        {"name": "The Huntingt--", "last_message": "You: I'm coming!", "image": "https://via.placeholder.com/60?text=H"},
+        {"name": "USC Pacific As--", "last_message": "John: I'm excited", "image": "https://via.placeholder.com/60?text=U"},
+        {"name": "Wrigley Mans--", "last_message": "Jenny: Slay", "image": "https://via.placeholder.com/60?text=W"},
+        {"name": "Norton Simon--", "last_message": "Jenny: Slay", "image": "https://via.placeholder.com/60?text=N"},
+        {"name": "The Gamble --", "last_message": "You: What does everyone think?", "image": "https://via.placeholder.com/60?text=G"},
+        {"name": "Explore Pasa--", "last_message": "You joined the group chat", "image": "https://via.placeholder.com/60?text=E"},
+    ]
 
-st.subheader('User Input parameters')
-st.write(df)
+    # render the items in group chat
+    for chat in group_chats:
+        st.markdown(
+            f"""
+            <div class="group-chat-item">
+                <img src="{chat['image']}" alt="{chat['name']}">
+                <div>
+                    <strong>{chat['name']}</strong>
+                    <span>{chat['last_message']}</span>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-iris = datasets.load_iris()
-X = iris.data
-Y = iris.target
-
-clf = RandomForestClassifier()
-clf.fit(X, Y)
-
-prediction = clf.predict(df)
-prediction_proba = clf.predict_proba(df)
-
-st.subheader('Class labels and their corresponding index number')
-st.write(iris.target_names)
-
-st.subheader('Prediction')
-st.write(iris.target_names[prediction])
-#st.write(prediction)
-
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
+    st.markdown('</div>', unsafe_allow_html=True)
