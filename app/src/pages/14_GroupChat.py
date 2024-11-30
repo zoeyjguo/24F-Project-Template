@@ -95,9 +95,9 @@ st.markdown(
 # create columns for layout
 col1, col2 = st.columns([1.3, 4])
 
-# Group Chats Section in Left Column
+# group Chats Section in Left Column
 with col1:
-    # Group chat title with "Create Chat" icon
+    # group chat title with create chat icon
     st.markdown(
         """
         <div class="group-chat">
@@ -113,7 +113,7 @@ with col1:
         unsafe_allow_html=True,
     )
 
-    # Search Bar
+    # search bar
     st.markdown(
         """
         <div class="group-chat-search">
@@ -124,7 +124,7 @@ with col1:
         unsafe_allow_html=True,
     )
 
-    # Data for group chats
+    # group chats content
     group_chats = [
         {"name": "Teatro Carcano El Bella E L...", "last_message": "You: I'm coming!", "image": "https://carlotomeoteatro.com/wp-content/uploads/2023/04/bb1.jpeg?w=1024"},
         {"name": "Agevolazioni Orchestra Fila...", "last_message": "John: I'm excited", "image": "https://santacecilia.it/wp-content/uploads/2024/11/HARDING_KANG_023-1920x1281.jpg"},
@@ -135,7 +135,7 @@ with col1:
         {"name": "Explore Pavia", "last_message": "You joined the group chat", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHezNTGIPOQOqTY2ZowLW34Kk1TurBKojfdg&s"},
     ]
 
-    # Render group chat items
+    # render group chat items
     for chat in group_chats:
         st.markdown(
             f"""
@@ -151,3 +151,15 @@ with col1:
         )
 
     st.markdown('</div>', unsafe_allow_html=True)
+
+# group chat content
+with col2:
+    st.markdown(
+        """
+        <div class="chat-content-container">
+            <h3>Teatro Carcano El Bella E La Bestia</h3>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
