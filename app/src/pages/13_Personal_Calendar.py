@@ -5,7 +5,7 @@ import requests
 from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
-from datetime import datetime
+from datetime import date, timedelta
 import calendar
 
 # navigation bar
@@ -133,3 +133,81 @@ with col1:
         )
 
     st.markdown('</div>', unsafe_allow_html=True)
+
+
+# Function to create a calendar grid
+def create_calendar(year, month, events):
+    # Generate the HTML content for the calendar
+    html_content = """
+    <style>
+    .calendar-container {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+    }
+    .calendar-day {
+        border: 1px solid #ddd;
+        padding: 20px; /* Increased padding for larger cells */
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        text-align: center;
+        position: relative;
+        min-height: 100px; /* Ensures taller cells */
+    }
+    .day-number {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .event {
+        font-size: 0.8rem;
+        padding: 5px; /* Adjusted padding for better spacing */
+        margin-top: 10px;
+        border-radius: 3px;
+        color: white;
+    }
+    </style>
+    """
+    # Get the first and last days of the month
+    _, num_days = calendar.monthrange(year, month)
+    first_day = date(year, month, 1)
+    start_weekday = first_day.weekday()
+
+    # Calendar header
+    html_content += f"<h3 style='text-align: center;'>{calendar.month_name[month]} {year}</h3>"
+    days_of_week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    html_content += "<div class='calendar-container'>" + "".join(
+        [f"<div style='font-weight: bold;'>{day}</div>" for day in days_of_week]
+    ) + "</div>"
+
+    # Create blank days for the start of the calendar
+    blank_days = ["<div></div>" for _ in range(start_weekday)]
+    calendar_days = blank_days
+
+    # Add the days of the month
+    for day in range(1, num_days + 1):
+        day_events = events.get(day, [])
+        event_divs = "".join(
+            [
+                f"<div class='event' style='background-color: {event['color']};'>{event['name']}</div>"
+                for event in day_events
+            ]
+        )
+        calendar_days.append(
+            f"""
+            <div class='calendar-day'>
+                <div class='day-number'>{day}</div>
+                {event_divs}
+            </div>
+            """
+        )
+
+    # Render the calendar grid
+    html_content += (
+        "<div class='calendar-container'>" + "".join(calendar_days) + "</div>"
+    )
+    return html_content
+
+# Right Column: Calendar
+with col2:
+    html_calendar = create_calendar(2024, 12, events)
+    st.components.v1.html(html_calendar, height=1000, scrolling=False)
