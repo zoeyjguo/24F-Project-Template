@@ -25,8 +25,14 @@ col1, col2= st.columns([1, 2])
 
 with col1:
     reports = [
-      {"title": "The Huntington Library", "username": "jacobmelano0202", "time-posted": "November 30, 2024", "description": "https://via.placeholder.com/50"},
-      {"title": "The Huntington Library", "username": "lol", "time-posted": "November 30, 2024", "description": "https://via.placeholder.com/50"}
+      {"title": "The Huntington Library", 
+       "username": "jacobmelano0202", 
+       "time-posted": "November 30, 2024", 
+       "description": "Finding more individuals like me that I can connect would be beneficial for me to find more aligned people like me, interest-wise. Is there a feature on this app that does, or do I have to find them by myself?"},
+      {"title": "The Huntington Library", 
+       "username": "lol", 
+       "time-posted": "November 30, 2024", 
+       "description": "https://via.placeholder.com/50"}
     ] 
   
 

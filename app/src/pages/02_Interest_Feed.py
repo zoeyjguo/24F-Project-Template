@@ -36,12 +36,6 @@ st.markdown(
             background-color: rgb(198,169,249);
             padding: 0.5rem 1rem;
         }}
-        .navbar-logo {{
-            margin-right: auto;
-        }}
-        .navbar-logo img {{
-            height: 50px;
-        }}
         .navbar-pages {{
             margin-left: auto;
             display: flex;
@@ -59,9 +53,6 @@ st.markdown(
 
         </style>
         <div class="navbar">
-            <div class="navbar-logo">
-                <img src="{logo}" alt="logo">
-            </div>
             <div class="navbar-pages">
                 {"".join([f'<span>{page}</span>' for page in pages])}
             </div>
