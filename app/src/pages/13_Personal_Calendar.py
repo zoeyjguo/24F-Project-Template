@@ -26,7 +26,7 @@ if page == "Logout":
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
 
-# group chat box styling size
+# styling for group chat box
 st.markdown(
     """
     <style>
@@ -134,8 +134,18 @@ with col1:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
+# define events and add color to label them
+events = {
+    5: [{"name": "Explore Milan", "color": "#8CBED6"}], 
+    8: [{"name": "Teatro Carcano El Bella E La Bestia", "color": "#B580B5"}],
+    11: [{"name": "Agevolazioni Filarmonica della Scala Stagione", "color": "#D6898E"}],
+    20: [{"name": "Collaborazione con Ponder", "color": "#7CBF7C"}], 
+    26: [{"name": "Agevolazioni Serate Musicali Stagioni", "color": "#D6898E"}], 
+    30: [{"name": "Cinete Camilano Cloud", "color": "#B580B5"}], 
+    31: [{"name": "Explore Pavia", "color": "#8CBED6"}], 
+}
 
-# Function to create a calendar grid
+# create the calendar grid
 def create_calendar(year, month, events):
     # Generate the HTML content for the calendar
     html_content = """
@@ -167,31 +177,31 @@ def create_calendar(year, month, events):
     }
     </style>
     """
-    # Get the first and last days of the month
+
+    # calculate the first and last day of the month
     _, num_days = calendar.monthrange(year, month)
     first_day = date(year, month, 1)
     start_weekday = first_day.weekday()
 
-    # Calendar header
+    # create the headers for the calendar
     html_content += f"<h3 style='text-align: center;'>{calendar.month_name[month]} {year}</h3>"
     days_of_week = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     html_content += "<div class='calendar-container'>" + "".join(
         [f"<div style='font-weight: bold;'>{day}</div>" for day in days_of_week]
     ) + "</div>"
 
-    # Create blank days for the start of the calendar
+    # start the calendar grid outline blank
     blank_days = ["<div></div>" for _ in range(start_weekday)]
     calendar_days = blank_days
 
-    # Add the days of the month
+    # add the days of the month
     for day in range(1, num_days + 1):
         day_events = events.get(day, [])
         event_divs = "".join(
             [
                 f"<div class='event' style='background-color: {event['color']};'>{event['name']}</div>"
                 for event in day_events
-            ]
-        )
+            ])
         calendar_days.append(
             f"""
             <div class='calendar-day'>
@@ -201,13 +211,13 @@ def create_calendar(year, month, events):
             """
         )
 
-    # Render the calendar grid
+    # render the calendar 
     html_content += (
         "<div class='calendar-container'>" + "".join(calendar_days) + "</div>"
     )
     return html_content
 
-# Right Column: Calendar
+# set the calender to thr right of the group chat
 with col2:
     html_calendar = create_calendar(2024, 12, events)
     st.components.v1.html(html_calendar, height=1000, scrolling=False)
