@@ -116,7 +116,7 @@ with col1:
         unsafe_allow_html=True,
     )
 
-    # Search Bar
+    # search Bar
     st.markdown(
         """
         <div class="group-chat-search">
@@ -127,7 +127,7 @@ with col1:
         unsafe_allow_html=True,
     )
 
-    # Data for group chats
+    # group chat contents
     group_chats = [
         {"name": "Teatro Carcano El Bella E L...", "last_message": "You: I'm coming!", "image": "https://carlotomeoteatro.com/wp-content/uploads/2023/04/bb1.jpeg?w=1024"},
         {"name": "Agevolazioni Orchestra Fila...", "last_message": "John: I'm excited", "image": "https://santacecilia.it/wp-content/uploads/2024/11/HARDING_KANG_023-1920x1281.jpg"},
@@ -138,7 +138,7 @@ with col1:
         {"name": "Explore Pavia", "last_message": "You joined the group chat", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHezNTGIPOQOqTY2ZowLW34Kk1TurBKojfdg&s"},
     ]
 
-    # Render group chat items
+    # render group chat items
     for chat in group_chats:
         st.markdown(
             f"""
