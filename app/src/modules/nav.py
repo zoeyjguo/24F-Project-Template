@@ -2,6 +2,8 @@ import streamlit as st
 from streamlit_navigation_bar import st_navbar
 
 def get_nav_config(show_home=False):
+    pages = ["Home"] if not st.session_state.get("authenticated", False) else []
+
     if "authenticated" not in st.session_state or show_home:
         st.session_state.authenticated = False
         pages = ["Home", "Kali", "Winston", "Chloe", "Joey"]
