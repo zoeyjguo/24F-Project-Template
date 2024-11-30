@@ -6,6 +6,23 @@ from streamlit_navigation_bar import st_navbar
 
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
+
+
+if page == "Feed":
+  st.switch_page('pages/02_Interest_Feed.py')
+
+if page == "Update Interests":
+  st.switch_page('pages/03_Update_Interests.py')
+
+if page == "View Other Profile":
+  st.switch_page('pages/04_View_Other_Profile.py')
+
+if page == "Logout":
+  del st.session_state["role"]
+  del st.session_state["authenticated"]
+  st.switch_page("Home.py")
+
+  
 kali = "app/src/assets/kali.jpg"
 
 pages = ["Pets", "Photography", "LGBTQ+"]
