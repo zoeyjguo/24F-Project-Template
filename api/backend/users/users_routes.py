@@ -11,13 +11,30 @@ from backend.ml_models.model01 import predict
 # routes.
 users = Blueprint('users', __name__)
 
+@users.route('/users', methods=['GET'])
+def get_most_pop_products():
+
+    query = '''
+        SELECT * FROM User
+    '''
+    
+    # Same process as handler above
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+ 
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
 #------------------------------------------------------------
 # Get rank of a specific user in the system
 @users.route('/user/<userId>/rank', methods=['GET'])
 def get_user_rank(userId):
     
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT Title FROM User WHERE UserId = {0}'.format(userId))
+    cursor.execute('SELECT Title FROM User')
+    # cursor.execute('SELECT Title FROM User WHERE UserId = {0}'.format(userId))
     
     theData = cursor.fetchall()
     
