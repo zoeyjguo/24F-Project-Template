@@ -38,6 +38,14 @@ st.markdown(
         font-size: 1.5rem;
         font-weight: bold;
         margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Align the icon to the right */
+    }
+    .create-chat-icon {
+        height: 24px;
+        cursor: pointer;
+        margin-left: auto; /* Push the icon to the far right */
     }
     .group-chat-search {
         display: flex;
@@ -92,10 +100,23 @@ col1, col2 = st.columns([1.3, 4])
 
 # Group Chats Section in Left Column
 with col1:
-    # group chat title
-    st.markdown("<h3>Group Chats</h3>", unsafe_allow_html=True)
+    # Group chat title with "Create Chat" icon
+    st.markdown(
+        """
+        <div class="group-chat">
+            <h3>
+                Group Chats
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ04rOxt6qIkj9mDqd9wTEvL0wa8IiycjGR_Q&s" 
+                     class="create-chat-icon" 
+                     title="Create Chat" 
+                     alt="Create Chat Icon">
+            </h3>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    # search Bar
+    # Search Bar
     st.markdown(
         """
         <div class="group-chat-search">
@@ -106,7 +127,7 @@ with col1:
         unsafe_allow_html=True,
     )
 
-    # data for group chats
+    # Data for group chats
     group_chats = [
         {"name": "Teatro Carcano El Bella E L...", "last_message": "You: I'm coming!", "image": "https://carlotomeoteatro.com/wp-content/uploads/2023/04/bb1.jpeg?w=1024"},
         {"name": "Agevolazioni Orchestra Fila...", "last_message": "John: I'm excited", "image": "https://santacecilia.it/wp-content/uploads/2024/11/HARDING_KANG_023-1920x1281.jpg"},
@@ -117,7 +138,7 @@ with col1:
         {"name": "Explore Pavia", "last_message": "You joined the group chat", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHezNTGIPOQOqTY2ZowLW34Kk1TurBKojfdg&s"},
     ]
 
-    # render group chat items
+    # Render group chat items
     for chat in group_chats:
         st.markdown(
             f"""
@@ -133,7 +154,7 @@ with col1:
         )
 
     st.markdown('</div>', unsafe_allow_html=True)
-
+  
 # define events and add color to label them
 events = {
     5: [{"name": "Explore Milan", "color": "#8CBED6"}], 
