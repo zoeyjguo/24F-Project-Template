@@ -25,7 +25,9 @@ def get_nav_config(show_home=False):
     styles = {
         "nav": {
             "background-color": "rgb(198,169,249)",
-            "justify-content": "right"
+            "justify-content": "space-between",  # Push logo and pages to opposite ends
+            "align-items": "center",
+            "padding": "0 1rem",
         },
         "div": {
             "max-width": "32rem",
@@ -48,4 +50,5 @@ def get_nav_config(show_home=False):
         "show_menu": False,
         "show_sidebar": False,
     }
+
     return pages, styles, logo, options
