@@ -91,3 +91,63 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# create columns for layout
+col1, col2 = st.columns([1.3, 4])
+
+# Group Chats Section in Left Column
+with col1:
+    # Group chat title with "Create Chat" icon
+    st.markdown(
+        """
+        <div class="group-chat">
+            <h3>
+                Group Chats
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ04rOxt6qIkj9mDqd9wTEvL0wa8IiycjGR_Q&s" 
+                     class="create-chat-icon" 
+                     title="Create Chat" 
+                     alt="Create Chat Icon">
+            </h3>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Search Bar
+    st.markdown(
+        """
+        <div class="group-chat-search">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnPWyKosZe-ytzAr3D130bkyo_KVrD05c0sg&s">
+            <input type="text" placeholder="Search Messages">
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Data for group chats
+    group_chats = [
+        {"name": "Teatro Carcano El Bella E L...", "last_message": "You: I'm coming!", "image": "https://carlotomeoteatro.com/wp-content/uploads/2023/04/bb1.jpeg?w=1024"},
+        {"name": "Agevolazioni Orchestra Fila...", "last_message": "John: I'm excited", "image": "https://santacecilia.it/wp-content/uploads/2024/11/HARDING_KANG_023-1920x1281.jpg"},
+        {"name": "Collaborazione con Ponder", "last_message": "Abby: Works for me!", "image": "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"},
+        {"name": "Agevolazioni Serate Musica...", "last_message": "Jenny: Slay", "image": "https://www.fsnews.it/content/dam/fs_news/focus-2022/giugno/servizi/21_06_2022_concerto_apertura.jpg"},
+        {"name": "Agevolazioni Fondazione S...", "last_message": "You: What does everyone think?", "image": "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"},
+        {"name": "Cinete Camilano Cloud", "last_message": "You: I can do Friday", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF4mVorkXgFOVKVuXYQRU-rJ2MQAM6Y6q4xA&s"},
+        {"name": "Explore Pavia", "last_message": "You joined the group chat", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHezNTGIPOQOqTY2ZowLW34Kk1TurBKojfdg&s"},
+    ]
+
+    # Render group chat items
+    for chat in group_chats:
+        st.markdown(
+            f"""
+            <div class="group-chat-item">
+                <img src="{chat['image']}" alt="{chat['name']}">
+                <div>
+                    <strong>{chat['name']}</strong>
+                    <span>{chat['last_message']}</span>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    st.markdown('</div>', unsafe_allow_html=True)
