@@ -14,3 +14,4 @@ seaborn
 scikit-learn
 shap
 streamlit-navigation-bar
+streamlit_folium
