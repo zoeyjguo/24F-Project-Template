@@ -10,13 +10,10 @@ import calendar
 
 # navigation bar
 pages, styles, logo, options = get_nav_config(show_home=False)
-page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
+page = st_navbar(pages, selected="Calendar", styles=styles, logo_path=logo, options=options)
 
 if page == "Update Location":
   st.switch_page('pages/11_Update_Location.py')
-
-if page == "Calendar":
-  st.switch_page('pages/13_Personal_Calendar.py')
 
 if page == "Group Chat":
   st.switch_page('pages/14_GroupChat.py')
