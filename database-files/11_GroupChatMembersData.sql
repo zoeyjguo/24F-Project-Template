@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into GroupChatMembers (GroupChatId, EventId, UserId) values (470, 470, 508);
 insert into GroupChatMembers (GroupChatId, EventId, UserId) values (379, 379, 508);
 insert into GroupChatMembers (GroupChatId, EventId, UserId) values (577, 577, 508);

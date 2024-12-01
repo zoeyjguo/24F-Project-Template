@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Report (Title, Description, Reporter, TimeReported) values ('App Crash Issue', 
 'This report highlights app crashes during high-traffic periods, identifies causes, and recommends fixes to improve stability and user experience, especially with event feeds and RSVPs.', 
 920, '2021-01-09 20:35:32');
@@ -119,7 +121,7 @@ insert into Report (Title, Description, Reporter, TimeReported) values ('Profile
 'I’m experiencing a delay in event verification—it’s taking longer than usual. This report explains the issue and suggests solutions to speed up the verification process.', 
 932, '2024-08-29 06:29:25');
 insert into Report (Title, Description, Reporter, TimeReported) values ('Search Results Incorrect', 
-'I’ve noticed that the search results are incorrect—sometimes they don’t match what I’m looking for. This report explains the issue and suggests improvements to make search results more accurate.', 
+'I’ve noticed that the search results sometimes don’t match what I’m looking for. This report explains the issue and suggests improvements to make search results more accurate.', 
 232, '2024-04-28 06:05:29');
 insert into Report (Title, Description, Reporter, TimeReported) values ('Connection Timeout', 
 'I’m experiencing a connection timeout issue—it’s taking too long to load. This report explains the problem and suggests solutions to improve connection stability and speed.', 

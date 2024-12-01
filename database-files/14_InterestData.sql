@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Interest (Name) values ('Art');
 insert into Interest (Name) values ('Music');
 insert into Interest (Name) values ('Sports');

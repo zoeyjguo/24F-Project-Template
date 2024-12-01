@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Flag (MessageId, PostId, Title, Flagger, Reviewer) values (4024, 594, 'Flag for inappropriate content', 150, 45);
 insert into Flag (MessageId, PostId, Title, Flagger, Reviewer) values (1530, 572, 'Flag for offensive language', 778, 57);
 insert into Flag (MessageId, PostId, Title, Flagger, Reviewer) values (4364, 26, 'Flag for spam', 536, 74);

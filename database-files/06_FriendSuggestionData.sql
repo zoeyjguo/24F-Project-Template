@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into FriendSuggestion (UserId, SuggestedUser) values (826, 836);
 insert into FriendSuggestion (UserId, SuggestedUser) values (793, 926);
 insert into FriendSuggestion (UserId, SuggestedUser) values (322, 937);

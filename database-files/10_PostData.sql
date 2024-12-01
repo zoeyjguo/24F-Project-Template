@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1, 1, 25, 'Art Showcase', 69);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (2, 2, 181, 'Live Painting Exhibition', 28);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (3, 3, 217, 'Art and Culture Festival', 43);

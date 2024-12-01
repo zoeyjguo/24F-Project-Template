@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Admin (FirstName, LastName, Pronouns, HasNotifs) values ('Roderigo', 'D''Souza', 'She/Her', true);
 insert into Admin (FirstName, LastName, Pronouns, HasNotifs) values ('Drusie', 'Marini', 'They/She', false);
 insert into Admin (FirstName, LastName, Pronouns, HasNotifs) values ('Reube', 'Brooksbank', 'He/Him', true);

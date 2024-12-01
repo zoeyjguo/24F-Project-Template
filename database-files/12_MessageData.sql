@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (128, 316, 316, 'respect!', null, '2024-07-30 01:49:37');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (932, 451, 451, 'Let’s meet at the usual place', 'https://example.com/image79.jpg', '2024-08-25 19:27:21');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (759, 705, 705, 'Can you tell me more about it?', null, '2024-11-01 11:58:05');
