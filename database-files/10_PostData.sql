@@ -1000,4 +1000,3 @@ insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (9
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (998, 998, 203, 'World of Photography', 75);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (999, 999, 604, 'Photography Workshop', 77);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1000, 1000, 681, 'International Photography Meetup', 22);
-
