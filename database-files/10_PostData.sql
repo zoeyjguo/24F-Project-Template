@@ -997,6 +997,6 @@ insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (9
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (995, 995, 813, 'Art Collectors Dinner', 32);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (996, 996, 199, 'Painting for Beginners', 65);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (997, 997, 166, 'Arts and Crafts Expo', 11);
-insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (998, 998, 203, 'World of Photography', 75);
-insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (999, 999, 604, 'Photography Workshop', 77);
-insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1000, 1000, 681, 'International Photography Meetup', 22);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (998, 998, NULL, 'World of Photography', 75);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (999, 999, NULL, 'Photography Workshop', 77);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1000, 1000, NULL, 'International Photography Meetup', 22);

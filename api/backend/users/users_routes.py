@@ -52,8 +52,8 @@ def delete_event(userId):
 def get_user_friends(userId):
     
     cursor = db.get_db().cursor()
-    query = f'''SELECT FirstName,
-                       LastName
+    query = f'''SELECT uf.FirstName,
+                       uf.LastName
                 FROM User u
                 JOIN Friend f ON u.UserId = f.UserId
                 JOIN User uf ON uf.UserId = f.FriendId
@@ -66,6 +66,22 @@ def get_user_friends(userId):
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+#------------------------------------------------------------
+# Add a friend to a particular user's friends list
+
+@users.route('/users/<userId>/friends', methods = ['POST'])
+def add_user_friend(userId):
+    friend_info = request.json
+    current_app.logger.info(friend_info)
+
+    cursor = db.get_db().cursor()
+    cursor.execute('INSERT INTO Friend VALUES ({0}, {1}), ({1}, {0})'.format(friend_info, userId))
+    db.get_db().commit()
+    
+    response = make_response("Successfully added friend to user {0}".format(userId))
+    response.status_code = 200
+    return response
 
 #------------------------------------------------------------
 # Get the badges the user with userId has acquired
@@ -208,21 +224,6 @@ def update_user_notifications(userId):
     response = make_response("Successfully updated notification settings")
     response.status_code = 200
     return response
-#------------------------------------------------------------
-# Add a friend to a particular user's friends list
-
-@users.route('/users/<userId>/friends', methods = ['POST'])
-def add_user_friend(userId):
-    friend_info = request.json
-    current_app.logger.info(friend_info)
-
-    cursor = db.get_db().cursor()
-    cursor.execute('INSERT INTO Friend VALUES ({0}, {1}), ({1}, {0})'.format(friend_info, userId))
-    db.get_db().commit()
-    
-    response = make_response("Successfully added friend to user {0}".format(userId))
-    response.status_code = 200
-    return response
 
 #------------------------------------------------------------
 # Get a user's friend suggestions
@@ -230,7 +231,7 @@ def add_user_friend(userId):
 def get_user_suggestions(userId):
     
     cursor = db.get_db().cursor()
-    query = f'''SELECT u.Name
+    query = f'''SELECT fu.FirstName, fu.LastName
                 FROM User u
                 JOIN FriendSuggestion fs ON u.UserId = fs.UserId
                 JOIN User fu on fs.SuggestedUser = fu.UserId

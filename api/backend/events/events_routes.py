@@ -68,7 +68,7 @@ def get_generated_events():
 
 #------------------------------------------------------------
 # Return all events associated with an InterestId
-@events.route('/events/<interestId>', methods=['GET'])
+@events.route('/events/interests/<interestId>', methods=['GET'])
 def get_interest_events(interestId):
     
     cursor = db.get_db().cursor()
@@ -95,7 +95,7 @@ def get_event_participants(eventId):
                 FROM GroupChatMembers gcm
                 JOIN Event e ON gcm.EventId = e.EventId
                 JOIN User u ON gcm.UserId = u.UserId
-                WHERE u.eventsId = {str(eventId)}
+                WHERE e.EventId = {str(eventId)}
     '''
     cursor.execute(query)
     
