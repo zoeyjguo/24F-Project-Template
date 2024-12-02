@@ -12,10 +12,11 @@ from backend.ml_models.model01 import predict
 users = Blueprint('users', __name__)
 
 @users.route('/users', methods=['GET'])
-def get_most_pop_products():
+# I am currently using this for debugging purposes, this can eventually be deleted
+def get_users():
 
     query = '''
-        SELECT * FROM User
+       SELECT * FROM INFORMATION_SCHEMA.TABLES;
     '''
     
     # Same process as handler above
@@ -33,8 +34,7 @@ def get_most_pop_products():
 def get_user_rank(userId):
     
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT Title FROM User')
-    # cursor.execute('SELECT Title FROM User WHERE UserId = {0}'.format(userId))
+    cursor.execute('SELECT Title FROM User WHERE UserId = {0}'.format(userId))
     
     theData = cursor.fetchall()
     
@@ -49,7 +49,7 @@ def get_user_events(userId):
 
     cursor = db.get_db().cursor()
     cursor.execute('''
-        SELECT DISTINCT p.Title, p.Description, e.StartTime, e.EndTime
+        SELECT DISTINCT p.Title, e.StartTime, e.EndTime
         FROM Post p JOIN Event e ON p.EventId = e.EventId
                     JOIN GroupChat gc ON p.GroupChatId = gc.GroupChatId
                     JOIN GroupChatMembers gcm ON gc.GroupChatId = gcm.GroupChatId
@@ -67,7 +67,7 @@ def get_user_events(userId):
 def get_user_posts(userId):
 
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT Title, Description FROM Post WHERE UserId = {0}'.format(userId))
+    cursor.execute('SELECT Title FROM Post WHERE CreatedBy = {0}'.format(userId))
     
     theData = cursor.fetchall()
     

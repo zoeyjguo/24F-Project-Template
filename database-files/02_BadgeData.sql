@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Badge (Name, PointsWorth) values ('Adventurer', 60);
 insert into Badge (Name, PointsWorth) values ('Music Lover', 11);
 insert into Badge (Name, PointsWorth) values ('Eco-friendly', 25);

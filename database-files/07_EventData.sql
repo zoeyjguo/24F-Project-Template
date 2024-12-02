@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (37.337302, 114.120108, '2025-01-22 18:06:18', '2025-01-22 20:41:18', 26, false);
 insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (-6.7131574, 107.0185123, '2025-08-24 12:11:50', '2025-08-24 13:58:50', 14, false);
 insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (-7.150975, 110.1402594, '2025-06-28 05:01:48', '2025-06-28 06:50:48', 34, false);

@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into GroupChat (EventId, Monitor, Name) values (1, 5, 'Ctrl Z Gang');
 insert into GroupChat (EventId, Monitor, Name) values (2, 63, 'The Chat Pack');
 insert into GroupChat (EventId, Monitor, Name) values (3, 49, 'Group Chat Geniuses');

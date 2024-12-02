@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into Friend (FriendId, UserId) values (884, 646);
 insert into Friend (FriendId, UserId) values (646, 884);
 insert into Friend (FriendId, UserId) values (381, 26);

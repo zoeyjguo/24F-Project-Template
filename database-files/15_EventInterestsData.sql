@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into EventInterests (EventId, InterestId, PostId) values (1, 4, 1);
 insert into EventInterests (EventId, InterestId, PostId) values (2, 1, 2);
 insert into EventInterests (EventId, InterestId, PostId) values (3, 3, 3);

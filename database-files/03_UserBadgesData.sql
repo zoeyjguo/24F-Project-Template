@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into UserBadges (UserId, BadgeId) values (224, 3);
 insert into UserBadges (UserId, BadgeId) values (59, 1);
 insert into UserBadges (UserId, BadgeId) values (506, 10);

@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive, CreatedAt) values ('Erica', 'Kolodziej', 'Gold', true, 'They/She', 18, 46.761348, 124.23692, true, '2022-05-07');
 insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive, CreatedAt) values ('Tine', 'Alcido', 'Silver', true, 'They/Them', 192, 39.109563, 117.223371, true, '2024-06-23');
 insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive, CreatedAt) values ('Erinn', 'Ruckman', 'Gold', false, 'She/Her', 116, 16.4311476, 103.5083998, true, '2023-08-05');
@@ -998,6 +1000,6 @@ insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latit
 insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive, CreatedAt) values ('Amandi', 'Habbon', 'Gold', true, 'He/Him', 32, 37.7525244, 139.1650556, true, '2022-03-21');
 insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive, CreatedAt) values ('Liliane', 'Abrahamsen', 'Bronze', true, 'They/Them', 142, -34.5937209, -58.5035787, true, '2021-11-25');
 insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive, CreatedAt) values ('Rosemary', 'Otterwell', 'Platinum', false, 'He/Him', 155, -38.7239099, -62.278743, true, '2021-05-21');
-insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive) values ('Kali', 'Linux', 'Iron', TRUE, 'They/Them', 0, 34.1478, 118.1445, TRUE);
-insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive) values ('Winston', 'Church', 'Silver', TRUE,'He/Him', 100,40.7128, -74.0060,  TRUE);
-INSERT INTO User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, CreatedAt, IsActive) VALUES ('Ava', 'Smith', 'Gold',TRUE,'She/Her', 200,42.3601, 71.0589, '2019-05-10',TRUE);
+insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive) values ('Kali', 'Linux', 'Iron', true, 'They/Them', 0, 34.1478, 118.1445, true);
+insert into User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, IsActive) values ('Winston', 'Church', 'Silver', true,'He/Him', 100,40.7128, -74.0060, true);
+INSERT INTO User (FirstName, LastName, Title, HasNotifs, Pronouns, Points, Latitude, Longitude, CreatedAt, IsActive) VALUES ('Ava', 'Smith', 'Gold', true,'She/Her', 200,42.3601, 71.0589, '2019-05-10', true);

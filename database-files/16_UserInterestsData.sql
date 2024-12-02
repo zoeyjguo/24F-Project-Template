@@ -1,3 +1,5 @@
+USE CoLink;
+
 insert into UserInterests (UserId, InterestId) values (101, 20);
 insert into UserInterests (UserId, InterestId) values (137, 17);
 insert into UserInterests (UserId, InterestId) values (25, 11);
