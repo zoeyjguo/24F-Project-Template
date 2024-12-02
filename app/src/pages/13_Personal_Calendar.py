@@ -103,22 +103,7 @@ with col1:
         <div class="group-chat">
             <h3>
                 Group Chats
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ04rOxt6qIkj9mDqd9wTEvL0wa8IiycjGR_Q&s" 
-                     class="create-chat-icon" 
-                     title="Create Chat" 
-                     alt="Create Chat Icon">
             </h3>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    # search Bar
-    st.markdown(
-        """
-        <div class="group-chat-search">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnPWyKosZe-ytzAr3D130bkyo_KVrD05c0sg&s">
-            <input type="text" placeholder="Search Messages">
         </div>
         """,
         unsafe_allow_html=True,
@@ -239,3 +224,4 @@ def create_calendar(year, month, events):
 with col2:
     html_calendar = create_calendar(2024, 12, events)
     st.components.v1.html(html_calendar, height=1000, scrolling=False)
+
