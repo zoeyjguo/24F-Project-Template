@@ -22,6 +22,18 @@ def get_user(userId):
     return the_response
 
 #------------------------------------------------------------
+# Delete event with EventId eventId from database
+@users.route('/users/<userId>', methods = ['DELETE'])
+def delete_event(userId):
+    cursor = db.get_db().cursor()
+    cursor.execute('DELETE FROM User WHERE UserId = {0}'.format(userId))
+    db.get_db().commit()
+    
+    response = make_response("Successfully deleted user {0}".format(userId))
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
 # Return the friends the user with id userId has
 @users.route('/users/<userId>/friends', methods=['GET'])
 def get_user_friends(userId):
@@ -200,23 +212,9 @@ def add_user_friend(userId):
     return response
 
 #------------------------------------------------------------
-# Return a particular user's friend suggestions
+# Get a user's friend suggestions
 @users.route('/users/<userId>/suggestions', methods=['GET'])
 def get_user_suggestions(userId):
-
-    cursor = db.get_db().cursor()
-    cursor.execute('SELECT Title FROM Post WHERE CreatedBy = {0}'.format(userId))
-    
-    theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
-
-#------------------------------------------------------------
-# Get the badges the user with userId has acquired
-@users.route('/users/<userId>/suggestions', methods=['GET'])
-def get_user_badges(userId):
     
     cursor = db.get_db().cursor()
     query = f'''SELECT u.Name
