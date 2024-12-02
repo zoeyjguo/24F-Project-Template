@@ -9,16 +9,13 @@ from backend.ml_models.model01 import predict
 # Create a new Blueprint object for flags
 flags = Blueprint('flags', __name__)
 
-@flags.route('/flags/<post_id>', methods=['POST'])
-def create_flag_post():
-
-    query = '''
-       INSERT INTO Flags (PostId)
-       VALUES (%s, %s);
-    '''
+#------------------------------------------------------------
+# Return all flags
+@flags.route('/flags', methods=['GET'])
+def get_flags():
     
     cursor = db.get_db().cursor()
-    cursor.execute(query)
+    cursor.execute('SELECT * FROM Flag')
     theData = cursor.fetchall()
  
     response = make_response(jsonify(theData))
@@ -26,14 +23,47 @@ def create_flag_post():
     return response
 
 #------------------------------------------------------------
-# Get rank of a specific user in the system
-@flags.route('/flags/<message_id>', methods=['POST'])
-def create_flag_message(userId):
+# Create a flag associated with a post made by Chloe Lane, an admin
+@flags.route('/flags/<post_id>', methods=['POST'])
+def create_flag_post(postId):
+    flag_info = request.json
+    current_app.logger.info(flag_info)
+
+    title = flag_info['Title']
+    description = flag_info['Description']
     
+    query = f'''
+        INSERT INTO Flag (PostId, Title, Description, Flagger)
+        VALUES ({str(postId)}, '{title}', '{description}', '76')
+    '''
+
     cursor = db.get_db().cursor()
-    cursor.execute('INSERT INTO Flags (MessageId) VALUES (%s, %s)')
+    cursor.execute(query)
+    db.get_db().commit()
     
-    theData = cursor.fetchall()
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
+    response = make_response("Successfully created flag for post {0}".format(postId))
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Create a flag associated with a message made by Chloe Lane, an admin
+@flags.route('/flags/<message_id>', methods=['POST'])
+def create_flag_message(messageId):
+    flag_info = request.json
+    current_app.logger.info(flag_info)
+
+    title = flag_info['Title']
+    description = flag_info['Description']
+    
+    query = f'''
+        INSERT INTO Flag (MessageId, Title, Description, Flagger)
+        VALUES ({str(messageId)}, '{title}', '{description}', '76')
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    response = make_response("Successfully created flag for post {0}".format(messageId))
+    response.status_code = 200
+    return response

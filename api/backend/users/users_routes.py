@@ -8,6 +8,19 @@ from backend.db_connection import db
 users = Blueprint('users', __name__)
 
 #------------------------------------------------------------
+# Return all users
+@users.route('/users', methods=['GET'])
+def get_users():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM User')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
 # Return all detailed information about the user with id userId
 @users.route('/users/<userId>', methods=['GET'])
 def get_user(userId):
