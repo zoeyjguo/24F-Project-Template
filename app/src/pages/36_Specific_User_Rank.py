@@ -22,27 +22,23 @@ if page == "Logout":
 # ***************************************************
 col1, col2 = st.columns([2, 4])
 
-title_response = requests.get("http://api:4000/u/user/1/rank").json()
-events_response = requests.get("http://api:4000/u/user/1/events").json()
-posts_response = requests.get("http://api:4000/u/user/1/posts").json()
+user_info = requests.get("http://api:4000/u/users/1").json()
+title_response = requests.get("http://api:4000/u/users/1/rank").json()
+events_response = requests.get("http://api:4000/u/users/1/events").json()
+posts_response = requests.get("http://api:4000/u/users/1/posts").json()
 
 # Column 1: Profile Info
 with col1:
     profile_info = st.container(border=True)
     profile_info.image("assets/prof pic.png", width=150)  
-    profile_info.markdown("### Eva Smith", unsafe_allow_html=True)
-    profile_info.markdown("<p>She/Her</p>", unsafe_allow_html=True)
+    profile_info.markdown("### {0} {1}".format(user_info[0]["FirstName"], user_info[0]["LastName"]), unsafe_allow_html=True)
+    profile_info.markdown("<p>{0}</p>".format(user_info[0]["Pronouns"]), unsafe_allow_html=True)
 
     stats = st.container(border=True)
     stats.markdown("#### Profile Overview", unsafe_allow_html=True)
 
-    col1_1, col1_2 = stats.columns(2)
-    with col1_1:
-        stats.metric("Rank", title_response[0]["Title"])
-        stats.metric("Achievements", "23")
-    with col1_2:
-        stats.metric("Points", "157")
-        stats.metric("Events", "17")
+    stats.metric("Rank", title_response[0]["Title"])
+    stats.metric("Points", title_response[0]["Points"])
 
 # Column 2: Posts and Events
 with col2:
@@ -53,5 +49,4 @@ with col2:
     posts_events.divider()
 
     posts_events.markdown("#### Events You're Attending", unsafe_allow_html=True)
-    posts_events.write("Event Content")
     posts_events.dataframe(events_response)
