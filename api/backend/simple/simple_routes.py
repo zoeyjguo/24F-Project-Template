@@ -6,7 +6,8 @@ from backend.db_connection import db
 # blueprint is a collection to route in flask
 simple_routes = Blueprint('simple_routes', __name__)
 
-# ------------------------------------------------------------
+#------------------------------------------------------------
+# Get all reports from the database
 @simple_routes.route('/reports', methods=['GET'])
 def get_reports():
     cursor = db.get_db().cursor()
@@ -18,6 +19,8 @@ def get_reports():
     the_response.status_code = 200
     return the_response
 
+#------------------------------------------------------------
+# Get all users' locations from the database
 @simple_routes.route('/locations', methods=['GET'])
 def get_locations():
     cursor = db.get_db().cursor()
@@ -29,6 +32,8 @@ def get_locations():
     the_response.status_code = 200
     return the_response
 
+#------------------------------------------------------------
+# Get all interests from the database
 @simple_routes.route('/interests', methods=['GET'])
 def get_interests():
     cursor = db.get_db().cursor()
@@ -40,10 +45,25 @@ def get_interests():
     the_response.status_code = 200
     return the_response
 
+#------------------------------------------------------------
+# Get all badges from the database
 @simple_routes.route('/badges', methods=['GET'])
 def get_badges():
     cursor = db.get_db().cursor()
     cursor.execute('SELECT * FROM Badge')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+# Get all groupchats a specific admin is monitoring
+@simple_routes.route('/admin/<adminId>/groupchats', methods=['GET'])
+def get_groupchats(adminId):
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM GroupChat WHERE Monitor = {0}'.format(adminId))
     
     theData = cursor.fetchall()
     

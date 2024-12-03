@@ -11,6 +11,8 @@ from backend.ml_models.model01 import predict
 # routes.
 groupchats = Blueprint('groupchats', __name__)
 
+#------------------------------------------------------------
+# Delete a particular groupchat from the database
 @groupchats.route('/groupchats/<groupchatId>', methods=['DELETE'])
 def delete_groupchat(groupchatId):
     query = 'DELETE FROM GroupChat WHERE GroupChatId = {0}'.format(groupchatId)
@@ -22,6 +24,8 @@ def delete_groupchat(groupchatId):
     response.status_code = 200
     return response
 
+#------------------------------------------------------------
+# Add a message to a particular groupchat
 @groupchats.route('/groupchats/<groupchatId>/messages', methods=['POST'])
 def create_message(groupchatId):
     the_data = request.json
@@ -40,6 +44,8 @@ def create_message(groupchatId):
     response.status_code = 200
     return response
 
+#------------------------------------------------------------
+# Add a user to a particular groupchat
 @groupchats.route('/groupchats/<groupchatId>/members', methods=['POST'])
 def add_member(groupchatId):
     userId = request.json['UserId']
@@ -52,4 +58,20 @@ def add_member(groupchatId):
     response = make_response("Successfully added user with id: {0} to groupchat with id: {1}".format(userId, groupchatId))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Get the messages from a particular group chat
+@groupchats.route('/groupchats/<groupchatId>/messages', methods=['GET'])
+def get_messages(groupchatId):
+    cursor = db.get_db().cursor()
+    cursor.execute(f'''
+        SELECT u.FirstName, u.LastName, m.Sender, m.Text 
+        FROM Message m JOIN User u ON m.Sender = u.UserId
+        WHERE GroupChatId = {str(groupchatId)}''')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
 

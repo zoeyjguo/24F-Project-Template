@@ -5000,3 +5000,10 @@ insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) va
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (676, 602, 602, 'vibes are fire rn', 'https://example.com/image10.jpg', '2024-09-25 22:53:19');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (316, 407, 407, 'Can we push this to next week?', 'https://example.com/image30.jpg', '2023-12-25 13:15:24');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (589, 714, 714, 'Say no more', null, '2024-05-25 01:26:25');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (589, 60, 60, 'Im near the balcony on the left.', null, '2024-05-25 01:26:25');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (560, 60, 60, 'Okay, I think I know where you are.', null, '2024-05-25 01:26:25');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (589, 60, 60, 'Mhm, Im in the front row wearing a sweater.', null, '2024-05-25 01:26:25');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (560, 60, 60, 'Wait, I dont think I see you… Nvm, Im coming!', null, '2024-05-25 01:26:25');
+
+
+
