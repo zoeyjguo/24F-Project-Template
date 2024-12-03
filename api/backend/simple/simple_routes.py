@@ -50,3 +50,14 @@ def get_badges():
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+@simple_routes.route('/groupchats', methods=['GET'])
+def get_groupchats():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM GroupChat')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
