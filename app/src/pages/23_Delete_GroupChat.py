@@ -21,26 +21,26 @@ if page == "Logout":
     del st.session_state["authenticated"]
     st.switch_page("Home.py")
 
+
 # Function to call the DELETE API route
 def delete_gc(group_chat_id):
     api_url = f"http://api:4000/g/groupchats/{group_chat_id}"  # Replace with your API URL
-    headers = {"Authorization": "Bearer your_admin_token"}  # Example of secure admin verification
 
     try:
-        response = requests.delete(api_url, headers=headers)
+        response = requests.delete(api_url)
         if response.status_code == 200:
             st.success(f"Group chat {group_chat_id} deleted successfully!")
         elif response.status_code == 404:
-            st.error("Group chat not found.")
-        elif response.status_code == 403:
-            st.error("Unauthorized access. Only admins can delete group chats.")
+            st.error(f"Group chat {group_chat_id} not found.")
         else:
             st.error(f"Failed to delete group chat. Error: {response.status_code}")
     except requests.exceptions.RequestException as e:
         st.error(f"Error connecting to the server: {e}")
 
+# Fetch group chat data from the API
 def fetch_group_chats():
-    api_url = "http://api:4000/g/groupchats"  # Replace with your API URL
+    api_url = "http://api:4000/g/tenGroupchats"  # Replace with your API URL for fetching group chats
+
     try:
         response = requests.get(api_url)
         if response.status_code == 200:
@@ -63,12 +63,11 @@ if group_chats:
     for gc in group_chats:
         col1, col2 = st.columns([8, 1])
         with col1:
-            st.write(f"**Group Chat ID:** {gc['GroupChatID']}")
+            st.write(f"**Group Chat ID:** {gc['GroupChatId']}")
             st.write(f"**Name:** {gc['Name']}")
-            st.write(f"**Monitor ID:** {gc['Monitor']}")
         with col2:
-            if st.button("Delete", key=f"delete_{gc['GroupChatID']}"):
-                delete_gc(gc['GroupChatID'])
+            if st.button("Delete", key=f"delete_{gc['GroupChatId']}", type="primary"):
+                delete_gc(gc['GroupChatId'])
         st.markdown("---")
 else:
     st.info("No group chats available to delete.")
