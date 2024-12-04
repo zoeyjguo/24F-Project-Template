@@ -30,7 +30,7 @@ posts_response = requests.get("http://api:4000/u/users/1/posts").json()
 # Column 1: Profile Info
 with col1:
     profile_info = st.container(border=True)
-    profile_info.image("assets/prof pic.png", width=150)  
+    profile_info.image("assets/erica.png", width=150)  
     profile_info.markdown("### {0} {1}".format(user_info[0]["FirstName"], user_info[0]["LastName"]), unsafe_allow_html=True)
     profile_info.markdown("<p>{0}</p>".format(user_info[0]["Pronouns"]), unsafe_allow_html=True)
 
@@ -44,9 +44,13 @@ with col1:
 with col2:
     posts_events = st.container(border=True)
     posts_events.markdown("#### Posts You've Made", unsafe_allow_html=True)
-    posts_events.dataframe(posts_response)
+    for post in posts_response:
+        posts_events.markdown(f"<b>{post['Title']}</b>", unsafe_allow_html=True)
 
     posts_events.divider()
 
     posts_events.markdown("#### Events You're Attending", unsafe_allow_html=True)
-    posts_events.dataframe(events_response)
+    for event in events_response:
+        posts_events.markdown(f"<b>{event['Title']}</b>", unsafe_allow_html=True)
+        posts_events.markdown(f"Starts at {event['StartTime']}")
+        posts_events.markdown(f"Ends at {event['EndTime']}")

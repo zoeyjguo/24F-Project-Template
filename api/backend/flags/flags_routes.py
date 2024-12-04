@@ -67,3 +67,21 @@ def create_flag_message(messageId):
     response = make_response("Successfully created flag for post {0}".format(messageId))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Update a flag so that it is reviewed by Chloe Lane, an admin
+@flags.route('flags/<flagId>', methods=['PUT'])
+def update_flag(flagId):
+    query = f'''
+        UPDATE Flag
+        SET Reviewer = 76
+        WHERE FlagId = {str(flagId)}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    response = make_response("Successfully updated flag with id: {0}".format(flagId))
+    response.status_code = 200
+    return response
