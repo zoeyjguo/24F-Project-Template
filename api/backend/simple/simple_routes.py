@@ -40,6 +40,42 @@ def get_interests():
     the_response.status_code = 200
     return the_response
 
+@simple_routes.route('/interests/counts', methods=['GET'])
+def get_interest_counts():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT InterestId, COUNT(DISTINCT UserId) FROM UserInterests GROUP BY InterestId')
+
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+
+@simple_routes.route('/messages', methods=['GET'])
+def get_user_interests():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM Message')
+
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+@simple_routes.route('/flagreports', methods=['GET']) 
+def get_flag_reports(): 
+    cursor = db.get_db().cursor() 
+    cursor.execute('SELECT * FROM flag JOIN users')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
 @simple_routes.route('/badges', methods=['GET'])
 def get_badges():
     cursor = db.get_db().cursor()

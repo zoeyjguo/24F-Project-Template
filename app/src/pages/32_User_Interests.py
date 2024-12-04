@@ -2,6 +2,7 @@ import streamlit as st
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 import pandas as pd 
+import requests
 
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Interests", styles=styles, logo_path=logo, options=options)
@@ -17,10 +18,22 @@ if page == "Logout":
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
 
+interests_fetch = requests.get("http://api:4000/simple//interests").json()
+interest_count = requests.get("http://api:4000/simple//interests/counts").json()
+
+all_interests = []
+count = []
+
+for interest in interests_fetch:
+  all_interests.append(interest["Name"])
+
+for interest in interest_count: 
+  count.append(interest["COUNT(DISTINCT UserId)"])
+
 
 data = {
-    'Interests': ['LGBTQA+', 'Art', 'Music', 'Dance', 'Sports'],
-    'Amount': [150, 200, 120, 180, 220]
+    'Interests': all_interests,
+    'Amount': count
 }
 
 df = pd.DataFrame(data)
@@ -29,7 +42,7 @@ st.markdown(
     """
     <div>
         <h3 style="color: black; text-align: center;">Interest Ranking</h3>
-
+        <div style="height: 100px;"></div> 
     </div>
     """,
     unsafe_allow_html=True,
