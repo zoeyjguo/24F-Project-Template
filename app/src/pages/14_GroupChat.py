@@ -95,11 +95,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
+
 # get from generated data
 fetch_groupchats = requests.get('http://api:4000/u/users/1002/groupchats').json()
 group_chats = []
 fetch_messages = requests.get('http://api:4000/g/groupchats/399/messages').json()
 messages_data = []
+
 for message in fetch_messages:
   messages_data.append({"sender": "{0} {1}".format(message["FirstName"], message["LastName"]),
                   "content": message["Text"],
