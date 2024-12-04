@@ -17,16 +17,16 @@ if page == "Logout":
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
 
-flags = requests.get("http://api:4000/simple/tenFlags").json()
+flags = requests.get("http://api:4000/m/tenFlags").json()
 st.session_state["flags"] = flags
 
 def ignore_flag(flag_id):
-  response = requests.put(f"http://api:4000/f/flags/{flag_id}")
+  response = requests.put(f"http://api:4000/m/flags/{flag_id}")
   if response.status_code == 200:
       st.success("Flag ignored.")
 
 def delete_message(message_id):
-    response = requests.delete(f"http://api:4000/simple/messages/{message_id}")
+    response = requests.delete(f"http://api:4000/m/messages/{message_id}")
     if response.status_code == 200:
       st.success("Message deleted successfully!")
 
