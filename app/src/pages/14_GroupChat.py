@@ -128,6 +128,20 @@ def send_message_with_image(message, image, groupchat_id):
     except requests.exceptions.RequestException as e:
       st.error(f"Error connecting to server: {str(e)}")
 
+def upload_image_to_server(uploaded_image):
+   try:
+      files = {"file": uploaded_image.getvalue()}
+      response = requests.post('http://api:4000/simple/upload', files=files)
+      if response.status_code == 200:
+         image_url = response.json().get("image_url")
+         return image_url
+      else:
+         st.error(f"Error uploading image: {response.text}")
+         return None
+   except requests.exceptions.RequestException as e:
+      st.error(f"Error connecting to the server: {str(e)}")
+      return None
+   
 # initialize the session state
 if "selected_chat_id" not in st.session_state:
     st.session_state.selected_chat_id = 399
@@ -208,7 +222,8 @@ with col2:
                       break
             if uploaded_image is not None:
                 # convert image to URL
-                uploaded_image_url = f"data:image/{uploaded_image.type.split('/')[-1]};base64," + uploaded_image.getvalue().decode("latin1")
-                send_message_with_image(new_message, uploaded_image_url, current)
+                uploaded_image_url = upload_image_to_server(uploaded_image)
+                if uploaded_image_url:
+                    send_message_with_image(new_message, uploaded_image_url, current)
             else:
               send_message(new_message,current)
