@@ -1,169 +1,74 @@
 import logging
 logger = logging.getLogger(__name__)
 import streamlit as st
+import requests
+from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 
-import requests
-
-st.set_page_config(layout = 'wide')
+# Navigation bar
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Delete Group Chat", styles=styles, logo_path=logo, options=options)
 
 if page == "Flag Message":
-  st.switch_page('pages/25_Flag_Message.py')
+    st.switch_page('pages/25_Flag_Message.py')
 
 if page == "Reports":
-  st.switch_page('pages/26_User_Reports.py')
+    st.switch_page('pages/26_User_Reports.py')
 
 if page == "Logout":
-  del st.session_state["role"]
-  del st.session_state["authenticated"]
-  st.switch_page("Home.py")
+    del st.session_state["role"]
+    del st.session_state["authenticated"]
+    st.switch_page("Home.py")
 
-# styling for the group chats and messages
-st.markdown(
-    """
-    <style>
-    .group-chat-bubble {
-        display: block;
-        padding: 10px 15px;
-        margin: 5px 0;
-        background-color: #eaeaea;
-        border-radius: 25px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-    .group-chat-bubble:hover {
-        background-color: #d0d0d0;
-    }
-    .chat-message {
-        padding: 10px;
-        margin: 10px;
-        border-radius: 15px;
-        max-width: 70%;
-        font-size: 14px;
-        font-weight: normal;
-    }
-    .chat-message-sender {
-        background-color: #d8eefe; /* Pastel blue */
-        margin-left: auto;
-        text-align: right;
-        color: #0a3e6d;
-    }
-    .chat-message-receiver {
-        background-color: #fefefe; /* White with a softer tone */
-        margin-right: auto;
-        text-align: left;
-        color: #3d3d3d;
-    }
-    .input-container {
-        display: flex;
-        align-items: center;
-        margin-top: 10px;
-    }
-    .input-box {
-        flex-grow: 1;
-        padding: 10px;
-        font-size: 14px;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        margin-right: 10px;
-    }
-    .send-button {
-        padding: 8px 16px;
-        background-color: #66b3ff; /* Pastel blue button */
-        color: white;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-    .send-button:hover {
-        background-color: #549fd6;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# Function to call the DELETE API route
+def delete_gc(group_chat_id):
+    api_url = f"http://api:4000/g/groupchats/{group_chat_id}"  # Replace with your API URL
+    headers = {"Authorization": "Bearer your_admin_token"}  # Example of secure admin verification
 
-# data for group chats and messages
-group_chats = [
-    {"id": 1, "name": "Teatro Carcano El Bella E La Bestia"},
-    {"id": 2, "name": "Agevolazioni Orchestra Filarmonica"},
-    {"id": 3, "name": "Collaborazione con Ponder"},
-    {"id": 4, "name": "Agevolazioni Serate Musicali"},
-    {"id": 5, "name": "Agevolazioni Fondazione S."},
-    {"id": 6, "name": "Cinete Camilano Cloud"},
-    {"id": 7, "name": "Explore Pavia"}
-]
+    try:
+        response = requests.delete(api_url, headers=headers)
+        if response.status_code == 200:
+            st.success(f"Group chat {group_chat_id} deleted successfully!")
+        elif response.status_code == 404:
+            st.error("Group chat not found.")
+        elif response.status_code == 403:
+            st.error("Unauthorized access. Only admins can delete group chats.")
+        else:
+            st.error(f"Failed to delete group chat. Error: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to the server: {e}")
 
-# data for the messages 
-messages_data = {
-    1: [
-        {"sender": "John", "content": "I'm near the balcony on the left."},
-        {"sender": "You", "content": "Okay, I think I know where you are."},
-        {"sender": "John", "content": "Mhm, I'm in the front row wearing a black sweater."},
-        {"sender": "You", "content": "Wait, I don't think I see you… Nvm, I'm coming!"}
-    ],
-    2: [],
-    3: [],
-    4: [],
-    5: [],
-    6: [],
-    7: []
-}
+def fetch_group_chats():
+    api_url = "http://api:4000/g/groupchats"  # Replace with your API URL
+    try:
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            return response.json()  # Assuming the API returns a JSON array of group chats
+        else:
+            st.error(f"Failed to fetch group chats. Error: {response.status_code}")
+            return []
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to the server: {e}")
+        return []
 
-# initialize the session state
-if "selected_chat" not in st.session_state:
-    st.session_state.selected_chat = 1
+# Page Title
+st.title("Delete Group Chats")
 
-if "messages" not in st.session_state:
-    st.session_state.messages = messages_data
+# Fetch group chats dynamically
+group_chats = fetch_group_chats()
 
-# update the selected chat when a button is clicked
-def select_chat(chat_id):
-    st.session_state.selected_chat = chat_id
-
-# add a new message to the current chat
-def send_message(message):
-    if message.strip():
-        st.session_state.messages[st.session_state.selected_chat].append({"sender": "You", "content": message.strip()})
-
-# set up layout of the page
-col1, col2 = st.columns([1.3, 4])
-
-# set up the group chats column
-with col1:
-    st.markdown("### Group Chats")
-    for chat in group_chats:
-        if st.button(chat["name"], key=f"chat_{chat['id']}", use_container_width=True):
-            select_chat(chat["id"])
-
-# set up the messages column
-with col2:
-    selected_chat_id = st.session_state.selected_chat
-    selected_chat = next(chat for chat in group_chats if chat["id"] == selected_chat_id)
-    st.markdown(f"## {selected_chat['name']}")
-
-    # display messages
-    chat_messages = st.session_state.messages[selected_chat_id]
-    for msg in chat_messages:
-        align = "flex-end" if msg["sender"] == "You" else "flex-start"
-        bg_color = "#e0f7fa" if msg["sender"] == "You" else "#ffffff"
-        st.markdown(
-            f"""
-            <div style="display: flex; justify-content: {align}; margin-bottom: 10px;">
-                <div style="background-color: {bg_color}; padding: 10px; border-radius: 10px; max-width: 60%;">
-                    <strong>{msg['sender']}</strong><br>{msg['content']}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
+if group_chats:
+    # Display group chats with a delete button for each
+    for gc in group_chats:
+        col1, col2 = st.columns([8, 1])
+        with col1:
+            st.write(f"**Group Chat ID:** {gc['GroupChatID']}")
+            st.write(f"**Name:** {gc['Name']}")
+            st.write(f"**Monitor ID:** {gc['Monitor']}")
+        with col2:
+            if st.button("Delete", key=f"delete_{gc['GroupChatID']}"):
+                delete_gc(gc['GroupChatID'])
+        st.markdown("---")
+else:
+    st.info("No group chats available to delete.")

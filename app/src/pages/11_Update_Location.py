@@ -85,4 +85,3 @@ if st.button("Save", use_container_width=True):
             st.error(f"Error connecting to the server: {e}")
     else:
         st.warning("Please select a location on the map before saving.")
-    
