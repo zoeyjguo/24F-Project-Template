@@ -1,49 +1,63 @@
 from flask import Blueprint, request, jsonify, make_response, current_app, redirect, url_for
 import json
 from backend.db_connection import db
-from backend.simple.playlist import sample_playlist_data
 
 # This blueprint handles some basic routes that you can use for testing
 # blueprint is a collection to route in flask
 simple_routes = Blueprint('simple_routes', __name__)
 
-
 # ------------------------------------------------------------
-# / is the most basic route
-# Once the api container is started, in a browser, go to 
-# localhost:4000/playlist
-@simple_routes.route('/')
-def welcome():
-    current_app.logger.info('GET / handler')
-    welcome_message = '<h1>Welcome to the CS 3200 Project Template REST API'
-    response = make_response(welcome_message)
-    response.status_code = 200
-    return response
+@simple_routes.route('/reports', methods=['GET'])
+def get_reports():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM Report')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
 
-# ------------------------------------------------------------
-# /playlist returns the sample playlist data contained in playlist.py
-# (imported above)
-@simple_routes.route('/playlist')
-def get_playlist_data():
-    current_app.logger.info('GET /playlist handler')
-    response = make_response(jsonify(sample_playlist_data))
-    response.status_code = 200
-    return response
+@simple_routes.route('/locations', methods=['GET'])
+def get_locations():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT Latitude, Longitude FROM User')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
 
-# ------------------------------------------------------------
-@simple_routes.route('/niceMesage', methods = ['GET'])
-def affirmation():
-    message = '''
-    <H1>Think about it...</H1>
-    <br />
-    You only need to be 1% better today than you were yesterday!
-    '''
-    response = make_response(message)
-    response.status_code = 200
-    return response
+@simple_routes.route('/interests', methods=['GET'])
+def get_interests():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM Interest')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
 
-# ------------------------------------------------------------
-# Demonstrates how to redirect from one route to another. 
-@simple_routes.route('/message')
-def mesage():
-    return redirect(url_for(affirmation))
+@simple_routes.route('/badges', methods=['GET'])
+def get_badges():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM Badge')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+@simple_routes.route('/groupchats', methods=['GET'])
+def get_groupchats():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM GroupChat')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
