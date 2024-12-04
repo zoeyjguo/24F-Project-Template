@@ -76,7 +76,7 @@ def add_user_friend(userId):
     current_app.logger.info(friend_info)
 
     cursor = db.get_db().cursor()
-    cursor.execute('INSERT INTO Friend VALUES ({0}, {1}), ({1}, {0})'.format(friend_info, userId))
+    cursor.execute('INSERT INTO Friend VALUES ({0}, {1}), ({1}, {0})'.format(friend_info['FriendId'], userId))
     db.get_db().commit()
     
     response = make_response("Successfully added friend to user {0}".format(userId))
