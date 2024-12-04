@@ -223,6 +223,23 @@ def update_user_location(userId):
     return response
 
 #------------------------------------------------------------
+# Get a user's interests
+@users.route('/users/<userId>/location', methods=['GET'])
+def get_user_location(userId):
+
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        SELECT Latitude, Longitude
+        FROM User u
+        WHERE u.UserId = {0}'''.format(userId))
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
 # Update the notification settings of a particular user
 @users.route('/users/<userId>/notifications', methods=['PUT'])
 def update_user_notifications(userId):
@@ -311,3 +328,4 @@ def delete_user_groupchat(userId):
     response = make_response("Successfully deleted group chat {0}".format(groupchat_info['GroupChatId']))
     response.status_code = 200
     return response
+#------------------------------------------------------------

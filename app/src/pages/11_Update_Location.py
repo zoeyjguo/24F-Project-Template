@@ -6,8 +6,14 @@ import pandas as pd
 import pydeck as pdk
 from urllib.error import URLError
 
+import streamlit as st
+from streamlit_folium import st_folium
+import folium
+from folium import Icon
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
+import requests
+
 
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Update Location", styles=styles, logo_path=logo, options=options)
@@ -23,93 +29,59 @@ if page == "Logout":
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
 
-# set up the page
-st.markdown("# Mapping Demo")
-st.sidebar.header("Mapping Demo")
-st.write(
-    """This Mapping Demo is from the Streamlit Documentation. It shows how to use
-[`st.pydeck_chart`](https://docs.streamlit.io/library/api-reference/charts/st.pydeck_chart)
-to display geospatial data."""
-)
+# Page Header
+st.header("Update Your Location")
 
+# Set default lat & long (based on image of Milan)?
+latitude = 45.4627  
+longitude = 9.1965 
 
-@st.cache_data
-def from_data_file(filename):
-    url = (
-        "http://raw.githubusercontent.com/streamlit/"
-        "example-data/master/hello/v1/%s" % filename
-    )
-    return pd.read_json(url)
+# Create the map with a draggable marker
+m = folium.Map(location=[latitude, longitude], zoom_start=14)
+folium.Marker(
+    location=[latitude, longitude],
+    popup="Drag me to update location",
+    draggable=True,
+    icon=Icon(icon="map-marker", prefix="fa", color="purple")
+).add_to(m)
 
+# Display the map in the app
+col1, col2, col3 = st.columns([1, 8, 1])
+with col1:
+   st.write("")
+with col2:
+    map_output = st_folium(m, width=1400, height=700)
+with col3:
+   st.write("")
 
-try:
-    ALL_LAYERS = {
-        "Bike Rentals": pdk.Layer(
-            "HexagonLayer",
-            data=from_data_file("bike_rental_stats.json"),
-            get_position=["lon", "lat"],
-            radius=200,
-            elevation_scale=4,
-            elevation_range=[0, 1000],
-            extruded=True,
-        ),
-        "Bart Stop Exits": pdk.Layer(
-            "ScatterplotLayer",
-            data=from_data_file("bart_stop_stats.json"),
-            get_position=["lon", "lat"],
-            get_color=[200, 30, 0, 160],
-            get_radius="[exits]",
-            radius_scale=0.05,
-        ),
-        "Bart Stop Names": pdk.Layer(
-            "TextLayer",
-            data=from_data_file("bart_stop_stats.json"),
-            get_position=["lon", "lat"],
-            get_text="name",
-            get_color=[0, 0, 0, 200],
-            get_size=15,
-            get_alignment_baseline="'bottom'",
-        ),
-        "Outbound Flow": pdk.Layer(
-            "ArcLayer",
-            data=from_data_file("bart_path_stats.json"),
-            get_source_position=["lon", "lat"],
-            get_target_position=["lon2", "lat2"],
-            get_source_color=[200, 30, 0, 160],
-            get_target_color=[200, 30, 0, 160],
-            auto_highlight=True,
-            width_scale=0.0001,
-            get_width="outbound",
-            width_min_pixels=3,
-            width_max_pixels=30,
-        ),
-    }
-    st.sidebar.markdown("### Map Layers")
-    selected_layers = [
-        layer
-        for layer_name, layer in ALL_LAYERS.items()
-        if st.sidebar.checkbox(layer_name, True)
-    ]
-    if selected_layers:
-        st.pydeck_chart(
-            pdk.Deck(
-                map_style="mapbox://styles/mapbox/light-v9",
-                initial_view_state={
-                    "latitude": 37.76,
-                    "longitude": -122.4,
-                    "zoom": 11,
-                    "pitch": 50,
-                },
-                layers=selected_layers,
-            )
-        )
+# Update location if the map is interacted with
+if map_output["last_clicked"]:
+    lat = map_output["last_clicked"]["lat"]
+    lng = map_output["last_clicked"]["lng"]
+    st.session_state["user_location"] = (lat, lng)
+
+# Save Button
+if st.button("Save", use_container_width=True):
+    if "user_location" in st.session_state:
+        lat, lng = st.session_state["user_location"]
+
+        # Assuming you have the userId stored in session state or another variable
+        userId = st.session_state.get("userId", 1)  # Replace `1` with dynamic userId as needed
+
+        # Prepare the request payload
+        payload = {
+            "Latitude": lat,
+            "Longitude": lng
+        }
+
+        # Send the PUT request
+        try:
+            response = requests.put('http://api:4000/u/users/1002/location', json=payload)
+            if response.status_code == 200:
+                st.success("Location updated successfully!")
+            else:
+                st.error(f"Failed to update location: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error connecting to the server: {e}")
     else:
-        st.error("Please choose at least one layer above.")
-except URLError as e:
-    st.error(
-        """
-        **This demo requires internet access.**
-        Connection error: %s
-    """
-        % e.reason
-    )
+        st.warning("Please select a location on the map before saving.")

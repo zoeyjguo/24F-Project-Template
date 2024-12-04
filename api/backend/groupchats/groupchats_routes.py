@@ -22,6 +22,19 @@ def get_groupchats():
     return the_response
 
 #------------------------------------------------------------
+# Get the first 10 groupchats in the database
+@groupchats.route('/tenGroupchats', methods=['GET'])
+def get_10_groupchats():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM GroupChat LIMIT 10')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
 # Delete a groupchat from the database
 @groupchats.route('/groupchats/<groupchatId>', methods=['DELETE'])
 def delete_groupchat(groupchatId):
