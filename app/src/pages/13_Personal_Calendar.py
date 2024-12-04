@@ -92,6 +92,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+title_response = requests.get("http://api:4000/u/user/1/rank").json()
+events_response = requests.get("http://api:4000/u/user/1/events").json()
+posts_response = requests.get("http://api:4000/u/user/1/posts").json()
+
+
 # create columns for layout
 col1, col2 = st.columns([1.3, 4])
 

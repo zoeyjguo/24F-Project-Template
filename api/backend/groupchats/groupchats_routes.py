@@ -32,10 +32,9 @@ def create_message(groupchatId):
     sender = the_data['Sender']
     text = the_data['Text']
     image_link = the_data['ImageLink']
-    time_sent = the_data['TimeSent']
 
-    query = 'INSERT INTO Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) VALUES (%s, %s, %s, %s, %s, %s)'
-    data = (sender, groupchatId, groupchatId, text, image_link, time_sent)
+    query = 'INSERT INTO Message (Sender, GroupChatId, EventId, Text, ImageLink) VALUES (%s, %s, %s, %s, %s)'
+    data = (sender, groupchatId, groupchatId, text, image_link)
     cursor = db.get_db().cursor()
     r = cursor.execute(query, data)
     db.get_db().commit()
@@ -59,19 +58,20 @@ def add_member(groupchatId):
     response.status_code = 200
     return response
 
-#------------------------------------------------------------
-# Get the messages from a particular group chat
 @groupchats.route('/groupchats/<groupchatId>/messages', methods=['GET'])
-def get_messages(groupchatId):
+def get_groupchat_messages(groupchatId):
+    
     cursor = db.get_db().cursor()
-    cursor.execute(f'''
-        SELECT u.FirstName, u.LastName, m.Sender, m.Text 
-        FROM Message m JOIN User u ON m.Sender = u.UserId
-        WHERE GroupChatId = {str(groupchatId)}''')
+    query = f'''SELECT u.FirstName, u.LastName, m.Text, m.ImageLink
+                FROM Message m
+                JOIN GroupChat gc ON m.GroupChatId = gc.GroupChatId
+                JOIN User u ON m.Sender = u.UserId
+                WHERE gc.GroupChatId = {str(groupchatId)}
+    '''
+    cursor.execute(query)
     
     theData = cursor.fetchall()
     
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
-

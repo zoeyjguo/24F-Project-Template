@@ -13,4 +13,3 @@ plotly
 seaborn
 scikit-learn
 shap
-streamlit-navigation-bar
