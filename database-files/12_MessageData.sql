@@ -718,7 +718,7 @@ insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) va
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (96, 34, 34, 'Omg', null, '2024-04-18 20:52:19');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (975, 537, 537, 'Thats a power move', null, '2024-03-20 08:51:27');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (242, 561, 561, 'Do you want to work together on this?', 'https://example.com/image88.jpg', '2024-03-14 07:26:21');
-insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (547, 399, 399, 'Whats the deadline for this?', 'https://example.com/image71.jpg', '2024-04-17 06:26:55');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (547, 399, 399, 'Whats the deadline for this?', 'https://images.unsplash.com/photo-1721332149069-a470150ef51c?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-04-17 06:26:55');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (98, 222, 222, 'Let me know if you need anything else', 'https://example.com/image16.jpg', '2023-12-06 13:25:40');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (60, 503, 503, 'Hows your project going?', null, '2024-08-04 19:59:54');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (232, 695, 695, 'Im heading out now', null, '2024-01-11 16:54:00');
@@ -910,7 +910,7 @@ insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) va
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (38, 419, 419, 'Youre a real one', null, '2024-07-25 03:27:35');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (343, 288, 288, 'What time do you finish work?', null, '2024-11-22 09:28:56');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (812, 22, 22, 'Let me know how it goes!', null, '2024-10-02 23:38:41');
-insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (785, 491, 491, 'its happening!', 'https://example.com/image95.jpg', '2024-07-01 20:43:11');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (785, 491, 491, 'its happening!', 'https://cdn.pixabay.com/photo/2023/05/09/05/37/flowers-7980350_640.jpg', '2024-07-01 20:43:11');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (529, 233, 233, 'Are we good to go?', null, '2024-02-26 01:46:02');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (418, 338, 338, 'Let me know your thoughts', 'https://example.com/image8.jpg', '2024-03-27 04:03:23');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (449, 734, 734, 'respect for that', null, '2024-06-09 00:54:41');
@@ -2835,7 +2835,7 @@ insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) va
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (431, 735, 735, 'Youre solid', null, '2024-07-23 17:02:54');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (176, 426, 426, 'its even better', null, '2024-05-23 12:44:26');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (57, 108, 108, 'Lets talk about this in person', null, '2024-02-08 09:52:22');
-insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (194, 491, 491, 'Let me know when youre ready', 'https://example.com/image35.jpg', '2024-09-23 15:36:20');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (194, 491, 491, 'Let me know when youre ready', 'https://media.istockphoto.com/id/1322052213/photo/hand-holding-magnifying-glass-in-front-of-real-text.jpg?s=612x612&w=0&k=20&c=5oKu73TP5RmPT68po-c-LFXYoM98N14j0XGVcBYiOcs=', '2024-09-23 15:36:20');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (973, 546, 546, 'Do you have time to chat?', null, '2024-09-22 03:15:10');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (798, 668, 668, 'Lets do something fun this weekend', 'https://example.com/image83.jpg', '2024-04-27 12:15:42');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (222, 734, 734, 'I hope youre feeling better today', null, '2024-03-30 11:33:13');
@@ -2986,7 +2986,7 @@ insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) va
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (367, 859, 859, 'Thats next level!', null, '2024-08-16 19:17:57');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (113, 803, 803, 'How was your weekend?', null, '2024-08-21 20:59:28');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (226, 588, 588, 'Lets catch up soon', null, '2024-03-17 16:15:48');
-insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (596, 420, 420, 'what a flex!', 'https://example.com/image21.jpg', '2024-05-13 05:13:42');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (596, 420, 420, 'what a flex!', 'https://plus.unsplash.com/premium_photo-1732730224344-030ff655d18e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-05-13 05:13:42');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (891, 20, 20, 'Yo', null, '2023-12-30 12:15:33');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (464, 321, 321, 'Yo', null, '2024-07-07 22:17:17');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (703, 579, 579, 'Do you know when theyll arrive?', null, '2024-11-10 14:36:09');
