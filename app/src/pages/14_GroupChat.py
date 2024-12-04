@@ -1,4 +1,28 @@
+import logging
+logger = logging.getLogger(__name__)
 import streamlit as st
+import requests
+from streamlit_extras.app_logo import add_logo
+from modules.nav import get_nav_config
+from streamlit_navigation_bar import st_navbar
+from datetime import date, timedelta
+import calendar
+
+# navigation bar
+pages, styles, logo, options = get_nav_config(show_home=False)
+page = st_navbar(pages, selected="Calendar", styles=styles, logo_path=logo, options=options)
+
+if page == "Update Location":
+  st.switch_page('pages/11_Update_Location.py')
+
+if page == "Group Chat":
+  st.switch_page('pages/14_GroupChat.py')
+
+if page == "Logout":
+  del st.session_state["role"]
+  del st.session_state["authenticated"]
+  st.switch_page("Home.py")
+
 
 # styling for the group chats and messages
 st.markdown(
@@ -85,7 +109,7 @@ group_chats = [
 # data for the messages 
 messages_data = {
     1: [
-        {"sender": "John", "content": "I'm near the balcony on the left."},
+        {"sender": "John", "content": "I'm near the balcony on the left.", "image": "https://teatrocarcano.com/images/img/affitta-teatro-slide-4.jpg"},
         {"sender": "You", "content": "Okay, I think I know where you are."},
         {"sender": "John", "content": "Mhm, I'm in the front row wearing a black sweater."},
         {"sender": "You", "content": "Wait, I don't think I see you… Nvm, I'm coming!"}
@@ -97,6 +121,17 @@ messages_data = {
     6: [],
     7: []
 }
+
+# get from generated data
+group_chats = requests.get('http://api:4000/simple/admin/77/groupchats').json()
+
+# add images to the group chat
+def send_message_with_image(message, image=None):
+    if message.strip():
+        new_message = {"sender": "You", "content": message.strip()}
+        if image is not None:
+            new_message["image"] = image
+        st.session_state.messages[st.session_state.selected_chat].append(new_message)
 
 # initialize the session state
 if "selected_chat" not in st.session_state:
@@ -135,22 +170,30 @@ with col2:
     for msg in chat_messages:
         align = "flex-end" if msg["sender"] == "You" else "flex-start"
         bg_color = "#e0f7fa" if msg["sender"] == "You" else "#ffffff"
-        st.markdown(
-            f"""
-            <div style="display: flex; justify-content: {align}; margin-bottom: 10px;">
-                <div style="background-color: {bg_color}; padding: 10px; border-radius: 10px; max-width: 60%;">
-                    <strong>{msg['sender']}</strong><br>{msg['content']}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        
+        # render message with optional image
+        content_html = f"""
+        <div style="display: flex; justify-content: {align}; margin-bottom: 10px;">
+            <div style="background-color: {bg_color}; padding: 10px; border-radius: 10px; max-width: 60%;">
+                <strong>{msg['sender']}</strong><br>{msg['content']}
+        """
+        if "image" in msg:
+            content_html += f'<img src="{msg["image"]}" alt="Image" style="max-width: 100%; margin-top: 10px;"/>'
+        content_html += "</div></div>"
+        
+        st.markdown(content_html, unsafe_allow_html=True)
 
-    # input into the box to send a message
+    # input text messages and image uploader to send a message
     st.markdown("---")
     with st.form(key="send_message_form", clear_on_submit=True):
         new_message = st.text_input("Write a message", key="new_message")
+        uploaded_image = st.file_uploader("Attach an image", type=["png", "jpg", "jpeg"], key="new_image")
         submit_button = st.form_submit_button("Send")
 
         if submit_button:
-            send_message(new_message)
+            if uploaded_image is not None:
+                # Convert uploaded image to URL or Base64 (temporary display in Streamlit)
+                uploaded_image_url = f"data:image/{uploaded_image.type.split('/')[-1]};base64," + uploaded_image.getvalue().decode("latin1")
+                send_message_with_image(new_message, uploaded_image_url)
+            else:
+                send_message_with_image(new_message)
