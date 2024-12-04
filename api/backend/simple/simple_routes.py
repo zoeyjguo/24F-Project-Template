@@ -59,7 +59,7 @@ def get_interest_counts():
 
 
 @simple_routes.route('/messages', methods=['GET'])
-def get_user_interests():
+def get_messages():
     cursor = db.get_db().cursor()
     cursor.execute('SELECT * FROM Message')
 
@@ -70,10 +70,51 @@ def get_user_interests():
     the_response.status_code = 200
     return the_response
 
+@simple_routes.route('/messages/<messageId>', methods=['DELETE'])
+def delete_message(messageId):
+    query = f'''
+        DELETE FROM Message
+        WHERE MessageId = {str(messageId)}
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    response = make_response("Successfully deleted : {0}".format(messageId))
+    response.status_code = 200
+    return response
+
+@simple_routes.route('/tenFlags', methods=['GET'])
+def get_ten_flags():
+    cursor = db.get_db().cursor()
+    cursor.execute('''SELECT f.Title, f.FlagId, m.MessageId, m.Text 
+                      FROM Flag f JOIN Message m ON f.MessageId = m.MessageId 
+                      WHERE f.Reviewer != 76
+                      ORDER BY f.FlagId ASC
+                      LIMIT 10''')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+@simple_routes.route('/flags', methods=['GET'])
+def get_flags():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM Flag')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
 @simple_routes.route('/flagreports', methods=['GET']) 
 def get_flag_reports(): 
     cursor = db.get_db().cursor() 
-    cursor.execute('SELECT * FROM flag JOIN users')
+    cursor.execute('SELECT * FROM Flag f JOIN User u ON f.flagger = u.UserId JOIN Message m ON f.MessageId = m.MessageId')
     
     theData = cursor.fetchall()
     
