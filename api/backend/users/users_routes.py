@@ -270,7 +270,7 @@ def get_user_suggestions(userId):
 def get_user_groupchats(userId):
 
     cursor = db.get_db().cursor()
-    query = f'''SELECT gc.Name, gc.GroupChatId
+    query = f'''SELECT gc.Name, gc.EventId, gc.GroupChatId
                 FROM GroupChat gc
                 JOIN GroupChatMembers gcm ON gc.GroupChatId = gcm.GroupChatId
                 WHERE gcm.UserId = {str(userId)}

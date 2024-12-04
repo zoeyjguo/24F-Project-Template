@@ -97,3 +97,40 @@ def get_groupchats():
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+@simple_routes.route('/admin/<adminId>/groupchats', methods=['GET'])
+def get_admin_groupchats(adminId):
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM GroupChat WHERE Monitor = {0}'.format(adminId))
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+    
+
+@simple_routes.route('postInterest', methods=['GET']) 
+def get_post_interest(): 
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT DISTINCT CreatedBy, Description, EndTime, g.Name as GroupChatName, StartTime, e.EventId, e.Latitude, e.Longitude, i.Name AS Interest, p.Title as PostTitle  FROM User u JOIN GroupChatMembers gcm ON gcm.UserId = u.UserId JOIN GroupChat g ON g.GroupChatId = gcm.GroupChatId JOIN Post p ON g.EventId = p.EventId JOIN Event e ON e.EventId = p.EventId JOIN EventInterests ei ON ei.EventId = p.EventId JOIN Interest i ON i.InterestId = ei.InterestId WHERE u.UserId = 1001')
+    #cursor.execute('SELECT Description, EndTime, ei.EventId, p.GroupChatId, i.Name, StartTime, p.Title, g.Name, u.FirstName, u.LastName FROM EventInterests ei JOIN Post p ON ei.EventId = p.EventId JOIN Interest i ON i.InterestId = ei.PostId JOIN Event e ON p.EventId = e.EventId JOIN GroupChat g ON g.EventId = p.EventId JOIN User u ON p.CreatedBy = u.UserId WHERE u.UserId = 1001')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+
+
+@simple_routes.route('postUser', methods=['GET']) 
+def get_post_user(): 
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT FirstName, LastName, p.EventId FROM User u JOIN Post p ON p.CreatedBy = u.UserId')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
