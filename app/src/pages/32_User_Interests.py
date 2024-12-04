@@ -4,10 +4,7 @@ from streamlit_navigation_bar import st_navbar
 import pandas as pd 
 
 pages, styles, logo, options = get_nav_config(show_home=False)
-page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
-
-if page == "Interests":
-  st.switch_page('pages/32_User_Interests.py')
+page = st_navbar(pages, selected="Interests", styles=styles, logo_path=logo, options=options)
 
 if page == "Badges":
   st.switch_page('pages/35_User_Badges.py')
