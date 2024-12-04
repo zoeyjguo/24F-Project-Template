@@ -102,3 +102,13 @@ def get_groupchats():
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+@simple_routes.route('/admin/<adminId>/groupchats', methods=['GET'])
+def get_admin_groupchats(adminId):
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM GroupChat WHERE Monitor = {0}'.format(adminId))
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
