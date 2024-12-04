@@ -68,13 +68,25 @@ def get_user_interests():
 @simple_routes.route('/flagreports', methods=['GET']) 
 def get_flag_reports(): 
     cursor = db.get_db().cursor() 
-    cursor.execute('SELECT * FROM flag JOIN users')
+    cursor.execute('SELECT * FROM Flag f JOIN User u ON f.flagger = u.UserId JOIN Message m ON f.MessageId = m.MessageId')
     
     theData = cursor.fetchall()
     
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+
+# Delete flag
+@simple_routes.route('/flagreports/<flagId>', methods = ['DELETE']) 
+def delete_flag(flagId): 
+    cursor = db.get_db().cursor()
+    cursor.execute('DELETE FROM Flag WHERE FlagId = {0}'.format(flagId))
+    db.get_db().commit()
+
+    response = make_response("Successfully deleted report with flag id {0}".format(flagId))
+    response.status_code = 200
+    return response
 
 @simple_routes.route('/badges', methods=['GET'])
 def get_badges():
