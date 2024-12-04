@@ -187,6 +187,10 @@ def add_friend(friend_id):
       response = requests.post('http://api:4000/u/users/1001/friends', json=data)
       if response.status_code == 200:
           logger.info("Friend added successfully!")
+          try:
+             response = requests.delete('http://api:4000/u/users/1001/suggestions', json=data)
+          except requests.exceptions.RequestException as e:
+             logger.error(f"Error connecting to server: {str(e)}")
       else:
           logger.error(f"Error adding friend: {response.text}")
   except requests.exceptions.RequestException as e:

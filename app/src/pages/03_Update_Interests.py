@@ -26,7 +26,7 @@ current_interests = []
 kali_groupchats = requests.get("http://api:4000/u/users/1001/groupchats").json()
 current_groupchats = []
 groupchat_info = []
-interests_fetch = requests.get("http://api:4000/simple/interests").json()
+interests_fetch = requests.get("http://api:4000/m/interests").json()
 all_interests = []
 
 for interest in kali_interests:
@@ -207,7 +207,6 @@ with profile_col2:
           data = {
             "GroupChatId": index
           }
-          logger.info(data)
           try:
             response = requests.delete('http://api:4000/u/users/1001/groupchats', json=data)
             if response.status_code == 200:
@@ -220,7 +219,6 @@ with profile_col2:
     groupchats = st.container(border=True)
     groupchats.write("#### Group Chats")
     selected_groupchats = groupchats.multiselect("Leave a group chat", current_groupchats, current_groupchats)
-    logger.info(groupchat_info)
 
     placeholder2 = st.empty()
     placeholder2.write(selected_groupchats)
