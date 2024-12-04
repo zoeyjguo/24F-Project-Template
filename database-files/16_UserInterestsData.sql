@@ -3622,3 +3622,5 @@ insert into UserInterests (UserId, InterestId) values (947, 13);
 insert into UserInterests (UserId, InterestId) values (801, 20);
 insert into UserInterests (UserId, InterestId) values (942, 17);
 insert into UserInterests (UserId, InterestId) values (918, 12);
+insert into UserInterests (UserId, InterestId) values (1002, 11);
+insert into UserInterests (UserId, InterestId) values (1002, 13);

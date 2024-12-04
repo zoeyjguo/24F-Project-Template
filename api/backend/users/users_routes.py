@@ -76,7 +76,7 @@ def add_user_friend(userId):
     current_app.logger.info(friend_info)
 
     cursor = db.get_db().cursor()
-    cursor.execute('INSERT INTO Friend VALUES ({0}, {1}), ({1}, {0})'.format(friend_info, userId))
+    cursor.execute('INSERT INTO Friend VALUES ({0}, {1}), ({1}, {0})'.format(friend_info['FriendId'], userId))
     db.get_db().commit()
     
     response = make_response("Successfully added friend to user {0}".format(userId))
@@ -151,6 +151,25 @@ def get_user_posts(userId):
     return the_response
 
 #------------------------------------------------------------
+# Get a user's interests
+@users.route('/users/<userId>/interests', methods=['GET'])
+def get_user_interests(userId):
+
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        SELECT i.Name
+        FROM User u
+        JOIN UserInterests ui ON u.UserId = ui.UserId
+        JOIN Interest i ON i.InterestId = ui.InterestId
+        WHERE u.UserId = {0}'''.format(userId))
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
 # Add to the interests of a particular user
 @users.route('/users/<userId>/interests', methods = ['POST'])
 def add_user_interest(userId):
@@ -158,7 +177,7 @@ def add_user_interest(userId):
     current_app.logger.info(interest_info)
 
     cursor = db.get_db().cursor()
-    cursor.execute('INSERT INTO UserInterests VALUES ({0}, {1})'.format(userId, interest_info))
+    cursor.execute('INSERT INTO UserInterests (UserId, InterestId) VALUES ({0}, {1})'.format(userId, interest_info['InterestId']))
     db.get_db().commit()
     
     response = make_response("Successfully added interest to user {0}".format(userId))
@@ -173,7 +192,7 @@ def delete_user_interest(userId):
     current_app.logger.info(interest_info)
 
     cursor = db.get_db().cursor()
-    cursor.execute('DELETE FROM UserInterests WHERE UserId = {0} AND InterestId = {1}'.format(userId, interest_info))
+    cursor.execute('DELETE FROM UserInterests WHERE UserId = {0} AND InterestId = {1}'.format(userId, interest_info['InterestId']))
     db.get_db().commit()
     
     response = make_response("Successfully deleted interest from user {0}".format(userId))
@@ -244,3 +263,37 @@ def get_user_suggestions(userId):
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+#------------------------------------------------------------
+# Gets groupchats a specific user is a part of
+@users.route('/users/<userId>/groupchats', methods=['GET'])
+def get_user_groupchats(userId):
+
+    cursor = db.get_db().cursor()
+    query = f'''SELECT gc.Name, gc.GroupChatId
+                FROM GroupChat gc
+                JOIN GroupChatMembers gcm ON gc.GroupChatId = gcm.GroupChatId
+                WHERE gcm.UserId = {str(userId)}
+    '''
+    cursor.execute(query)
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+# Remove a particular user from one of their group chats
+@users.route('/users/<userId>/groupchats', methods = ['DELETE'])
+def delete_user_groupchat(userId):
+    groupchat_info = request.json
+    current_app.logger.info(groupchat_info)
+
+    cursor = db.get_db().cursor()
+    cursor.execute('DELETE FROM GroupChatMembers WHERE UserId = {0} AND GroupChatId = {1}'.format(userId, groupchat_info['GroupChatId']))
+    db.get_db().commit()
+    
+    response = make_response("Successfully deleted group chat {0}".format(groupchat_info['GroupChatId']))
+    response.status_code = 200
+    return response

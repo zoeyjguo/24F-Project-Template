@@ -3,6 +3,7 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
+import requests
 
 st.set_page_config(page_title="Profile Page", layout="wide")
 pages, styles, logo, options = get_nav_config(show_home=False)
@@ -19,6 +20,23 @@ if page == "Logout":
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
 
+winston_info = requests.get("http://api:4000/u/users/1002").json()
+interests_fetch = requests.get("http://api:4000/u/users/1002/interests").json()
+winston_interests = []
+kali_suggested = requests.get("http://api:4000/u/users/1001/suggestions").json()
+suggestions = []
+users_fetch = requests.get("http://api:4000/u/users").json()
+users = []
+
+for interest in interests_fetch:
+  winston_interests.append(interest["Name"])
+for suggested in kali_suggested:
+  suggestions.append("{0} {1}".format(suggested["FirstName"], suggested["LastName"]))
+for user in users_fetch:
+  users.append(("{0} {1}".format(user["FirstName"], user["LastName"]), user["UserId"]))
+
+logger.info(users)
+
 # Layout: Profile and Additional Info
 profile_col1, profile_col2 = st.columns([3,1])
 with profile_col1:
@@ -31,10 +49,10 @@ with profile_col1:
     with col1:
        st.image("assets/winston.jpg", width=200)
     with col2:
-      st.write("##### Winston Church")
-      st.write("He/Him")
+      st.write("##### {0} {1}".format(winston_info[0]["FirstName"], winston_info[0]["LastName"]))
+      st.write("{0}".format(winston_info[0]["Pronouns"]))
       st.write("Milan, Italy")
-      st.write("100 Points")
+      st.write("{0} Points".format(winston_info[0]["Points"]))
 
     # Bio Section
     bio = st.container(border=True)
@@ -64,48 +82,40 @@ with profile_col1:
     )
 
     # Static interests
-    static_interests = ["Pets", "Sports", "Photography", "LGBTQ+"]
-    interests_html = "".join(f"<span class='interest-tag'>{interest}</span>" for interest in static_interests)
+    interests_html = "".join(f"<span class='interest-tag'>{interest}</span>" for interest in winston_interests)
 
     interests.markdown(interests_html, unsafe_allow_html=True)
 
 # Column 2: Suggested for You
+def add_friend(friend_id):
+  data = {
+        "FriendId": friend_id
+  }
+  try:
+      response = requests.post('http://api:4000/u/users/1001/friends', json=data)
+      if response.status_code == 200:
+          st.success("Friend added successfully!")
+      else:
+          st.error(f"Error adding friend: {response.text}")
+  except requests.exceptions.RequestException as e:
+      st.error(f"Error connecting to server: {str(e)}")
+
+if 'button_states' not in st.session_state:
+    st.session_state['button_states'] = {profile: False for profile in suggestions}
+    
 with profile_col2:
-    suggested = st.container(border=True)
-    suggested.write("### Suggested for You")
-    suggested.markdown("<p style='text-align:right;'><a href='#'>See All</a></p>", unsafe_allow_html=True)
+  suggested = st.container(border = True)
+  for index, profile in enumerate(suggestions):
+    st.write(f"**{profile}**")
+    friend_id = next(user[1] for user in users if user[0] == profile)
 
-    # List of suggested users
-    suggested_profiles = [
-      {"name": "Alessandro Rossi", "img_url": "https://via.placeholder.com/50"},  # Placeholder image URL
-      {"name": "Giovanni Conti", "img_url": "https://via.placeholder.com/50"},
-      {"name": "Ethan Walker", "img_url": "https://via.placeholder.com/50"},
-      {"name": "Ava Taylor", "img_url": "https://via.placeholder.com/50"},
-      {"name": "Mia Johnson", "img_url": "https://via.placeholder.com/50"},
-      {"name": "Sofia De Luca", "img_url": "https://via.placeholder.com/50"},
-      {"name": "Adrien Greco", "img_url": "https://via.placeholder.com/50"}
-    ]
+    # Button text based on current state
+    button_text = 'Friend Added' if st.session_state['button_states'][profile] else 'Add Friend'
 
-    # Build the HTML content dynamically using a for loop
-    html_content = ""
-    for profile in suggested_profiles:
-        html_content += f"""
-        <div style="display: flex; align-items: center; justify-content: space-between; background-color: rgb(255, 255, 255); padding: 10px; margin-bottom: 10px; border-radius: 10px;">
-            <div style="display: flex; align-items: center;">
-                <img src="{profile['img_url']}" alt="{profile['name']}'s profile" style="border-radius: 10px; width: 50px; height: 50px; margin-right: 10px;">
-                <p style="margin: 0; font-weight: normal;">{profile['name']}</p>
-            </div>
-            <button style="padding: 5px 10px; background-color: #e7e7e7; color: black; border: none; font-weight: bold; border-radius: 5px; cursor: pointer;">Follow</button>
-        </div>
-        """
-
-    # Pass the HTML content to st.markdown
-    st.markdown(
-        f"""
-        <div style="background-color: rgb(255, 255, 255); padding: 20px; border-radius: 10px;">
-            <h3 style="color: black; text-align: center;">Suggested for you</h3>
-            {html_content}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    # Button functionality
+    if st.button(button_text, key=f'friend_button_{profile}'):
+        if not st.session_state['button_states'][profile]:
+            # Call the add_friend function only when the button is in 'Add Friend' state
+            add_friend(friend_id)
+            # Change the button text to 'Friend Added' after clicking
+            st.session_state['button_states'][profile] = True

@@ -58,12 +58,19 @@ def get_badges():
     the_response.status_code = 200
     return the_response
 
+<<<<<<< HEAD
 #------------------------------------------------------------
 # Get all groupchats a specific admin is monitoring
 @simple_routes.route('/admin/<adminId>/groupchats', methods=['GET'])
 def get_groupchats(adminId):
     cursor = db.get_db().cursor()
     cursor.execute('SELECT * FROM GroupChat WHERE Monitor = {0}'.format(adminId))
+=======
+@simple_routes.route('/groupchats', methods=['GET'])
+def get_groupchats():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT * FROM GroupChat')
+>>>>>>> main
     
     theData = cursor.fetchall()
     
