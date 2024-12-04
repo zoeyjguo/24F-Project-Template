@@ -9,8 +9,11 @@ from urllib.error import URLError
 import streamlit as st
 from streamlit_folium import st_folium
 import folium
+from folium import Icon
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
+import requests
+
 
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Update Location", styles=styles, logo_path=logo, options=options)
@@ -39,10 +42,17 @@ folium.Marker(
     location=[latitude, longitude],
     popup="Drag me to update location",
     draggable=True,
+    icon=Icon(icon="map-marker", prefix="fa", color="purple")
 ).add_to(m)
 
 # Display the map in the app
-map_output = st_folium(m, width=700, height=500)
+col1, col2, col3 = st.columns([1, 8, 1])
+with col1:
+   st.write("")
+with col2:
+    map_output = st_folium(m, width=1400, height=700)
+with col3:
+   st.write("")
 
 # Update location if the map is interacted with
 if map_output["last_clicked"]:
@@ -51,7 +61,28 @@ if map_output["last_clicked"]:
     st.session_state["user_location"] = (lat, lng)
 
 # Save Button
-# st.markdown('<div style="text-align: center; margin-top: 20px;">', unsafe_allow_html=True)
 if st.button("Save", use_container_width=True):
-    st.success("Location saved successfully!")
-# st.markdown('</div>', unsafe_allow_html=True)
+    if "user_location" in st.session_state:
+        lat, lng = st.session_state["user_location"]
+
+        # Assuming you have the userId stored in session state or another variable
+        userId = st.session_state.get("userId", 1)  # Replace `1` with dynamic userId as needed
+
+        # Prepare the request payload
+        payload = {
+            "Latitude": lat,
+            "Longitude": lng
+        }
+
+        # Send the PUT request
+        try:
+            response = requests.put('http://api:4000/u/users/1002/location', json=payload)
+            if response.status_code == 200:
+                st.success("Location updated successfully!")
+            else:
+                st.error(f"Failed to update location: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error connecting to the server: {e}")
+    else:
+        st.warning("Please select a location on the map before saving.")
+    
