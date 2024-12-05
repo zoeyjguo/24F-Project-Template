@@ -18,16 +18,7 @@ if page == "Logout":
     del st.session_state["authenticated"]
     st.switch_page("Home.py")
 
-# Fetch flag reports
-flagWithUsers = requests.get("http://api:4000/simple//flagreports").json()
-
-flagTitles = []
-flagUser = []
-flagDescription = []
-originalMessage = []
-flagIds = []  # Assume each flag has a unique ID for deletion
-
-report_fetch = requests.get("http://api:4000/simple/reportInfo").json()
+report_fetch = requests.get("http://api:4000/m/reports").json()
 reports = []
 
 for report in report_fetch:
@@ -66,7 +57,7 @@ with col1:
 def delete_report(report_id):
     try:
         # Make a DELETE request to the API
-        response = requests.delete(f"http://api:4000/simple/report/{report_id}")
+        response = requests.delete(f"http://api:4000/m/report/{report_id}")
         if response.status_code == 200:
             st.success(f"Successfully deleted report {report_id}")
         else:
@@ -99,15 +90,5 @@ with col2:
     # Add the delete button functionality in Streamlit
     if st.button("Resolve Report"):
         delete_report(report["ReportId"])
-
-        # Add a button for resolving the report
-        if st.button("Resolve Report", key="resolve_button"):
-            flag_id_to_delete = flagIds[0]  # Get the ID of the first report
-            response = requests.delete(f"http://api:4000/simple/flagreports/{flag_id_to_delete}")
-
-            if response.status_code == 200:
-                st.success("Report resolved successfully!")
-            else:
-                st.error("Failed to resolve the report. Please try again.")
     else:
         st.warning("No flagged reports available.")

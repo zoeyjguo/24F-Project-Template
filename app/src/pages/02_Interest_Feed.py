@@ -39,12 +39,8 @@ group_chats = []
 interest_fetch = requests.get("http://api:4000/u/users/1001/interests").json()
 all_interests = []
 
-# For getting events posts
-post_interest_fetch = requests.get("http://api:4000/simple/postInterest").json()
-post_interest = []
-
-post_user_fetch = requests.get("http://api:4000/simple/postUser").json()
-post_user = []
+all_interest_fetch = requests.get("http://api:4000/m/interests").json()
+all_interests_info = []
 
 #
 # Processing API data
@@ -63,52 +59,33 @@ for chat in chat_fetch:
 for i in interest_fetch:
     all_interests.append(i['Name'])
 
-# Post details
-for post in post_user_fetch:
-    post_user.append(post)
 
 
+for i in all_interest_fetch: 
+    all_interests_info.append(i) 
 
-# # Match posts with creators
-# for id in eventId:
-#     for user in post_user:
-#         if id == user["EventId"]:
-#             curr_creator.append(user)
+currInterests = [] 
+for name in all_interests:
+    for interest in all_interests_info:
+        if name == interest["Name"]: 
+            currInterests.append(interest) 
 
-# Custom Navbar Styling
-st.markdown(
-    f"""
-    <style>
-    .navbar {{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: rgb(198,169,249);
-        padding: 0.5rem 1rem;
-    }}
-    .navbar-pages {{
-        margin-left: auto;
-        display: flex;
-        gap: 1rem;
-    }}
-    .navbar-pages span {{
-        border-radius: 0.5rem;
-        color: rgb(49, 51, 63);
-        padding: 0.4375rem 0.625rem;
-        cursor: pointer;
-    }}
-    .navbar-pages span:hover {{
-        background-color: rgba(255, 255, 255, 0.35);
-    }}
-    </style>
-    <div class="navbar">
-        <div class="navbar-pages">
-            {"".join([f'<span>{page}</span>' for page in all_interests])}
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
+if "selected_interest" not in st.session_state:
+    st.session_state.selected_interest = all_interests[0]  # Set a default selected interest
+
+# Function to handle interest selection (updating session state)
+def select_interest(page):
+    st.session_state.selected_interest = page
+
+col_count = len(all_interests)  # Number of columns needed (one per button)
+columns = st.columns(col_count)
+
+# Loop through the list of interests and create a button in each column
+for idx, page in enumerate(all_interests):
+    with columns[idx]:
+        if st.button(page, key=page):
+            select_interest(page)
 
 
 # Layout spacing
@@ -117,23 +94,17 @@ st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
 # Layout with columns
 col1, col2, col3 = st.columns([1, 2, 1])
 
+if "selected_chat_id" not in st.session_state:
+    st.session_state.selected_chat_id = 399
+
+# group chats section in the left column
 with col1:
-    # Display group chats
-    st.title("Group Chats")
-    
+    st.markdown("### Group Chats")
     for chat in group_chats:
-        group_name = chat['Name']
-        start_date = chat['StartTime']
-        end_date = chat['EndTime']
-        
-    
-        # Button text will show the group name and dates
-        button_text = f"{group_name} ({start_date} - {end_date})"
-        
-        # Button functionality for redirecting to '04_groupchats' page
-        if st.button(button_text, key=f'group_chat_button_{group_name}'):
-            st.session_state.selected_chat_id = chat['GroupChatId']
+        if st.button(f"{chat["Name"]} ({chat["StartTime"]} - {chat["EndTime"]})"):
+            st.session_state["selected_chat_id"] = chat['GroupChatId']
             st.switch_page('pages/14_GroupChat.py')
+            st.rerun()
 
 
 def update_event(endpoint_url, data):
@@ -148,7 +119,7 @@ def update_event(endpoint_url, data):
 
 
 with col2:
-    
+    st.title("Make Post")
    # Add custom CSS to style the inputs
     st.markdown(
         '''
@@ -201,21 +172,40 @@ with col2:
             update_event(endpoint, event_data)   
 
 
-    # # Display posts
-    # post_content = ""
-    # for creator in curr_creator:
-    #     post_content += f"""
-    #     <div style="display: flex; flex-direction: column; background-color: rgb(255, 255, 255); padding: 10px; margin-bottom: 10px; border-radius: 10px">
-    #         <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 10px;">
-    #             <div style="display: flex; flex-direction: column;">
-    #                 <h4 style="margin: 0; font-size: 16px;">{creator["FirstName"]} {creator["LastName"]}</h4>
-    #             </div>
-    #             <p style="margin-left: auto; color: grey; font-size: 12px;">{startTime}</p>
-    #         </div>
-    #         <p>{description}</p>
-    #     </div>
-    #     """
-    # st.markdown(post_content, unsafe_allow_html=True)
+    st.title("Post")
+
+    def get_InterestId(): 
+        for interest in currInterests: 
+            if interest["Name"] == st.session_state.selected_interest: 
+                return interest["InterestId"]
+  
+
+    interestId = get_InterestId() 
+
+    
+    # For getting posts with their correlated interest 
+    post_interest_fetch = requests.get(f"http://api:4000/m/postInterest/{interestId}").json()
+    currPosts = []
+
+    for post in post_interest_fetch: 
+        currPosts.append(post)
+
+    currPosts.sort(key=lambda x: datetime.strptime(x["StartTime"], "%a, %d %b %Y %H:%M:%S GMT"), reverse=True)
+    # Display posts
+    post_content = ""
+    for post in currPosts:
+        post_content += f"""
+        <div style="display: flex; flex-direction: column; background-color: rgb(255, 255, 255); padding: 10px; margin-bottom: 10px; border-radius: 10px">
+            <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 10px;">
+                <div style="display: flex; flex-direction: column;">
+                </div>
+                <p style="margin-left: auto; color: grey; font-size: 12px;">{post["StartTime"]}-{post["EndTime"]}</p>
+            </div>
+            <p style="font-size: 24px;"><strong>{post["Title"]}</strong></p>
+            <p>{post["Description"]}</p>
+        </div>
+        """
+    st.markdown(post_content, unsafe_allow_html=True) 
 
 
 # Column 3: Suggested for You

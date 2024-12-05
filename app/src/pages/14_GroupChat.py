@@ -211,7 +211,7 @@ with col2:
                 <strong>{msg['sender']}</strong><br>{msg['content']}
         """
         if "image" in msg and msg["image"] is not None:
-            content_html += f'<img src="{msg["image"]}" alt="Image" style="width: 100%; margin-top: 10px;"/>'
+            content_html += f'<img src="{msg["image"]}" alt="Image" style="width: 100px; margin-top: 10px;"/>'
         content_html += "</div></div>"
         
         st.markdown(content_html, unsafe_allow_html=True)
