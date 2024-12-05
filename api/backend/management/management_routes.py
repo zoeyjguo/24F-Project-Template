@@ -138,7 +138,13 @@ def get_badges():
 @management.route('/badges/counts', methods=['GET'])
 def get_badge_counts():
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT BadgeId, COUNT(DISTINCT UserId) AS NumStudents FROM UserBadges GROUP BY BadgeId')
+    query = '''
+        SELECT b.BadgeId, b.Name, COUNT(DISTINCT ub.UserId) AS NumStudents
+        FROM Badge b
+        JOIN UserBadges ub ON b.BadgeId = ub.BadgeId
+        GROUP BY b.BadgeId
+    '''
+    cursor.execute(query)
 
     theData = cursor.fetchall()
     
@@ -227,5 +233,3 @@ def delete_message(messageId):
     response = make_response("Successfully deleted : {0}".format(messageId))
     response.status_code = 200
     return response
-
-#------------------------------------------------------------
