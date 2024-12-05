@@ -134,6 +134,19 @@ def get_badges():
     return the_response
 
 #------------------------------------------------------------
+# Get the number of students who have each badge in the database
+@management.route('/badges/counts', methods=['GET'])
+def get_badge_counts():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT BadgeId, COUNT(DISTINCT UserId) AS NumStudents FROM UserBadges GROUP BY BadgeId')
+
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
 # Get all distinct user locations from the database
 @management.route('/locations', methods=['GET'])
 def get_locations():
