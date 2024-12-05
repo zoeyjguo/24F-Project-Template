@@ -127,11 +127,7 @@ def send_message_with_image(message, image_url, groupchat_id):
         st.error("Invalid image URL. Message not sent.")
         return
 
-    data = {
-        "Sender": 1002,
-        "Text": message.strip(),
-        "ImageLink": image_url
-    }
+    data = {"Sender": 1002,"Text": message.strip(),"ImageLink": image_url}
     try:
         response = requests.post(f'http://api:4000/g/groupchats/{groupchat_id}/messages', json=data)
         if response.status_code == 200:
@@ -184,7 +180,7 @@ with col2:
             break
     st.markdown(f"## {current}")
 
-    # Display messages
+    # display messages
     fetch_messages = requests.get(f'http://api:4000/g/groupchats/{selected_chat_id}/messages').json()
     messages_data = []
     for message in fetch_messages:
@@ -207,7 +203,7 @@ with col2:
         
         st.markdown(content_html, unsafe_allow_html=True)
 
-    # Input text messages and image URL
+    # input text messages and image URL
     st.markdown("---")
     st.markdown("### Add a Message")
     with st.form(key="send_message_form", clear_on_submit=True):

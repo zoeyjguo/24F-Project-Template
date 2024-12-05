@@ -9,7 +9,7 @@ import calendar
 
 logger = logging.getLogger(__name__)
 
-# Navigation bar setup
+# \navigation bar setup
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Calendar", styles=styles, logo_path=logo, options=options)
 
@@ -24,7 +24,7 @@ if page == "Logout":
     del st.session_state["authenticated"]
     st.switch_page("Home.py")
 
-# Styling for group chat box
+# styling for group chat box
 st.markdown(
     """
     <style>
@@ -68,18 +68,18 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Fetch group chats and events
+# fetch group chats and events
 fetch_groupchats = requests.get('http://api:4000/u/users/1002/groupchats').json()
 group_chats = []
 events_fetch = requests.get("http://api:4000/u/users/1002/events").json()
 events = {}
 
+# add data from the fecth
 for groupchat in fetch_groupchats:
     group_chats.append({"name": groupchat["Name"], "id": groupchat["GroupChatId"]})
 
 
 for event in events_fetch:
-    # Extract start and end times
     start_datetime_string = event.get("StartTime")
     end_datetime_string = event.get("EndTime") 
 
@@ -93,21 +93,20 @@ for event in events_fetch:
         if event_day not in events:
             events[event_day] = []
 
-        events[event_day].append({"day": event_day,"name": event.get("Title"),"color": event.get("color", "#AEC6CF")
-        })
+        events[event_day].append({"day": event_day,"name": event.get("Title"),"color": event.get("color", "#AEC6CF")})
 
-        # Increment to the next day
+        # increment to the next day
         current_date += timedelta(days=1)
 
 
-# Create columns for layout
+# create columns for layout
 col1, col2 = st.columns([1,3])
 
 # initialize the session state
 if "selected_chat_id" not in st.session_state:
     st.session_state.selected_chat_id = 399
 
-# Group Chats Section in Left Column
+# group chats section in the left column
 with col1:
     st.markdown("### Group Chats")
     for chat in group_chats:
@@ -117,7 +116,7 @@ with col1:
             st.rerun()
 
 
-# Create the calendar grid
+# create the calender grid
 def create_calendar(year, month, events):
     html_content = """
     <style>
@@ -183,7 +182,7 @@ def create_calendar(year, month, events):
     )
     return html_content
 
-# Render the calendar in the second column
+# render the calendar
 with col2:
     html_calendar = create_calendar(2024, 12, events)
     st.components.v1.html(html_calendar, height=1000, scrolling=False)
