@@ -1,6 +1,7 @@
 import streamlit as st
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
+import requests
 
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Reports", styles=styles, logo_path=logo, options=options)
@@ -19,29 +20,25 @@ if page == "Logout":
 
 col1, col2= st.columns([1, 2])
 
+report_fetch = requests.get("http://api:4000/simple/reportInfo").json()
+reports = []
+
+for report in report_fetch:
+  reports.append("{0} {1} {2} {3} {4} {5}".format(report["FirstName"], report["LastName"], report["Title"], report["Description"], report["TimeReported"], report["ReportId"]))
+
+users = []
 
 with col1:
-    reports = [
-      {"title": "The Huntington Library", 
-       "username": "jacobmelano0202", 
-       "time-posted": "November 30, 2024", 
-       "description": "Finding more individuals like me that I can connect would be beneficial for me to find more aligned people like me, interest-wise. Is there a feature on this app that does, or do I have to find them by myself?"},
-      {"title": "The Huntington Library", 
-       "username": "lol", 
-       "time-posted": "November 30, 2024", 
-       "description": "https://via.placeholder.com/50"}
-    ] 
-  
 
     # Build the HTML content dynamically using a for loop
     html_content = ""
-    for report in reports:
+    for report in report_fetch:
         html_content += f"""
         <div style="display: flex; align-items: center; justify-content: space-between; background-color: rgb(255, 255, 255); padding: 10px; margin-bottom: 10px; border-radius: 10px;">
             <div style="display: flex; align-items: center;">
-                <p style="margin: 0; font-weight: normal;">
-                <strong>{report['title']}</strong><br> 
-                {report['description']}
+                <p style="margin: 20px; font-weight: normal;">
+                <strong>{report["Title"]}</strong> — <span style="font-size: 0.9em; color: gray;">{report["TimeReported"]}</span><br>
+                {report["Description"]}
                 </p>
             </div>
         </div>
@@ -58,39 +55,41 @@ with col1:
     )
 
 
+def delete_report(report_id):
+    try:
+        # Make a DELETE request to the API
+        response = requests.delete(f"http://api:4000/simple/report/{report_id}")
+        if response.status_code == 200:
+            st.success(f"Successfully deleted report {report_id}")
+        else:
+            st.error(f"Failed to delete report. Status code: {response.status_code}")
+    except Exception as e:
+        st.error(f"Error: {e}")
+
 
 with col2: 
-    selected = {
-        "title": "The Huntington Library", 
-        "username": "jacobmelano0202", 
-        "time-posted": "November 30, 2024", 
-        "description": "Finding more individuals like me that I can connect would be beneficial for me to find more aligned people like me, interest-wise. Is there a feature on this app that does, or do I have to find them by myself?"
-    }
-
     html_content = f"""
          <div style="background-color: rgb(255, 255, 255); padding: 20px; border-radius: 10px;">
-            <p style="font-size: 36px; "font-weight: bold;">{selected['title']}</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px">
-                <p style="margin: 0;">By {selected['username']}</p>
-                <p style="margin: 0;">Posted: {selected['time-posted']}</p>
+                <p style="font-size: 36px; "font-weight: bold;">{report['Title']}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px">
+                    <p style="margin: 0;">By {report['FirstName']} {report['LastName']}</p>
+                    <p style="margin: 0;">Posted: {report['TimeReported']}</p>
+                </div>
+                <p>{report['Description']}</p><br>
+                <p style="font-weight: semi-bold;">Admin Answer</p>
+                <input type="text" name="Admin Answer" placeholder="Type Answer..." 
+                    style="height: 200px; width: 100%; background-color: #e7e7e7; padding: 10px; padding-top: 15px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px;"/>
             </div>
-            <p>{selected['description']}</p><br>
-            <p style="font-weight: semi-bold;">Admin Answer</p>
-            <input type="text" name="Admin Answer" placeholder="Type Answer..." 
-                style="height: 100px; width: 100%; background-color: #e7e7e7; padding: 10px; padding-top: 15px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 20px;"/>
-          <button style="padding: 10px 20px; border-radius: 5px; background-color: #c6a9f9; border: none;">Resolve Report</button>
         </div>
-        """
-    st.markdown(
-        f"""
-        <div style="background-color: rgb(255, 255, 255); padding: 20px; border-radius: 10px;">
-            {html_content}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    """
 
+    # Display the HTML content
+    st.markdown(html_content, unsafe_allow_html=True)
 
+    st.write("")  # Add an empty line for spacing
 
+    # Add the delete button functionality in Streamlit
+    if st.button("Resolve Report"):
+        delete_report(report["ReportId"])
 
 

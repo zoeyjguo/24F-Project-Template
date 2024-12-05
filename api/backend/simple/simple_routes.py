@@ -65,16 +65,6 @@ def get_user_interests():
     the_response.status_code = 200
     return the_response
 
-@simple_routes.route('/flagreports', methods=['GET']) 
-def get_flag_reports(): 
-    cursor = db.get_db().cursor() 
-    cursor.execute('SELECT * FROM flag JOIN users')
-    
-    theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
 
 @simple_routes.route('/badges', methods=['GET'])
 def get_badges():
@@ -122,7 +112,28 @@ def get_post_interest():
     the_response.status_code = 200
     return the_response
 
+@simple_routes.route('/reportInfo', methods=['GET'])
+def get_reporters():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT u.FirstName, u.LastName, r.Description, r.TimeReported, r.Title, r.ReportId FROM Report r Join User u ON r.Reporter = u.UserId')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
 
+
+# Delete report with ReportId reportId from database
+@simple_routes.route('/report/<reportId>', methods = ['DELETE'])
+def delete_report(reportId):
+    cursor = db.get_db().cursor()
+    cursor.execute('DELETE FROM Report WHERE ReportId = {0}'.format(reportId))
+    db.get_db().commit()
+    
+    response = make_response("Successfully deleted report")
+    response.status_code = 200
+    return response
 
 @simple_routes.route('postUser', methods=['GET']) 
 def get_post_user(): 
