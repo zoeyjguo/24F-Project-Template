@@ -100,24 +100,22 @@ for event in events_fetch:
         current_date += timedelta(days=1)
 
 
-
 # Create columns for layout
 col1, col2 = st.columns([1,3])
+
+# initialize the session state
+if "selected_chat_id" not in st.session_state:
+    st.session_state.selected_chat_id = 399
 
 # Group Chats Section in Left Column
 with col1:
     st.markdown("### Group Chats")
     for chat in group_chats:
-        st.markdown(
-            f"""
-            <div class="group-chat-item">
-                <div>
-                    <strong>{chat['name']}</strong>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        if st.button(chat['name']):
+            st.session_state["selected_chat_id"] = chat['id']
+            st.switch_page('pages/14_GroupChat.py')
+            st.rerun()
+
 
 # Create the calendar grid
 def create_calendar(year, month, events):
