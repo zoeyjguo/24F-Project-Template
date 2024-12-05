@@ -7,16 +7,17 @@ from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 from datetime import date, timedelta
 import calendar
+from PIL import Image
 
 # navigation bar
 pages, styles, logo, options = get_nav_config(show_home=False)
-page = st_navbar(pages, selected="Calendar", styles=styles, logo_path=logo, options=options)
+page = st_navbar(pages, selected="Group Chat", styles=styles, logo_path=logo, options=options)
 
 if page == "Update Location":
   st.switch_page('pages/11_Update_Location.py')
 
-if page == "Group Chat":
-  st.switch_page('pages/14_GroupChat.py')
+if page == "Calendar":
+  st.switch_page('pages/13_Personal_Calendar.py')
 
 if page == "Logout":
   del st.session_state["role"]
@@ -50,6 +51,14 @@ st.markdown(
         max-width: 70%;
         font-size: 14px;
         font-weight: normal;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .chat-message img {
+        max-width: 100%; /* Ensure images span the full width of the message */
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 10px;
     }
     .chat-message-sender {
         background-color: #d8eefe;
@@ -65,8 +74,9 @@ st.markdown(
     }
     .input-container {
         display: flex;
-        align-items: center;
-        margin-top: 10px;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
     }
     .input-box {
         flex-grow: 1;
@@ -86,6 +96,7 @@ st.markdown(
         font-size: 14px;
         font-weight: bold;
         transition: background-color 0.3s ease;
+        align-self: flex-start;
     }
     .send-button:hover {
         background-color: #549fd6;
@@ -100,6 +111,7 @@ fetch_groupchats = requests.get('http://api:4000/u/users/1002/groupchats').json(
 group_chats = []
 fetch_messages = requests.get('http://api:4000/g/groupchats/399/messages').json()
 messages_data = []
+
 for message in fetch_messages:
   messages_data.append({"sender": "{0} {1}".format(message["FirstName"], message["LastName"]),
                   "content": message["Text"],
@@ -109,36 +121,21 @@ for groupchat in fetch_groupchats:
     group_chats.append({"name": groupchat["Name"], "id": groupchat["GroupChatId"]})
 
 # add images to the group chat
-def send_message_with_image(message, image, groupchat_id):
-    logger.info(image)
-    data = {
-                "Sender": 1002,
-                "Text": message.strip(),
-                "ImageLink": image
-            }
-    try:
-      response = requests.post('http://api:4000/g/groupchats/{0}/messages'.format(groupchat_id), json=data)
-      if response.status_code == 200:
-        st.success("Message with image sent successfully!")
-      else:
-        st.error(f"Error sending message with image: {response.text}")
-    except requests.exceptions.RequestException as e:
-      st.error(f"Error connecting to server: {str(e)}")
+def send_message_with_image(message, image_url, groupchat_id):
+    if not image_url:
+        st.error("Invalid image URL. Message not sent.")
+        return
 
-def upload_image_to_server(uploaded_image):
-   try:
-      files = {"file": uploaded_image.getvalue()}
-      response = requests.post('http://api:4000/simple/upload', files=files)
-      if response.status_code == 200:
-         image_url = response.json().get("image_url")
-         return image_url
-      else:
-         st.error(f"Error uploading image: {response.text}")
-         return None
-   except requests.exceptions.RequestException as e:
-      st.error(f"Error connecting to the server: {str(e)}")
-      return None
-   
+    data = {"Sender": 1002,"Text": message.strip(),"ImageLink": image_url}
+    try:
+        response = requests.post(f'http://api:4000/g/groupchats/{groupchat_id}/messages', json=data)
+        if response.status_code == 200:
+            st.success("Message with image sent successfully!")
+        else:
+            st.error(f"Error sending message with image: {response.text}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
+
 # initialize the session state
 if "selected_chat_id" not in st.session_state:
     st.session_state.selected_chat_id = 399
@@ -177,50 +174,41 @@ with col1:
 with col2:
     selected_chat_id = st.session_state.selected_chat_id
     for gc in group_chats:
-        if gc["id"]==selected_chat_id:
+        if gc["id"] == selected_chat_id:
             current = gc["name"]
             break
     st.markdown(f"## {current}")
 
     # display messages
-    fetch_messages = requests.get('http://api:4000/g/groupchats/{0}/messages'.format(selected_chat_id)).json()
+    fetch_messages = requests.get(f'http://api:4000/g/groupchats/{selected_chat_id}/messages').json()
     messages_data = []
     for message in fetch_messages:
-      messages_data.append({"sender": "{0} {1}".format(message["FirstName"], message["LastName"]),
-                      "content": message["Text"],
-                      "image": message["ImageLink"]})
+        messages_data.append({"sender": f"{message['FirstName']} {message['LastName']}",
+                              "content": message["Text"],
+                              "image": message["ImageLink"]})
     for msg in messages_data:
         align = "flex-end" if msg["sender"] == "Winston Church" else "flex-start"
         bg_color = "#e0f7fa" if msg["sender"] == "Winston Church" else "#ffffff"
         
-        # render message with optional image
+        # Render message with optional image
         content_html = f"""
         <div style="display: flex; justify-content: {align}; margin-bottom: 10px;">
             <div style="background-color: {bg_color}; padding: 10px; border-radius: 10px; max-width: 60%;">
                 <strong>{msg['sender']}</strong><br>{msg['content']}
         """
         if "image" in msg and msg["image"] is not None:
-            content_html += f'<img src="{msg["image"]}" alt="Image" style="max-width: 100px; margin-top: 10px;"/>'
+            content_html += f'<img src="{msg["image"]}" alt="Image" style="width: 100%; margin-top: 10px;"/>'
         content_html += "</div></div>"
         
         st.markdown(content_html, unsafe_allow_html=True)
 
-    # input text messages and image uploader to send a message
+    # input text messages and image URL
     st.markdown("---")
+    st.markdown("### Add a Message")
     with st.form(key="send_message_form", clear_on_submit=True):
         new_message = st.text_input("Write a message", key="new_message")
-        uploaded_image = st.file_uploader("Attach an image", type=["png", "jpg", "jpeg"], key="new_image")
+        new_image_url = st.text_input("Attach an image URL (optional)", key="new_image_url", placeholder="Paste image URL here (optional)")
         submit_button = st.form_submit_button("Send")
 
         if submit_button:
-            for gc in group_chats:
-                  if gc["id"]==selected_chat_id:
-                      current = gc["id"]
-                      break
-            if uploaded_image is not None:
-                # convert image to URL
-                uploaded_image_url = upload_image_to_server(uploaded_image)
-                if uploaded_image_url:
-                    send_message_with_image(new_message, uploaded_image_url, current)
-            else:
-              send_message(new_message,current)
+            send_message_with_image(new_message, new_image_url, selected_chat_id)
