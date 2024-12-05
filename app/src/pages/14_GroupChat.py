@@ -106,7 +106,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # get from generated data
 fetch_groupchats = requests.get('http://api:4000/u/users/1002/groupchats').json()
 group_chats = []
