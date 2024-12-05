@@ -3,22 +3,29 @@ from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 import requests
 
+# Navigation bar configuration
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Reports", styles=styles, logo_path=logo, options=options)
 
 if page == "Delete Group Chat":
-  st.switch_page('pages/23_Delete_GroupChat.py')
+    st.switch_page('pages/23_Delete_GroupChat.py')
 
 if page == "Flag Message":
-  st.switch_page('pages/25_Flag_Message.py')
+    st.switch_page('pages/25_Flag_Message.py')
 
 if page == "Logout":
-  del st.session_state["role"]
-  del st.session_state["authenticated"]
-  st.switch_page("Home.py")
+    del st.session_state["role"]
+    del st.session_state["authenticated"]
+    st.switch_page("Home.py")
 
+# Fetch flag reports
+flagWithUsers = requests.get("http://api:4000/simple//flagreports").json()
 
-col1, col2= st.columns([1, 2])
+flagTitles = []
+flagUser = []
+flagDescription = []
+originalMessage = []
+flagIds = []  # Assume each flag has a unique ID for deletion
 
 report_fetch = requests.get("http://api:4000/simple/reportInfo").json()
 reports = []
@@ -28,6 +35,10 @@ for report in report_fetch:
 
 users = []
 
+# Layout columns
+col1, col2 = st.columns([1, 2])
+
+# Sidebar display of all flagged reports
 with col1:
 
     # Build the HTML content dynamically using a for loop
@@ -43,17 +54,14 @@ with col1:
             </div>
         </div>
         """
-
-    # Pass the HTML content to st.markdown
     st.markdown(
         f"""
-        <div style="background-color: e7e7e7; padding: 20px; border-radius: 10px;">
+        <div style="background-color: #e7e7e7; padding: 20px; border-radius: 10px;">
             {html_content}
         </div>
         """,
         unsafe_allow_html=True,
     )
-
 
 def delete_report(report_id):
     try:
@@ -92,4 +100,14 @@ with col2:
     if st.button("Resolve Report"):
         delete_report(report["ReportId"])
 
+        # Add a button for resolving the report
+        if st.button("Resolve Report", key="resolve_button"):
+            flag_id_to_delete = flagIds[0]  # Get the ID of the first report
+            response = requests.delete(f"http://api:4000/simple/flagreports/{flag_id_to_delete}")
 
+            if response.status_code == 200:
+                st.success("Report resolved successfully!")
+            else:
+                st.error("Failed to resolve the report. Please try again.")
+    else:
+        st.warning("No flagged reports available.")

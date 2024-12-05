@@ -1,6 +1,6 @@
 # `database-files` Folder
 
-The `database-files` Folder holds two files, one for the DDL of our database **CoLink**, and one for populating the database with sample data for each of the tables, listed below. The data population file, named `SampleData.sql`, has a single line comment indicating the start of a different table's data. 
+The `database-files` Folder holds 17 files to set up our database **CoLink**, one for the DDL and 16 for populating the database with sample data for each of the tables, listed below.
 
 Database: CoLink
 
@@ -22,5 +22,4 @@ Tables:
 - **EventInterests**, representing interest categories associated with an event
 - **UserInterests**, representing the interest categories a user is interested in
 
-To re-bootstrap the database, open DataGrip, locate the "Run" tab in the menu bar, and click "Edit Configurations...". Click the plus sign in the top left of the Run/Debug Configurations window and select "Database Script". Change the name to "CoLink Script", add a target data source of your choosing, and select "Script files" out of the Execute options. Add `DDL.sql` and `SampleData.sql` and hit OK to add the new run configuration and close the Run/Debug Configurations window. Now locate the "Run" tab again and select "Run 'CoLink Script'".
-TODO: Put some notes here about how this works.  include how to re-bootstrap the db. 
+To re-bootstrap the database, run `docker compose down` to shutdown and delete any running containers (to ensure the container runs the most updated data) and then run `docker compose up db -d` to start the database container. Wait until the Docker logs indicate that all files in this folder have executed.

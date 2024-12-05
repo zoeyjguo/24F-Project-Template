@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_navigation_bar import st_navbar
 
 def get_nav_config(show_home=False):
     pages = ["Home"] if not st.session_state.get("authenticated", False) else []
@@ -20,14 +19,11 @@ def get_nav_config(show_home=False):
 
         if st.session_state["role"] == "data_analyst":
             pages = ["Interests", "Badges", "User Rank", "Logout"]
-        
-        #if st.session_state["role"] == "us_coop_student_feed":
-            #pages = ["Pets", "Photography", "LGBTQ+"]
 
     styles = {
         "nav": {
             "background-color": "rgb(198,169,249)",
-            "justify-content": "space-between",  # Push logo and pages to opposite ends
+            "justify-content": "space-between",
             "align-items": "center",
             "padding": "0 1rem",
         },

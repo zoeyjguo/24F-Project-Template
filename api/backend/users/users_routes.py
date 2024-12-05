@@ -8,7 +8,7 @@ from backend.db_connection import db
 users = Blueprint('users', __name__)
 
 #------------------------------------------------------------
-# Return all users
+# Return all information about all users in the database
 @users.route('/users', methods=['GET'])
 def get_users():
     cursor = db.get_db().cursor()
@@ -21,7 +21,7 @@ def get_users():
     return the_response
 
 #------------------------------------------------------------
-# Return all detailed information about the user with id userId
+# Return all information about a single user
 @users.route('/users/<userId>', methods=['GET'])
 def get_user(userId):
     
@@ -35,9 +35,9 @@ def get_user(userId):
     return the_response
 
 #------------------------------------------------------------
-# Delete event with EventId eventId from database
+# Delete a user from the database
 @users.route('/users/<userId>', methods = ['DELETE'])
-def delete_event(userId):
+def delete_user(userId):
     cursor = db.get_db().cursor()
     cursor.execute('DELETE FROM User WHERE UserId = {0}'.format(userId))
     db.get_db().commit()
@@ -47,7 +47,7 @@ def delete_event(userId):
     return response
 
 #------------------------------------------------------------
-# Return the friends the user with id userId has
+# Return the friends a user has
 @users.route('/users/<userId>/friends', methods=['GET'])
 def get_user_friends(userId):
     
@@ -68,8 +68,7 @@ def get_user_friends(userId):
     return the_response
 
 #------------------------------------------------------------
-# Add a friend to a particular user's friends list
-
+# Add a friend to a particular user's friend list
 @users.route('/users/<userId>/friends', methods = ['POST'])
 def add_user_friend(userId):
     friend_info = request.json
@@ -84,7 +83,7 @@ def add_user_friend(userId):
     return response
 
 #------------------------------------------------------------
-# Get the badges the user with userId has acquired
+# Get the badges a user has acquired
 @users.route('/users/<userId>/badges', methods=['GET'])
 def get_user_badges(userId):
     
@@ -118,7 +117,7 @@ def get_user_rank(userId):
     return the_response
 
 #------------------------------------------------------------
-# Get events a specific user is attending in the system
+# Get events a specific user in the system is attending/has attended
 @users.route('/users/<userId>/events', methods=['GET'])
 def get_user_events(userId):
 
@@ -137,7 +136,7 @@ def get_user_events(userId):
     return the_response
 
 #------------------------------------------------------------
-# Get posts a specific user has made in the system
+# Get posts a specific user in the system has made 
 @users.route('/users/<userId>/posts', methods=['GET'])
 def get_user_posts(userId):
 
@@ -224,7 +223,24 @@ def update_user_location(userId):
     return response
 
 #------------------------------------------------------------
-# Update the notifications of a particular user
+# Get a user's interests
+@users.route('/users/<userId>/location', methods=['GET'])
+def get_user_location(userId):
+
+    cursor = db.get_db().cursor()
+    cursor.execute('''
+        SELECT Latitude, Longitude
+        FROM User u
+        WHERE u.UserId = {0}'''.format(userId))
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+# Update the notification settings of a particular user
 @users.route('/users/<userId>/notifications', methods=['PUT'])
 def update_user_notifications(userId):
     the_data = request.json
@@ -265,7 +281,22 @@ def get_user_suggestions(userId):
     return the_response
 
 #------------------------------------------------------------
-# Gets groupchats a specific user is a part of
+# Delete from the friend suggestions of a particular user
+@users.route('/users/<userId>/suggestions', methods = ['DELETE'])
+def delete_user_suggestion(userId):
+    suggestion_info = request.json
+    current_app.logger.info(suggestion_info)
+
+    cursor = db.get_db().cursor()
+    cursor.execute('DELETE FROM FriendSuggestion WHERE UserId = {0} AND SuggestedUser = {1}'.format(userId, suggestion_info['FriendId']))
+    db.get_db().commit()
+    
+    response = make_response("Successfully deleted friend suggestion from user {0}".format(userId))
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Get group chats a specific user is a part of
 @users.route('/users/<userId>/groupchats', methods=['GET'])
 def get_user_groupchats(userId):
 
