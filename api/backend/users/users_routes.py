@@ -297,3 +297,23 @@ def delete_user_groupchat(userId):
     response = make_response("Successfully deleted group chat {0}".format(groupchat_info['GroupChatId']))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Gets groupchats a specific user is a part of with event info
+@users.route('/users/<userId>/groupchatsInfo', methods=['GET'])
+def get_user_groupchats_info(userId):
+
+    cursor = db.get_db().cursor()
+    query = f'''SELECT gc.Name, e.StartTime, e.EndTime, gc.GroupChatId
+                FROM GroupChat gc
+                JOIN GroupChatMembers gcm ON gc.GroupChatId = gcm.GroupChatId
+                JOIN Event e ON e.EventId = gc.EventId
+                WHERE gcm.UserId = {str(userId)}
+    '''
+    cursor.execute(query)
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
