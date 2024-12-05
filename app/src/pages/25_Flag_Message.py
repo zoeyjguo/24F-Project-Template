@@ -3,6 +3,9 @@ import requests
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Flag Message", styles=styles, logo_path=logo, options=options)
 
@@ -37,7 +40,7 @@ for flag in st.session_state["flags"]:
     st.write(f"<strong>Message ID: {flag['MessageId']}</strong>", unsafe_allow_html=True)
     st.write(f"<strong>Flag ID: {flag['FlagId']}</strong>", unsafe_allow_html=True)
     st.write(f"Message Content: {flag['Text']}")
-    st.write(f"Title: {flag['Title']}")
+    st.write(f"Reason: {flag['Title']}")
   with col2:
     if st.button("Ignore Flag", key=f"ignore_{flag['FlagId']}", type="secondary"):
       ignore_flag(flag['FlagId'])
