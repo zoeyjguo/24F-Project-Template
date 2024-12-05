@@ -228,7 +228,8 @@ def delete_message(messageId):
     response.status_code = 200
     return response
 
-#---------
+#------------------------------------------------------------
+# Gets the name of the interest that is correlated the events with the given eventIds
 @management.route('/groupchatsInterest', methods=['GET'])
 def get_groupchats_interest():
     # Fetching the event IDs from the request's query parameter (e.g., EventIds=1,2,3)
@@ -248,20 +249,13 @@ def get_groupchats_interest():
         WHERE ei.EventId IN ({})
     '''.format(','.join(['?'] * len(event_ids)))
     
-    # Get database connection and cursor
     cursor = db.get_db().cursor()
-    
-    # Execute the query with event_ids as parameters
     cursor.execute(query, event_ids)
-    
-    # Fetch the data
     the_data = cursor.fetchall()
     
-    # Check if data exists, otherwise return a message
     if not the_data:
         return jsonify({"message": "No interests found for the given events"}), 404
     
-    # Prepare the response
     return jsonify(the_data), 200
 
 # TODO
@@ -295,6 +289,8 @@ def add_user_friend(userId):
     response.status_code = 200
     return response
 
+#------------------------------------------------------------
+# Gets post and event data associated with an interest
 @management.route('/postInterest/<interestId>', methods=['GET']) 
 def get_post_interest(interestId): 
     cursor = db.get_db().cursor()
@@ -312,6 +308,8 @@ def get_post_interest(interestId):
     the_response.status_code = 200
     return the_response
 
+#------------------------------------------------------------
+# Gets report information in database
 @management.route('/reportInfo', methods=['GET'])
 def get_reporters():
     cursor = db.get_db().cursor()
@@ -323,8 +321,8 @@ def get_reporters():
     the_response.status_code = 200
     return the_response
 
-
-# Delete report with ReportId reportId from database
+#------------------------------------------------------------
+# Delete report from database
 @management.route('/report/<reportId>', methods = ['DELETE'])
 def delete_report(reportId):
     cursor = db.get_db().cursor()
@@ -334,14 +332,3 @@ def delete_report(reportId):
     response = make_response("Successfully deleted report")
     response.status_code = 200
     return response
-
-@management.route('/postUser', methods=['GET']) 
-def get_post_user(): 
-    cursor = db.get_db().cursor()
-    cursor.execute('SELECT FirstName, LastName, p.EventId FROM User u JOIN Post p ON p.CreatedBy = u.UserId')
-    
-    theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
