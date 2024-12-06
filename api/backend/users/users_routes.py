@@ -301,7 +301,7 @@ def delete_user_suggestion(userId):
 def get_user_groupchats(userId):
 
     cursor = db.get_db().cursor()
-    query = f'''SELECT gc.Name, gc.GroupChatId
+    query = f'''SELECT gc.Name, gc.EventId, gc.GroupChatId
                 FROM GroupChat gc
                 JOIN GroupChatMembers gcm ON gc.GroupChatId = gcm.GroupChatId
                 WHERE gcm.UserId = {str(userId)}
@@ -328,4 +328,72 @@ def delete_user_groupchat(userId):
     response = make_response("Successfully deleted group chat {0}".format(groupchat_info['GroupChatId']))
     response.status_code = 200
     return response
+
 #------------------------------------------------------------
+# Gets groupchats a specific user is a part of with event info
+@users.route('/users/<userId>/groupchatsInfo', methods=['GET'])
+def get_user_groupchats_info(userId):
+
+    cursor = db.get_db().cursor()
+    query = f'''SELECT gc.Name, e.StartTime, e.EndTime, gc.GroupChatId
+                FROM GroupChat gc
+                JOIN GroupChatMembers gcm ON gc.GroupChatId = gcm.GroupChatId
+                JOIN Event e ON e.EventId = gc.EventId
+                WHERE gcm.UserId = {str(userId)}
+    '''
+    cursor.execute(query)
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+
+#------------------------------------------------------------
+# Gets posts and user information from the database
+@users.route('/users/postCreators', methods=['GET'])
+def get_post_creators():
+
+    cursor = db.get_db().cursor()
+    query = f'''SELECT p.CreatedBy, u.FirstName, u.LastName
+                FROM User u 
+                JOIN Post p ON p.CreatedBy = u.UserId
+    '''
+    cursor.execute(query)
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+#Add to the posts of a user (replicate a user posting in the app)
+@users.route('/users/<userId>/posts', methods=['POST'])
+def create_message(userId):
+    the_data = request.json
+    title = the_data['Title']
+    start_time = the_data['StartTime']
+    description = the_data['Description']
+    lat = the_data['Latitude']
+    lon = the_data['Longitude']
+    points = the_data['PointsWorth']
+
+    query1 = 'INSERT INTO Event (Latitude, Longitude, StartTime, PointsWorth) VALUES (%s, %s, %s, %s)'
+    data1 = (lat, lon, start_time, points)
+    cursor = db.get_db().cursor()
+    cursor.execute(query1, data1)
+    eventId = cursor.lastrowid
+    query2 = 'INSERT INTO GroupChat (EventId, Monitor, Name) VALUES (%s, %s, %s)'
+    data2 = (eventId, 1, title)
+    cursor.execute(query2, data2)
+    groupChatId = cursor.lastrowid
+    query3 = 'INSERT INTO Post (EventId, GroupChatId, Title, Description, CreatedBy, PointsWorth) VALUES (%s, %s, %s, %s, %s, %s)'
+    data3 = (eventId, groupChatId, title, description, userId, points)
+    cursor.execute(query3, data3)
+    db.get_db().commit()
+
+    response = make_response("Successfully created message with text")
+    response.status_code = 200
+    return response

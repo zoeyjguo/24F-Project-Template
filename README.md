@@ -1,42 +1,52 @@
 # CoLink Project Repository
 
-## Current Project Components
+CoLink is a data-driven application focused on improving the experiential learning space at Northeastern University. It does this by tackling the need for community among Northeastern students on co-op with an event-based, interest categorized, and location-centric social media platform.
 
-Currently, there are three major components which will each run in their own Docker Containers:
+## Description
+
+Our app satisfies the need for community among Northeastern students on co-op by creating tailored opportunities to meet others with similar personal and professional interests, backgrounds, and experiences. Our platform emphasizes highly personalized, data-driven engagement, allowing users to set up profiles detailing interests and goals to form a curated feed of interest-based events. In particular, users can join groups, attend events, and even create posts to find others interested in joining activities. Users also have their point system where you can earn badges based on how many events you plan and attend! Key features like curated For You Pages (FYP) based on user interests, event posts with group chat integration, app-generated recommendations, and point system based on event attendance empower students to build a support network while they are on co-op. Our platform ensures that our members stay connected to the Northeastern student community no matter where they are around the world.
+
+Accessing our app is very simple! As a user, you are able to look at your home page, create posts or even join group chats related to each post! Additionally, users are able to look at a list of suggested users where they can add as friends. Not only are they able to access their own profiles showcasing their basic information along with their posts and group chats, they can also see other user's profile information as well. Aside from student users, we also have a system administrator that maintains the platform. Administrators can look at reports, flag messages, and as well as delete group chats as needed.
+
+Finally, we have a data analyst in charge of collected user information to see how digital application can impact students experimental learning. Data analyst are able to view user's data, user badge rankings, as well as viewing the profile and ranking of a specific user. 
+
+### Handling User Role Access and Control
+
+In most applications, when a user logs in, they assume a particular role. To do this in Streamlit, we've implemented a Role-based Access Control (**RBAC**) system that removes the need for using user authentication (usernames and passwords) as well as user profile set up. For simplicity's sake (and to render the UI for some of our pages), we've assumed each logged-in user has a username, biography, email address, phone number, profile picture, and background profile picture in the system, each initialized upon their profile creation, but these values cannot be changed within our application. To learn more about our RBAC system, navigate to the `pages` directory.
+
+## Getting Started
+
+### Project Components
+
+Our project has three major components which will each run in their own Docker Containers:
 
 - Streamlit App in the `./app` directory
-- Flask REST api in the `./api` directory
+- Flask REST API in the `./api` directory
 - SQL files for our data model and database in the `./database-files` directory
 
-## Controlling the Containers
+### Controlling the Containers
 
 - `docker compose up -d` to start all the containers in the background
 - `docker compose down` to shutdown and delete the containers
-- `docker compose up db -d` only start the database container (replace db with the other services as needed)
+- `docker compose up db -d` to only start the database container (replace db with the other services as needed)
 - `docker compose stop` to "turn off" the containers but not delete them. 
 
-## Handling User Role Access and Control
+### Installing & executing program
 
-In most applications, when a user logs in, they assume a particular role.  For instance, when one logs in to a stock price prediction app, they may be a single investor, a portfolio manager, or a corporate executive (of a publicly traded company).  Each of those *roles* will likely present some similar features as well as some different features when compared to the other roles. So, how do you accomplish this in Streamlit?  This is sometimes called Role-based Access Control, or **RBAC** for short. 
+To download our program, 
+- clone this repository
+- add and/or update an env file
+- run the following commands in the terminal:
+```
+docker compose build
+docker compose up
+``` 
+- view the application on [your machine's port 8501](http://localhost:8501)
 
-The code in this project demonstrates how to implement a simple RBAC system in Streamlit but without actually using user authentication (usernames and passwords).  The Streamlit pages from the original template repo are split up among 3 roles - Political Strategist, USAID Worker, and a System Administrator role (this is used for any sort of system tasks such as re-training ML model, etc.). It also demonstrates how to deploy an ML model. 
+## Authors
 
-Wrapping your head around this will take a little time and exploration of this code base.  Some highlights are below. 
-
-### Getting Started with the RBAC 
-1. We need to turn off the standard panel of links on the left side of the Streamlit app. This is done through the `app/src/.streamlit/config.toml` file.  So check that out. We are turning it off so we can control directly what links are shown. 
-1. Then I created a new python module in `app/src/modules/nav.py`.  When you look at the file, you will se that there are functions for basically each page of the application. The `st.sidebar.page_link(...)` adds a single link to the sidebar. We have a separate function for each page so that we can organize the links/pages by role. 
-1. Next, check out the `app/src/Home.py` file. Notice that there are 3 buttons added to the page and when one is clicked, it redirects via `st.switch_page(...)` to that Roles Home page in `app/src/pages`.  But before the redirect, I set a few different variables in the Streamlit `session_state` object to track role, first name of the user, and that the user is now authenticated.  
-1. Notice near the top of `app/src/Home.py` and all other pages, there is a call to `SideBarLinks(...)` from the `app/src/nav.py` module.  This is the function that will use the role set in `session_state` to determine what links to show the user in the sidebar. 
-1. The pages are organized by Role.  Pages that start with a `0` are related to the *Political Strategist* role.  Pages that start with a `1` are related to the *USAID worker* role.  And, pages that start with a `2` are related to The *System Administrator* role. 
-
-
-## Deploying An ML Model (Totally Optional for CS3200 Project)
-
-*Note*: This project only contains the infrastructure for a hypothetical ML model. 
-
-1. Build, train, and test your ML model in a Jupyter Notebook. 
-1. Once you're happy with the model's performance, convert your Jupyter Notebook code for the ML model to a pure python script.  You can include the `training` and `testing` functionality as well as the `prediction` functionality.  You may or may not need to include data cleaning, though. 
-1. Check out the  `api/backend/ml_models` module.  In this folder, I've put a sample (read *fake*) ML model in `model01.py`.  The `predict` function will be called by the Flask REST API to perform '*real-time*' prediction based on model parameter values that are stored in the database.  **Important**: you would never want to hard code the model parameter weights directly in the prediction function.  tl;dr - take some time to look over the code in `model01.py`.  
-1. The prediction route for the REST API is in `api/backend/customers/customer_routes.py`. Basically, it accepts two URL parameters and passes them to the `prediction` function in the `ml_models` module. The `prediction` route/function packages up the value(s) it receives from the model's `predict` function and send its back to Streamlit as JSON. 
-1. Back in streamlit, check out `app/src/pages/11_Prediction.py`.  Here, I create two numeric input fields.  When the button is pressed, it makes a request to the REST API URL `/c/prediction/.../...` function and passes the values from the two inputs as URL parameters.  It gets back the results from the route and displays them. Nothing fancy here. 
+[Amy Wang](https://github.com/amywng)
+[Sarah Zhang](https://github.com/Sarah-Zhang1)
+[Zoey Guo](https://github.com/zoeyjguo)
+[Deborah He](https://github.com/deborahhe2493)
+[Julia Tan](https://github.com/juliaatan)

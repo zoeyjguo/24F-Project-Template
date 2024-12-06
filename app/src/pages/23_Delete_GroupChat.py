@@ -6,6 +6,9 @@ from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 # Navigation bar
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Delete Group Chat", styles=styles, logo_path=logo, options=options)
