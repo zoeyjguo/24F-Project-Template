@@ -17,7 +17,7 @@ if page == "Update Location":
     st.switch_page('pages/11_Update_Location.py')
 
 if page == "Group Chat":
-    st.switch_page('pages/14_GroupChat.py')
+    st.switch_page('pages/14_Winston_GroupChat.py')
 
 if page == "Logout":
     del st.session_state["role"]

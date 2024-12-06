@@ -8,11 +8,7 @@ from datetime import datetime
 
 # Setup navigation
 pages, styles, logo, options = get_nav_config(show_home=False)
-page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
-
-# Page switching logic
-if page == "Feed":
-    st.switch_page('pages/02_Interest_Feed.py')
+page = st_navbar(pages, selected="Feed", styles=styles, logo_path=logo, options=options)
 
 if page == "Update Interests":
     st.switch_page('pages/03_Update_Interests.py')
@@ -24,6 +20,11 @@ if page == "Logout":
     del st.session_state["role"]
     del st.session_state["authenticated"]
     st.switch_page("Home.py")
+
+if page == "Group Chat":
+    del st.session_state["role"]
+    del st.session_state["authenticated"]
+    st.switch_page("pages/001_Kali_GroupChat.py")
 
 # Fetch data from APIs
 kali_suggested = requests.get("http://api:4000/u/users/1001/suggestions").json()
@@ -59,8 +60,6 @@ for chat in chat_fetch:
 for i in interest_fetch:
     all_interests.append(i['Name'])
 
-
-
 for i in all_interest_fetch: 
     all_interests_info.append(i) 
 
@@ -87,9 +86,7 @@ for idx, page in enumerate(all_interests):
         if st.button(page, key=page):
             select_interest(page)
 
-
-# Layout spacing
-st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
+st.markdown("---")
 
 # Layout with columns
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -101,10 +98,12 @@ if "selected_chat_id" not in st.session_state:
 with col1:
     st.markdown("### Group Chats")
     for chat in group_chats:
-        if st.button(f"{chat["Name"]} ({chat["StartTime"]} - {chat["EndTime"]})"):
+        if st.button(f'{chat["Name"]} ({chat["StartTime"]} - {chat["EndTime"]})'):
             st.session_state["selected_chat_id"] = chat['GroupChatId']
-            st.switch_page('pages/14_GroupChat.py')
+            st.session_state['authenticated'] = True
+            st.switch_page('pages/001_Kali_GroupChat.py')
             st.rerun()
+        st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
 
 def update_event(endpoint_url, data):
@@ -119,7 +118,7 @@ def update_event(endpoint_url, data):
 
 
 with col2:
-    st.title("Make Post")
+    st.markdown("### Make Post")
    # Add custom CSS to style the inputs
     st.markdown(
         '''
@@ -172,7 +171,7 @@ with col2:
             update_event(endpoint, event_data)   
 
 
-    st.title("Post")
+    st.markdown("### Post")
 
     def get_InterestId(): 
         for interest in currInterests: 
@@ -226,7 +225,7 @@ if 'button_states' not in st.session_state:
     st.session_state['button_states'] = {profile: False for profile in suggestions}
     
 with col3:
-  st.title("Suggested")
+  st.markdown("### Suggested")
   suggested = st.container(border = True)
   for index, profile in enumerate(suggestions):
     st.write(f"**{profile}**")

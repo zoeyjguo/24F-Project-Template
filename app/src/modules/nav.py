@@ -9,7 +9,7 @@ def get_nav_config(show_home=False):
 
     if st.session_state["authenticated"]:
         if st.session_state["role"] == "us_coop_student":
-            pages = ["Feed", "Update Interests", "View Other Profile", "Logout"]
+            pages = ["Feed", "Update Interests", "View Other Profile", "Group Chat", "Logout"]
         
         if st.session_state["role"] == "abroad_coop_student":
             pages = ["Update Location", "Calendar", "Group Chat", "Logout"]
