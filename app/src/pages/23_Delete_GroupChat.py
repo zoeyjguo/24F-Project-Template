@@ -2,7 +2,6 @@ import logging
 logger = logging.getLogger(__name__)
 import streamlit as st
 import requests
-from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 

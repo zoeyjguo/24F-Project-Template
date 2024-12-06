@@ -261,7 +261,7 @@ def delete_message(messageId):
     return response
 
 #------------------------------------------------------------
-# Gets post and event data associated with an interest
+# Get post and event data associated with an interest
 @management.route('/posts/<interestId>', methods=['GET']) 
 def get_post_interest(interestId): 
     cursor = db.get_db().cursor()

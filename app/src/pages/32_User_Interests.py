@@ -33,7 +33,6 @@ for interest in interests_fetch:
 for interest in interest_count: 
   count.append(interest["NumStudents"])
 
-
 data = {
     'Interests': all_interests,
     'Amount': count

@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import jsonify
 from flask import make_response
 from backend.db_connection import db
+from flask import request
 
 #------------------------------------------------------------
 # New Blueprint object for events routes
@@ -102,3 +103,17 @@ def get_event_participants(eventId):
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+#------------------------------------------------------------
+# Add to the participants of an event
+@events.route('/events/<eventId>/participants', methods = ['POST'])
+def add_event_participant(eventId):
+    user_info = request.json
+
+    cursor = db.get_db().cursor()
+    cursor.execute('INSERT INTO GroupChatMembers (EventId, GroupChatId, UserId) VALUES ({0}, {0}, {1})'.format(eventId, user_info['UserId']))
+    db.get_db().commit()
+    
+    response = make_response("Successfully added user to event {0}".format(eventId))
+    response.status_code = 200
+    return response

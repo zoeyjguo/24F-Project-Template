@@ -34,7 +34,6 @@ def select_report(report_id):
     """Update session state with the selected report."""
     st.session_state["selected_report"] = report_id
 
-
 def delete_report(report_id):
     try:
         # Make a DELETE request to the API
@@ -45,8 +44,6 @@ def delete_report(report_id):
             st.error(f"Failed to delete report. Status code: {response.status_code}")
     except Exception as e:
         st.error(f"Error: {e}")
-
-        
 
 # Layout columns
 col1, col2 = st.columns([1, 3])

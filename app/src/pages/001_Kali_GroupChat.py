@@ -2,12 +2,8 @@ import logging
 logger = logging.getLogger(__name__)
 import streamlit as st
 import requests
-from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
-from datetime import date, timedelta
-import calendar
-from PIL import Image
 
 if "authenticated" not in st.session_state:
     st.switch_page("Home.py")

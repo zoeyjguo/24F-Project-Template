@@ -20,9 +20,6 @@ if page == "Logout":
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
 
-# ***************************************************
-#    The major content of this page
-# ***************************************************
 col1, col2, col3 = st.columns([1, .1, 1])
 
 user_info = requests.get("http://api:4000/u/users/1").json()

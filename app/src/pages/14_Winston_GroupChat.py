@@ -6,8 +6,6 @@ from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 from datetime import date, timedelta
-import calendar
-from PIL import Image
 
 if "authenticated" not in st.session_state:
     st.switch_page("Home.py")
@@ -26,7 +24,6 @@ if page == "Logout":
   del st.session_state["role"]
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
-
 
 # styling for the group chats and messages
 st.markdown(
@@ -195,7 +192,6 @@ with col2:
             current = gc["name"]
             st.markdown(f"## {current}")
             break
-    
 
     # display messages
     fetch_messages = requests.get(f'http://api:4000/g/groupchats/{selected_chat_id}/messages').json()

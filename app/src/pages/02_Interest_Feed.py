@@ -3,7 +3,6 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
-import numpy as np
 import requests
 from datetime import datetime
 import math
@@ -114,8 +113,6 @@ with col1:
             st.switch_page('pages/001_Kali_GroupChat.py')
             st.rerun()
         st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
-
-
 
 with btw1: 
     st.empty()
@@ -296,4 +293,3 @@ with col3:
                 if not st.session_state['button_states'][profile]:
                     add_friend(friend_id)
                     st.session_state['button_states'][profile] = True
-

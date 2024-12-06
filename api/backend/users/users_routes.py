@@ -332,7 +332,7 @@ def delete_user_groupchat(userId):
     return response
 
 #------------------------------------------------------------
-# Get group chat and event info a specific user is a part/attending
+# Get group chat and event info a specific user is a part of/attending
 @users.route('/users/<userId>/groupchatsInfo', methods=['GET'])
 def get_user_groupchats_info(userId):
 

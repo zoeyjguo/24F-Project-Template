@@ -1,7 +1,6 @@
 import logging
 import streamlit as st
 import requests
-from streamlit_extras.app_logo import add_logo
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 from datetime import date, datetime, timedelta
@@ -106,7 +105,6 @@ for event in events_fetch:
             # increment to the next day
             current_date += timedelta(days=1)
 
-
 # create columns for layout
 col1, col2 = st.columns([1,3])
 
@@ -122,7 +120,6 @@ with col1:
             st.session_state["selected_chat_id"] = chat['id']
             st.switch_page('pages/14_Winston_GroupChat.py')
             st.rerun()
-
 
 # create the calender grid
 def create_calendar(year, month, events):

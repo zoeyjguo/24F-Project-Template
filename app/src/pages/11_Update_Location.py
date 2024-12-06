@@ -1,12 +1,6 @@
 import logging
 logger = logging.getLogger(__name__)
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
-import pandas as pd
-import pydeck as pdk
-from urllib.error import URLError
-
-import streamlit as st
 from streamlit_folium import st_folium
 import folium
 from folium import Icon

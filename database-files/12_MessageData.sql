@@ -5034,7 +5034,7 @@ insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) va
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (914, 1006, 1006, 'Can I swing by later?', null, '2024-10-21 20:38:42');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (9, 1007, 1007, 'Thanks for your help!', null, '2024-01-16 13:36:11');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (217, 1008, 1008, 'Bless up!', null, '2024-02-09 16:24:24');
-insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (67, 1009, 1009, 'Do you have any recommendations?', 'https://example.com/image91.jpg', '2024-04-04 23:11:57');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (67, 1009, 1009, 'Do you have any recommendations?', null, '2024-04-04 23:11:57');
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (217, 1010, 1010, 'Do you have any recommendations?', null, '2024-04-18 09:55:30');
 
 insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (31, 1010, 1010, 'I think I can make it', null, '2024-05-01 19:03:14');
