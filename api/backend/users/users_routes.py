@@ -5,6 +5,8 @@ from flask import make_response
 from flask import current_app
 from backend.db_connection import db
 
+#------------------------------------------------------------
+# New Blueprint object for users routes
 users = Blueprint('users', __name__)
 
 #------------------------------------------------------------
@@ -103,7 +105,7 @@ def get_user_badges(userId):
     return the_response
 
 #------------------------------------------------------------
-# Get rank and points of a specific user in the system
+# Get rank and points of a specific user in the database
 @users.route('/users/<userId>/rank', methods=['GET'])
 def get_user_rank(userId):
     
@@ -223,7 +225,7 @@ def update_user_location(userId):
     return response
 
 #------------------------------------------------------------
-# Get a user's interests
+# Get a user's location
 @users.route('/users/<userId>/location', methods=['GET'])
 def get_user_location(userId):
 
@@ -330,7 +332,7 @@ def delete_user_groupchat(userId):
     return response
 
 #------------------------------------------------------------
-# Gets groupchats a specific user is a part of with event info
+# Get group chat and event info a specific user is a part/attending
 @users.route('/users/<userId>/groupchatsInfo', methods=['GET'])
 def get_user_groupchats_info(userId):
 
@@ -349,9 +351,8 @@ def get_user_groupchats_info(userId):
     the_response.status_code = 200
     return the_response
 
-
 #------------------------------------------------------------
-# Gets posts and user information from the database
+# Get all posts and user information from the database
 @users.route('/users/postCreators', methods=['GET'])
 def get_post_creators():
 
@@ -369,7 +370,7 @@ def get_post_creators():
     return the_response
 
 #------------------------------------------------------------
-#Add to the posts of a user (replicate a user posting in the app)
+# Add to the posts of a user (replicate a user posting in the app)
 @users.route('/users/<userId>/posts', methods=['POST'])
 def create_message(userId):
     the_data = request.json

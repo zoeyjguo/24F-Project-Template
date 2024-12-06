@@ -2,7 +2,8 @@ from flask import Blueprint, request, jsonify, make_response, current_app, redir
 import json
 from backend.db_connection import db
 
-# This blueprint handles some basic routes that you can use for testing
+#------------------------------------------------------------
+# New Blueprint object for management routes
 management = Blueprint('management', __name__)
 
 #######################
@@ -21,6 +22,31 @@ def get_reports():
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+#------------------------------------------------------------
+# Get report and associated user information
+@management.route('/reportInfo', methods=['GET'])
+def get_reporters():
+    cursor = db.get_db().cursor()
+    cursor.execute('SELECT u.FirstName, u.LastName, r.Description, r.TimeReported, r.Title, r.ReportId FROM Report r Join User u ON r.Reporter = u.UserId')
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+# Delete report from database
+@management.route('/report/<reportId>', methods = ['DELETE'])
+def delete_report(reportId):
+    cursor = db.get_db().cursor()
+    cursor.execute('DELETE FROM Report WHERE ReportId = {0}'.format(reportId))
+    db.get_db().commit()
+    
+    response = make_response("Successfully deleted report")
+    response.status_code = 200
+    return response
 
 #------------------------------------------------------------
 # Get all information about all flags in the database
@@ -53,7 +79,7 @@ def get_ten_flags():
     return the_response
 
 #------------------------------------------------------------
-# Create a flag associated with a post made by Chloe Lane, an admin
+# Create a flag associated with a post made by Chloe Lane, a system administrator
 @management.route('/flags/<post_id>', methods=['POST'])
 def create_flag_post(postId):
     flag_info = request.json
@@ -76,7 +102,7 @@ def create_flag_post(postId):
     return response
 
 #------------------------------------------------------------
-# Create a flag associated with a message made by Chloe Lane, an admin
+# Create a flag associated with a message made by Chloe Lane, a system administrator
 @management.route('/flags/<message_id>', methods=['POST'])
 def create_flag_message(messageId):
     flag_info = request.json
@@ -99,7 +125,7 @@ def create_flag_message(messageId):
     return response
 
 #------------------------------------------------------------
-# Update a flag so that it is reviewed by Chloe Lane, an admin
+# Update a flag so that it is reviewed by Chloe Lane, a system administrator
 @management.route('flags/<flagId>', methods=['PUT'])
 def update_flag(flagId):
     query = f'''
@@ -235,69 +261,8 @@ def delete_message(messageId):
     return response
 
 #------------------------------------------------------------
-# Gets the name of the interest that is correlated the events with the given eventIds
-@management.route('/groupchatsInterest', methods=['GET'])
-def get_groupchats_interest():
-    # Fetching the event IDs from the request's query parameter (e.g., EventIds=1,2,3)
-    event_ids = request.args.get('EventId')
-    
-    if not event_ids:
-        return jsonify({"error": "No event IDs provided"}), 400
-    
-    # Convert the event IDs to a list of integers
-    event_ids = [int(id.strip()) for id in event_ids.split(',')]
-    
-    # Prepare the query using parameterized queries to prevent SQL injection
-    query = '''
-        SELECT i.Name
-        FROM Interest i
-        JOIN EventInterests ei ON ei.InterestId = i.InterestId
-        WHERE ei.EventId IN ({})
-    '''.format(','.join(['?'] * len(event_ids)))
-    
-    cursor = db.get_db().cursor()
-    cursor.execute(query, event_ids)
-    the_data = cursor.fetchall()
-    
-    if not the_data:
-        return jsonify({"message": "No interests found for the given events"}), 404
-    
-    return jsonify(the_data), 200
-
-# TODO
-@management.route('/post', methods = ['POST'])
-def add_user_friend(userId):
-    event_info = request.json
-    current_app.logger.info(event_info)
-
-    # Get data from the request
-    title = event_info.get('title')
-    date = event_info.get('date')
-    time = event_info.get('time')
-    description = event_info.get('description')
-
-    if not title or not date or not time or not description:
-        response = make_response(
-            "Missing required fields: title, date, time, and description are all required.",
-            400
-        )
-        return response
-    
-    cursor = db.get_db().cursor()
-    cursor.execute(
-        '''
-        INSERT INTO Event (title, date, time, description) 
-        VALUES (%s, %s, %s, %s)
-        ''',(title, date, time, description))
-    db.get_db().commit()
-    
-    response = make_response("Successfully added post")
-    response.status_code = 200
-    return response
-
-#------------------------------------------------------------
 # Gets post and event data associated with an interest
-@management.route('/postInterest/<interestId>', methods=['GET']) 
+@management.route('/posts/<interestId>', methods=['GET']) 
 def get_post_interest(interestId): 
     cursor = db.get_db().cursor()
     cursor.execute('''
@@ -313,28 +278,3 @@ def get_post_interest(interestId):
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
-
-#------------------------------------------------------------
-# Gets report information in database
-@management.route('/reportInfo', methods=['GET'])
-def get_reporters():
-    cursor = db.get_db().cursor()
-    cursor.execute('SELECT u.FirstName, u.LastName, r.Description, r.TimeReported, r.Title, r.ReportId FROM Report r Join User u ON r.Reporter = u.UserId')
-    
-    theData = cursor.fetchall()
-    
-    the_response = make_response(jsonify(theData))
-    the_response.status_code = 200
-    return the_response
-
-#------------------------------------------------------------
-# Delete report from database
-@management.route('/report/<reportId>', methods = ['DELETE'])
-def delete_report(reportId):
-    cursor = db.get_db().cursor()
-    cursor.execute('DELETE FROM Report WHERE ReportId = {0}'.format(reportId))
-    db.get_db().commit()
-    
-    response = make_response("Successfully deleted report")
-    response.status_code = 200
-    return response

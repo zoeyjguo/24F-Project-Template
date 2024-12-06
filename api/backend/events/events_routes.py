@@ -35,7 +35,7 @@ def delete_event(eventId):
 
 #------------------------------------------------------------
 # Update the verified status of an event
-@events.route('/events/<eventId>', methods = ['POST'])
+@events.route('/events/<eventId>', methods = ['PUT'])
 def add_user_interest(eventId):
     cursor = db.get_db().cursor()
     cursor.execute('UPDATE Event SET IsVerified = TRUE WHERE EventId = {0})'.format(eventId))

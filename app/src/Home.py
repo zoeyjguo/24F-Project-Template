@@ -69,7 +69,7 @@ if st.button('Act as Winston, a student co-oping abroad',
     st.session_state['first_name'] = 'Winston'
     st.switch_page('pages/10_Abroad_Student_Home.py')
 
-if st.button('Act as Chloe, a System Administrator', 
+if st.button('Act as Chloe, a system administrator', 
             type = 'primary', 
             use_container_width=True) or page == "Chloe":
     st.session_state['authenticated'] = True
@@ -77,7 +77,7 @@ if st.button('Act as Chloe, a System Administrator',
     st.session_state['first_name'] = 'Chloe'
     st.switch_page('pages/20_Admin_Home.py')
 
-if st.button('Act as Joey, a Data Analyst',
+if st.button('Act as Joey, a data analyst',
              type = 'primary',
              use_container_width = True) or page == "Joey":
         st.session_state['authenticated'] = True

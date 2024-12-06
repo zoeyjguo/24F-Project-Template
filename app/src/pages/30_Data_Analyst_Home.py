@@ -21,7 +21,7 @@ if st.button('View user interests data',
              use_container_width=True) or page == "Interests":
   st.switch_page('pages/32_User_Interests.py')
 
-if st.button('View user badge rankings', 
+if st.button('View user badge data', 
              type='primary',
              use_container_width=True) or page == "Badges":
   st.switch_page('pages/35_User_Badges.py')

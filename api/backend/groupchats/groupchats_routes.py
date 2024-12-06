@@ -47,26 +47,25 @@ def delete_groupchat(groupchatId):
     return response
 
 #------------------------------------------------------------
-# Add a message to a particular groupchat
-@groupchats.route('/groupchats/<groupchatId>/messages', methods=['POST'])
-def create_message(groupchatId):
-    the_data = request.json
-    sender = the_data['Sender']
-    text = the_data['Text']
-    image_link = the_data['ImageLink']
+# Update a group chat's name to be more appropriate
+@groupchats.route('groupchats/<groupchatId>', methods=['PUT'])
+def change_groupchat_name(groupchatId):
+    query = f'''
+        UPDATE GroupChat
+        SET Name = "Appropriate Name"
+        WHERE GroupChatId = {str(groupchatId)}
+    '''
 
-    query = 'INSERT INTO Message (Sender, GroupChatId, EventId, Text, ImageLink) VALUES (%s, %s, %s, %s, %s)'
-    data = (sender, groupchatId, groupchatId, text, image_link)
     cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
+    cursor.execute(query)
     db.get_db().commit()
-
-    response = make_response("Successfully created message with text: {0}".format(text))
+    
+    response = make_response("Successfully updated group chat name of group chat: {0}".format(groupchatId))
     response.status_code = 200
     return response
 
 #------------------------------------------------------------
-# Add a user to a groupchat
+# Add a user to a group chat
 @groupchats.route('/groupchats/<groupchatId>/members', methods=['POST'])
 def add_member(groupchatId):
     userId = request.json['UserId']
@@ -82,7 +81,7 @@ def add_member(groupchatId):
     return response
 
 #------------------------------------------------------------
-# Get the messages in a group chat
+# Get the members of a group chat
 @groupchats.route('/groupchats/<groupchatId>/members', methods=['GET'])
 def get_groupchat_members(groupchatId):
     
@@ -119,3 +118,22 @@ def get_groupchat_messages(groupchatId):
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+#------------------------------------------------------------
+# Add a message to a particular group chat
+@groupchats.route('/groupchats/<groupchatId>/messages', methods=['POST'])
+def create_message(groupchatId):
+    the_data = request.json
+    sender = the_data['Sender']
+    text = the_data['Text']
+    image_link = the_data['ImageLink']
+
+    query = 'INSERT INTO Message (Sender, GroupChatId, EventId, Text, ImageLink) VALUES (%s, %s, %s, %s, %s)'
+    data = (sender, groupchatId, groupchatId, text, image_link)
+    cursor = db.get_db().cursor()
+    r = cursor.execute(query, data)
+    db.get_db().commit()
+
+    response = make_response("Successfully created message with text: {0}".format(text))
+    response.status_code = 200
+    return response

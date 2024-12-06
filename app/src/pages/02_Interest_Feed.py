@@ -205,7 +205,7 @@ with col2:
     interestId = get_InterestId() 
 
     # For getting posts with their correlated interest 
-    post_interest_fetch = requests.get(f"http://api:4000/m/postInterest/{interestId}").json()
+    post_interest_fetch = requests.get(f"http://api:4000/m/posts/{interestId}").json()
     currPosts = []
 
     for post in post_interest_fetch: 
