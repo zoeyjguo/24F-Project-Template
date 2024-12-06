@@ -43,6 +43,9 @@ all_interests = []
 all_interest_fetch = requests.get("http://api:4000/m/interests").json()
 all_interests_info = []
 
+post_creators_fetch = requests.get("http://api:4000/u/users/postCreators").json() 
+post_creators = []
+
 #
 # Processing API data
 for suggested in kali_suggested:
@@ -69,6 +72,8 @@ for name in all_interests:
         if name == interest["Name"]: 
             currInterests.append(interest) 
 
+for creators in post_creators_fetch: 
+    post_creators.append(creators) 
 
 if "selected_interest" not in st.session_state:
     st.session_state.selected_interest = all_interests[0]  # Set a default selected interest
@@ -89,7 +94,7 @@ for idx, page in enumerate(all_interests):
 st.markdown("---")
 
 # Layout with columns
-col1, col2, col3 = st.columns([1, 2, 1])
+col1, btw1, col2, btw2, col3 = st.columns([1, 0.1, 2, 0.1, 1])
 
 if "selected_chat_id" not in st.session_state:
     st.session_state.selected_chat_id = 399
@@ -98,7 +103,7 @@ if "selected_chat_id" not in st.session_state:
 with col1:
     st.markdown("### Group Chats")
     for chat in group_chats:
-        if st.button(f'{chat["Name"]} ({chat["StartTime"]} - {chat["EndTime"]})'):
+        if st.button(f'{chat["Name"]}'):
             st.session_state["selected_chat_id"] = chat['GroupChatId']
             st.session_state['authenticated'] = True
             st.switch_page('pages/001_Kali_GroupChat.py')
@@ -106,16 +111,42 @@ with col1:
         st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
 
-def update_event(endpoint_url, data):
-    try:
-        response = requests.put(endpoint_url, json=data)
-        if response.status_code == 200:
-            st.success("Event updated successfully!")
-        else:
-            st.error(f"Failed to update event. Status code: {response.status_code}")
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
 
+with btw1: 
+    st.empty()
+
+def join_groupchat(groupchat_id):
+  data = {
+        "UserId": 1001
+  }
+  try:
+      response = requests.post(f'http://api:4000/g/groupchats/{groupchat_id}/members', json=data)
+      if response.status_code == 200:
+          st.info("Group chat joined successfully!")
+      else:
+          logger.error(f"Error joining group chat: {response.text}")
+  except requests.exceptions.RequestException as e:
+      logger.error(f"Error connecting to server: {str(e)}")
+
+
+def add_post(title, startTime, description, lat, long, points): 
+    data = {
+        "Title": title,
+        "StartTime": startTime,
+        "Description": description, 
+        "Latitude": lat, 
+        "Longitude": long,
+        "PointsWorth": points
+    }
+
+    try:
+        response = requests.post('http://api:4000/u/users/1001/posts', json=data)
+        if response.status_code == 200:
+            st.success("Post added successfully!")
+        else:
+            st.error(f"Error adding post: {response.text}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to server: {str(e)}")
 
 with col2:
     st.markdown("### Make Post")
@@ -143,45 +174,35 @@ with col2:
     )
 
     # Event form inputs
-    with st.container():
+    with st.container(border=True):
         title = st.text_input("Add Post Title", placeholder="Post Title")
                 
         date_col, time_col = st.columns([1, 1])
         with date_col:
-            date = st.date_input("", label_visibility="collapsed")  # Date picker
+            date = st.date_input("Add Date", label_visibility="collapsed")  # Date picker
         with time_col:
-            time = st.time_input("", label_visibility="collapsed")
+            time = st.time_input("Add Time", label_visibility="collapsed")
+        lat_col, long_col = st.columns([1, 1])
+        with lat_col:
+            lat = st.text_input("Add Latitude", placeholder="Post Latitude")
+        with long_col:
+            long = st.text_input("Add Longitude", placeholder="Post Longitude")
+
+        points = st.text_input("Points Worth", placeholder="Post Points Worth")
                 
         description = st.text_area("Add Description", placeholder="Event Description")
             
         # Submit button that spans the whole section
         if st.button("Submit", key="submit", use_container_width=True):
-            # Prepare data for PUT request
-            event_data = {
-                "title": title,
-                "date": str(date),  # Convert date to string
-                "time": str(time),  # Convert time to string
-                "description": description,
-            }
-
-            # Example endpoint URL (replace with your actual endpoint)
-            endpoint = "https://example.com/api/update-event"
-
-            # Make the PUT request
-            update_event(endpoint, event_data)   
-
-
-    st.markdown("### Post")
+            add_post(title, '{0}'.format(datetime.combine(date, time)), description, float(lat), float(long), int(points))   
 
     def get_InterestId(): 
         for interest in currInterests: 
             if interest["Name"] == st.session_state.selected_interest: 
                 return interest["InterestId"]
   
-
     interestId = get_InterestId() 
 
-    
     # For getting posts with their correlated interest 
     post_interest_fetch = requests.get(f"http://api:4000/m/postInterest/{interestId}").json()
     currPosts = []
@@ -189,23 +210,52 @@ with col2:
     for post in post_interest_fetch: 
         currPosts.append(post)
 
-    currPosts.sort(key=lambda x: datetime.strptime(x["StartTime"], "%a, %d %b %Y %H:%M:%S GMT"), reverse=True)
-    # Display posts
-    post_content = ""
-    for post in currPosts:
-        post_content += f"""
-        <div style="display: flex; flex-direction: column; background-color: rgb(255, 255, 255); padding: 10px; margin-bottom: 10px; border-radius: 10px">
-            <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 10px;">
-                <div style="display: flex; flex-direction: column;">
-                </div>
-                <p style="margin-left: auto; color: grey; font-size: 12px;">{post["StartTime"]}-{post["EndTime"]}</p>
-            </div>
-            <p style="font-size: 24px;"><strong>{post["Title"]}</strong></p>
-            <p>{post["Description"]}</p>
-        </div>
-        """
-    st.markdown(post_content, unsafe_allow_html=True) 
+    if 'post_button_states' not in st.session_state:
+        st.session_state['post_button_states'] = {}
 
+    currPosts.sort(key=lambda x: datetime.strptime(x["StartTime"], "%a, %d %b %Y %H:%M:%S GMT"), reverse=True)
+    post_w_creator = []
+    for post in currPosts: 
+        for creator in post_creators: 
+            if post["CreatedBy"] == creator["CreatedBy"]: 
+                # Append a dictionary containing both post and creator
+                post_w_creator.append({
+                    "post": post,
+                    "creator": creator
+                })
+
+    for index, post in enumerate(post_w_creator):
+        st.markdown(
+            f"""
+            <div style="display: flex; flex-direction: column; background-color: rgb(255, 255, 255); padding: 10px; margin-bottom: 20px; border-radius: 10px">
+                <div style="display: flex; align-items: center; justify-content: flex-start; margin-bottom: 10px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <p>{post['creator']['FirstName']} {post['creator']['LastName']}</p>
+                    </div>
+                    <p style="margin-left: auto; color: grey; font-size: 12px;">{post['post']['StartTime']} - {post['post']['EndTime']}</p>
+                </div>
+                <p style="font-size: 24px;"><strong>{post['post']['Title']}</strong></p>
+                <p>Description: {post['post']['Description']}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        groupchat_id = post['post']["EventId"]
+
+        if index not in st.session_state['post_button_states']:
+            st.session_state['post_button_states'][index] = False
+
+        gc_button_text = 'Group Chat Joined' if st.session_state['post_button_states'][index] else 'Join Group Chat'
+
+        if st.button(gc_button_text, key=f"join_button_{index}"):
+            st.session_state['post_button_states'][index] = True
+            join_groupchat(groupchat_id)  
+
+        st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
+
+with btw2:
+    st.empty()
 
 # Column 3: Suggested for You
 def add_friend(friend_id):
@@ -215,29 +265,40 @@ def add_friend(friend_id):
   try:
       response = requests.post('http://api:4000/u/users/1001/friends', json=data)
       if response.status_code == 200:
-          st.success("Friend added successfully!")
+          logger.info("Friend added successfully!")
+          try:
+             response = requests.delete('http://api:4000/u/users/1001/suggestions', json=data)
+          except requests.exceptions.RequestException as e:
+             logger.error(f"Error connecting to server: {str(e)}")
       else:
-          st.error(f"Error adding friend: {response.text}")
+          logger.error(f"Error adding friend: {response.text}")
   except requests.exceptions.RequestException as e:
-      st.error(f"Error connecting to server: {str(e)}")
+      logger.error(f"Error connecting to server: {str(e)}")
 
 if 'button_states' not in st.session_state:
     st.session_state['button_states'] = {profile: False for profile in suggestions}
-    
+
 with col3:
-  st.markdown("### Suggested")
   suggested = st.container(border = True)
-  for index, profile in enumerate(suggestions):
-    st.write(f"**{profile}**")
-    friend_id = next(user[1] for user in users if user[0] == profile)
+  st.write("#### Suggested for you")
+  st.write("")
+  scol1, scol2 = st.columns([1,1])
+  with scol1:
+     for profile in suggestions:
+        st.write(f"**{profile}**")
+        st.write("")
+  with scol2:
+    for index, profile in enumerate(suggestions):
+      
+      friend_id = next(user[1] for user in users if user[0] == profile)
 
-    # Button text based on current state
-    button_text = 'Friend Added' if st.session_state['button_states'][profile] else 'Add Friend'
+      # Button text based on current state
+      button_text = 'Friend Added' if st.session_state['button_states'][profile] else 'Add Friend'
 
-    # Button functionality
-    if st.button(button_text, key=f'friend_button_{profile}'):
-        if not st.session_state['button_states'][profile]:
-            # Call the add_friend function only when the button is in 'Add Friend' state
-            add_friend(friend_id)
-            # Change the button text to 'Friend Added' after clicking
-            st.session_state['button_states'][profile] = True
+      # Button functionality
+      if st.button(button_text, key=f'friend_button_{profile}'):
+          if not st.session_state['button_states'][profile]:
+              # Call the add_friend function only when the button is in 'Add Friend' state
+              add_friend(friend_id)
+              # Change the button text to 'Friend Added' after clicking
+              st.session_state['button_states'][profile] = True

@@ -348,3 +348,52 @@ def get_user_groupchats_info(userId):
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
+
+
+#------------------------------------------------------------
+# Gets posts and user information from the database
+@users.route('/users/postCreators', methods=['GET'])
+def get_post_creators():
+
+    cursor = db.get_db().cursor()
+    query = f'''SELECT p.CreatedBy, u.FirstName, u.LastName
+                FROM User u 
+                JOIN Post p ON p.CreatedBy = u.UserId
+    '''
+    cursor.execute(query)
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
+
+#------------------------------------------------------------
+#Add to the posts of a user (replicate a user posting in the app)
+@users.route('/users/<userId>/posts', methods=['POST'])
+def create_message(userId):
+    the_data = request.json
+    title = the_data['Title']
+    start_time = the_data['StartTime']
+    description = the_data['Description']
+    lat = the_data['Latitude']
+    lon = the_data['Longitude']
+    points = the_data['PointsWorth']
+
+    query1 = 'INSERT INTO Event (Latitude, Longitude, StartTime, PointsWorth) VALUES (%s, %s, %s, %s)'
+    data1 = (lat, lon, start_time, points)
+    cursor = db.get_db().cursor()
+    cursor.execute(query1, data1)
+    eventId = cursor.lastrowid
+    query2 = 'INSERT INTO GroupChat (EventId, Monitor, Name) VALUES (%s, %s, %s)'
+    data2 = (eventId, 1, title)
+    cursor.execute(query2, data2)
+    groupChatId = cursor.lastrowid
+    query3 = 'INSERT INTO Post (EventId, GroupChatId, Title, Description, CreatedBy, PointsWorth) VALUES (%s, %s, %s, %s, %s, %s)'
+    data3 = (eventId, groupChatId, title, description, userId, points)
+    cursor.execute(query3, data3)
+    db.get_db().commit()
+
+    response = make_response("Successfully created message with text")
+    response.status_code = 200
+    return response
