@@ -27,35 +27,13 @@ reports = []
 for report in report_fetch:
   reports.append("{0} {1} {2} {3} {4} {5}".format(report["FirstName"], report["LastName"], report["Title"], report["Description"], report["TimeReported"], report["ReportId"]))
 
-users = []
+if "selected_report" not in st.session_state:
+    st.session_state["selected_report"] = None
 
-# Layout columns
-col1, col2 = st.columns([1, 2])
+def select_report(report_id):
+    """Update session state with the selected report."""
+    st.session_state["selected_report"] = report_id
 
-# Sidebar display of all flagged reports
-with col1:
-
-    # Build the HTML content dynamically using a for loop
-    html_content = ""
-    for report in report_fetch:
-        html_content += f"""
-        <div style="display: flex; align-items: center; justify-content: space-between; background-color: rgb(255, 255, 255); padding: 10px; margin-bottom: 10px; border-radius: 10px;">
-            <div style="display: flex; align-items: center;">
-                <p style="margin: 20px; font-weight: normal;">
-                <strong>{report["Title"]}</strong> — <span style="font-size: 0.9em; color: gray;">{report["TimeReported"]}</span><br>
-                {report["Description"]}
-                </p>
-            </div>
-        </div>
-        """
-    st.markdown(
-        f"""
-        <div style="background-color: #e7e7e7; padding: 20px; border-radius: 10px;">
-            {html_content}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
 def delete_report(report_id):
     try:
@@ -68,27 +46,51 @@ def delete_report(report_id):
     except Exception as e:
         st.error(f"Error: {e}")
 
+        
+
+# Layout columns
+col1, col2 = st.columns([1, 3])
+
+# Sidebar display of all flagged reports
+with col1:
+    for report in report_fetch:
+        button_label = (
+            f"**{report['Title']}**\n"
+            # f"*{report['TimeReported']}*\n"
+            # f"{report['Description'][:100]}..."  
+        )
+
+        if st.button(button_label, key=f"btn_{report['ReportId']}"):
+            select_report(report["ReportId"])
 
 with col2: 
-    html_content = f"""
-         <div style="background-color: rgb(255, 255, 255); padding: 20px; border-radius: 10px;">
-                <p style="font-size: 36px; "font-weight: bold;">{report['Title']}</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px">
-                    <p style="margin: 0;">By {report['FirstName']} {report['LastName']}, UserId: {report['UserId']}</p>
-                    <p style="margin: 0;">Posted: {report['TimeReported']}</p>
+    selected_report_id = st.session_state["selected_report"]
+    if selected_report_id:
+        selected_report = next(
+            (r for r in report_fetch if r["ReportId"] == selected_report_id), None
+        )
+        if selected_report:
+            st.markdown(
+                f"""
+                <div style="background-color: rgb(255, 255, 255); padding: 20px; border-radius: 10px;">
+                    <p style="font-size: 36px; font-weight: bold;">{selected_report['Title']}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px">
+                        <p style="margin: 0;">By {selected_report['FirstName']} {selected_report['LastName']}</p>
+                        <p style="margin: 0;">Posted: {selected_report['TimeReported']}</p>
+                    </div>
+                    <p>{selected_report['Description']}</p><br>
+                    <p style="font-weight: semi-bold;">Admin Answer</p>
+                    <textarea placeholder="Type Answer..." 
+                        style="height: 200px; width: 100%; background-color: #e7e7e7; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px;"></textarea>
                 </div>
-                <p>{report['Description']}</p><br>
-                <p style="font-weight: semi-bold;">Admin Answer</p>
-                <input type="text" name="Admin Answer" placeholder="Type Answer..." 
-                    style="height: 200px; width: 100%; background-color: #e7e7e7; padding: 10px; padding-top: 15px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px;"/>
-            </div>
-        </div>
-    """
+                """,
+                unsafe_allow_html=True,
+            )
+            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
-    # Display the HTML content
-    st.markdown(html_content, unsafe_allow_html=True)
-
-    st.write("")  # Add an empty line for spacing
-
-    if st.button("Resolve Report"):
-        delete_report(report["ReportId"])
+            if st.button("Resolve Report"):
+                delete_report(selected_report["ReportId"])
+        else:
+            st.error("Report not found.")
+    else:
+        st.warning("No report selected.")
