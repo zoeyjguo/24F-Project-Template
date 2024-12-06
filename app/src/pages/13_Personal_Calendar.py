@@ -77,7 +77,7 @@ group_chats = []
 events_fetch = requests.get("http://api:4000/u/users/1002/events").json()
 events = {}
 
-# add data from the fecth
+# add data from the fetch
 for groupchat in fetch_groupchats:
     group_chats.append({"name": groupchat["Name"], "id": groupchat["GroupChatId"]})
 
@@ -115,7 +115,7 @@ with col1:
     for chat in group_chats:
         if st.button(chat['name']):
             st.session_state["selected_chat_id"] = chat['id']
-            st.switch_page('pages/14_GroupChat.py')
+            st.switch_page('pages/14_Winston_GroupChat.py')
             st.rerun()
 
 
