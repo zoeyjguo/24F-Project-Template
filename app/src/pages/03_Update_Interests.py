@@ -5,6 +5,9 @@ from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 import requests
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 st.set_page_config(page_title="Profile Page", layout="wide")
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Update Interests", styles=styles, logo_path=logo, options=options)
@@ -19,6 +22,11 @@ if page == "Logout":
   del st.session_state["role"]
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
+
+if page == "Group Chat":
+    del st.session_state["role"]
+    del st.session_state["authenticated"]
+    st.switch_page("pages/001_Kali_GroupChat.py")
 
 kali_info = requests.get("http://api:4000/u/users/1001").json()
 kali_interests = requests.get("http://api:4000/u/users/1001/interests").json()

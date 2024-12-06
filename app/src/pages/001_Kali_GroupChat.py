@@ -9,20 +9,26 @@ from datetime import date, timedelta
 import calendar
 from PIL import Image
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 # navigation bar
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Group Chat", styles=styles, logo_path=logo, options=options)
 
-if page == "Update Location":
-  st.switch_page('pages/11_Update_Location.py')
+if page == "Feed":
+  st.switch_page('pages/02_Interest_Feed.py')
 
-if page == "Calendar":
-  st.switch_page('pages/13_Personal_Calendar.py')
+if page == "Update Interests":
+    st.switch_page('pages/03_Update_Interests.py')
+
+if page == "View Other Profile":
+    st.switch_page('pages/04_View_Other_Profile.py')
 
 if page == "Logout":
-  del st.session_state["role"]
-  del st.session_state["authenticated"]
-  st.switch_page("Home.py")
+    del st.session_state["role"]
+    del st.session_state["authenticated"]
+    st.switch_page("Home.py")
 
 
 # styling for the group chats and messages
@@ -107,7 +113,7 @@ st.markdown(
 )
 
 # get from generated data
-fetch_groupchats = requests.get('http://api:4000/u/users/1002/groupchats').json()
+fetch_groupchats = requests.get('http://api:4000/u/users/1001/groupchats').json()
 group_chats = []
 fetch_messages = requests.get('http://api:4000/g/groupchats/399/messages').json()
 messages_data = []
@@ -126,7 +132,7 @@ def send_message_with_image(message, image_url, groupchat_id):
         st.error("Invalid image URL. Message not sent.")
         return
 
-    data = {"Sender": 1002,"Text": message.strip(),"ImageLink": image_url}
+    data = {"Sender": 1001,"Text": message.strip(),"ImageLink": image_url}
     try:
         response = requests.post(f'http://api:4000/g/groupchats/{groupchat_id}/messages', json=data)
         if response.status_code == 200:
@@ -161,7 +167,7 @@ def select_chat(chat_id):
 # add a new message to the current chat
 def send_message(message, groupchat_id):
     data = {
-                "Sender": 1002,
+                "Sender": 1001,
                 "Text": message.strip(),
                 "ImageLink": None
             }
@@ -190,9 +196,9 @@ with col2:
     for gc in group_chats:
         if gc["id"] == selected_chat_id:
             current = gc["name"]
+            st.markdown(f"## {current}")
             break
-    st.markdown(f"## {current}")
-
+   
     # display messages
     fetch_messages = requests.get(f'http://api:4000/g/groupchats/{selected_chat_id}/messages').json()
     messages_data = []

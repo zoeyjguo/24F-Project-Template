@@ -5,6 +5,9 @@ import streamlit as st
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, styles=styles, logo_path=logo, options=options)
 
@@ -14,7 +17,7 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('View your personalized feed for the "Pets" interest category', 
+if st.button('View your personalized feed', 
              type='primary',
              use_container_width=True) or page == "Feed":
   st.switch_page('pages/02_Interest_Feed.py')

@@ -70,15 +70,35 @@ def create_message(groupchatId):
 @groupchats.route('/groupchats/<groupchatId>/members', methods=['POST'])
 def add_member(groupchatId):
     userId = request.json['UserId']
-    query = 'INSERT INTO GroupChatMembers (GroupChatId, UserId) VALUES (%s, %s)'
-    data = (groupchatId, userId)
+    
+    query = 'INSERT INTO GroupChatMembers (GroupChatId, EventId, UserId) VALUES (%s, %s, %s)'
+    data = (groupchatId, groupchatId, userId)
     cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
+    cursor.execute(query, data)
     db.get_db().commit()
 
     response = make_response("Successfully added user with id: {0} to groupchat with id: {1}".format(userId, groupchatId))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Get the messages in a group chat
+@groupchats.route('/groupchats/<groupchatId>/members', methods=['GET'])
+def get_groupchat_members(groupchatId):
+    
+    cursor = db.get_db().cursor()
+    query = f'''SELECT u.FirstName, u.LastName
+                FROM GroupChatMembers gcm
+                JOIN User u ON gcm.UserId = u.UserId
+                WHERE gcm.GroupChatId = {str(groupchatId)}
+    '''
+    cursor.execute(query)
+    
+    theData = cursor.fetchall()
+    
+    the_response = make_response(jsonify(theData))
+    the_response.status_code = 200
+    return the_response
 
 #------------------------------------------------------------
 # Get the messages in a group chat

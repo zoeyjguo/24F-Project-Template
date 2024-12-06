@@ -14,6 +14,8 @@ from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 import requests
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
 
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Update Location", styles=styles, logo_path=logo, options=options)
@@ -22,7 +24,7 @@ if page == "Calendar":
   st.switch_page('pages/13_Personal_Calendar.py')
 
 if page == "Group Chat":
-  st.switch_page('pages/14_GroupChat.py')
+  st.switch_page('pages/14_Winston_GroupChat.py')
 
 if page == "Logout":
   del st.session_state["role"]
