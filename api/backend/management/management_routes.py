@@ -267,7 +267,7 @@ def get_post_interest(interestId):
     cursor = db.get_db().cursor()
     cursor.execute('''
         SELECT DISTINCT
-            p.Title, p.CreatedBy, p.EventId, ei.InterestId, e.StartTime, e.EndTime, p.Description
+            p.Title, p.CreatedBy, p.EventId, ei.InterestId, e.StartTime, e.EndTime, p.Description, e.Latitude, e.Longitude
             FROM Post p 
             JOIN Event e ON e.EventId = p.EventId
             JOIN EventInterests ei ON ei.EventId = p.EventId 

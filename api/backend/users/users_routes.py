@@ -357,7 +357,7 @@ def get_user_groupchats_info(userId):
 def get_post_creators():
 
     cursor = db.get_db().cursor()
-    query = f'''SELECT p.PostId, p.CreatedBy, u.FirstName, u.LastName
+    query = f'''SELECT DISTINCT p.PostId, p.CreatedBy, u.FirstName, u.LastName
                 FROM User u 
                 JOIN Post p ON p.CreatedBy = u.UserId
     '''

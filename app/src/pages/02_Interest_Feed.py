@@ -3,8 +3,10 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
+import numpy as np
 import requests
 from datetime import datetime
+import math
 
 if "authenticated" not in st.session_state:
     st.switch_page("Home.py")
@@ -32,6 +34,8 @@ kali_suggested = requests.get("http://api:4000/u/users/1001/suggestions").json()
 suggestions = []
 users_fetch = requests.get("http://api:4000/u/users").json()
 users = []
+
+location = requests.get("http://api:4000/u/users/1001/location").json()
 
 # For getting group chats
 chat_fetch = requests.get("http://api:4000/u/users/1001/groupchatsInfo").json()
@@ -209,7 +213,8 @@ with col2:
     currPosts = []
 
     for post in post_interest_fetch: 
-        currPosts.append(post)
+        if (math.fabs(location[0]["Latitude"] - post["Latitude"]) <= 0.15 and math.fabs(location[0]["Longitude"] == post["Longitude"]) <= 0.15):
+            currPosts.append(post)
 
     if 'post_button_states' not in st.session_state:
         st.session_state['post_button_states'] = {}
@@ -219,12 +224,12 @@ with col2:
     for post in currPosts: 
         for creator in post_creators: 
             if post["CreatedBy"] == creator["CreatedBy"]: 
-                # Append a dictionary containing both post and creator
-                post_w_creator.append({
-                    "post": post,
-                    "creator": creator
-                })
-
+                c = creator
+        post_w_creator.append({
+            "post": post,
+            "creator": c
+        })
+        
     for index, post in enumerate(post_w_creator):
         st.markdown(
             f"""
