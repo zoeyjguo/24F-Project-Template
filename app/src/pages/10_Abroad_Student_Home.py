@@ -26,7 +26,7 @@ if st.button("View your calendar",
 if st.button('Send an image in one of your group chats', 
              type='primary',
              use_container_width=True) or page == "Group Chat":
-  st.switch_page('pages/14_GroupChat.py')
+  st.switch_page('pages/14_Winston_GroupChat.py')
 
 if page == "Logout":
   del st.session_state["role"]

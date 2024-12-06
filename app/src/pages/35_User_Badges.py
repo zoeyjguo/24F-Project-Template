@@ -31,13 +31,14 @@ badge_icons = {
     "Fashionista": "👗",
 }
 # fetch badge data
-fetch_badges = requests.get('http://api:4000/m/badges').json()
+fetch_badge_data = requests.get('http://api:4000/m/badges/counts').json()
 badges = []
 
-for badge in fetch_badges:
+for badge in fetch_badge_data:
     badges.append({
         "name": badge["Name"],
-        "icon": badge_icons.get(badge["Name"], "🏅")
+        "icon": badge_icons.get(badge["Name"], "🏅"),
+        "count": badge["NumStudents"]
     })
 
 # display title
@@ -54,6 +55,7 @@ for badge in badges:
             <div style="text-align: center; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 10px; padding: 10px; background-color: #f9f9f9;">
                 <div style="font-size: 40px; margin-bottom: 10px;">{badge['icon']}</div>
                 <div style="font-weight: bold; font-size: 18px;">{badge["name"]}</div>
+                <div style="font-weight: bold; font-size: 18px;">{badge["count"]} users</div>
             </div>
             """,
             unsafe_allow_html=True,

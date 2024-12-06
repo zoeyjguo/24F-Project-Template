@@ -13,16 +13,19 @@ from PIL import Image
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Group Chat", styles=styles, logo_path=logo, options=options)
 
-if page == "Update Location":
-  st.switch_page('pages/11_Update_Location.py')
+if page == "Feed":
+  st.switch_page('pages/02_Interest_Feed.py')
 
-if page == "Calendar":
-  st.switch_page('pages/13_Personal_Calendar.py')
+if page == "Update Interests":
+    st.switch_page('pages/03_Update_Interests.py')
+
+if page == "View Other Profile":
+    st.switch_page('pages/04_View_Other_Profile.py')
 
 if page == "Logout":
-  del st.session_state["role"]
-  del st.session_state["authenticated"]
-  st.switch_page("Home.py")
+    del st.session_state["role"]
+    del st.session_state["authenticated"]
+    st.switch_page("Home.py")
 
 
 # styling for the group chats and messages
@@ -107,7 +110,7 @@ st.markdown(
 )
 
 # get from generated data
-fetch_groupchats = requests.get('http://api:4000/u/users/1002/groupchats').json()
+fetch_groupchats = requests.get('http://api:4000/u/users/1001/groupchats').json()
 group_chats = []
 fetch_messages = requests.get('http://api:4000/g/groupchats/399/messages').json()
 messages_data = []
@@ -126,7 +129,7 @@ def send_message_with_image(message, image_url, groupchat_id):
         st.error("Invalid image URL. Message not sent.")
         return
 
-    data = {"Sender": 1002,"Text": message.strip(),"ImageLink": image_url}
+    data = {"Sender": 1001,"Text": message.strip(),"ImageLink": image_url}
     try:
         response = requests.post(f'http://api:4000/g/groupchats/{groupchat_id}/messages', json=data)
         if response.status_code == 200:
@@ -136,6 +139,20 @@ def send_message_with_image(message, image_url, groupchat_id):
     except requests.exceptions.RequestException as e:
         st.error(f"Error connecting to server: {str(e)}")
 
+def upload_image_to_server(uploaded_image):
+   try:
+      files = {"file": uploaded_image.getvalue()}
+      response = requests.post('http://api:4000/simple/upload', files=files)
+      if response.status_code == 200:
+         image_url = response.json().get("image_url")
+         return image_url
+      else:
+         st.error(f"Error uploading image: {response.text}")
+         return None
+   except requests.exceptions.RequestException as e:
+      st.error(f"Error connecting to the server: {str(e)}")
+      return None
+   
 # initialize the session state
 if "selected_chat_id" not in st.session_state:
     st.session_state.selected_chat_id = 399
@@ -147,7 +164,7 @@ def select_chat(chat_id):
 # add a new message to the current chat
 def send_message(message, groupchat_id):
     data = {
-                "Sender": 1002,
+                "Sender": 1001,
                 "Text": message.strip(),
                 "ImageLink": None
             }
@@ -176,9 +193,9 @@ with col2:
     for gc in group_chats:
         if gc["id"] == selected_chat_id:
             current = gc["name"]
+            st.markdown(f"## {current}")
             break
-    st.markdown(f"## {current}")
-
+   
     # display messages
     fetch_messages = requests.get(f'http://api:4000/g/groupchats/{selected_chat_id}/messages').json()
     messages_data = []
@@ -197,7 +214,7 @@ with col2:
                 <strong>{msg['sender']}</strong><br>{msg['content']}
         """
         if "image" in msg and msg["image"] is not None:
-            content_html += f'<img src="{msg["image"]}" alt="Image" style="width: 100%; margin-top: 10px;"/>'
+            content_html += f'<img src="{msg["image"]}" alt="Image" style="width: 100px; margin-top: 10px;"/>'
         content_html += "</div></div>"
         
         st.markdown(content_html, unsafe_allow_html=True)

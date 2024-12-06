@@ -22,7 +22,7 @@ if page == "Calendar":
   st.switch_page('pages/13_Personal_Calendar.py')
 
 if page == "Group Chat":
-  st.switch_page('pages/14_GroupChat.py')
+  st.switch_page('pages/14_Winston_GroupChat.py')
 
 if page == "Logout":
   del st.session_state["role"]
