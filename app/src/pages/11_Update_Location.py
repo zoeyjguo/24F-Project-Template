@@ -42,7 +42,7 @@ if 'user_location' not in st.session_state:
 
 # Create map given previous location
 m = folium.Map(location=[latitude,longitude], zoom_start=14)
-folium.Marker(
+marker = folium.Marker(
     location=[latitude, longitude],
     popup="Drag me to update location",
     draggable=True,
@@ -65,10 +65,9 @@ if map_output["last_clicked"]:
     st.session_state["user_location"] = (lat, lng)
 
 # Update new location to database
-if st.button("Save", use_container_width=True):
+if st.button("To save, click directly below the pin point at the updated location and press this button", use_container_width=True):
     if "user_location" in st.session_state:
         lat, lng = st.session_state["user_location"]
-        userId = st.session_state.get("userId", 1)
         payload = {
             "Latitude": lat,
             "Longitude": lng

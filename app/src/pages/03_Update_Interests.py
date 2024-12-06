@@ -24,8 +24,6 @@ if page == "Logout":
   st.switch_page("Home.py")
 
 if page == "Group Chat":
-    del st.session_state["role"]
-    del st.session_state["authenticated"]
     st.switch_page("pages/001_Kali_GroupChat.py")
 
 kali_info = requests.get("http://api:4000/u/users/1001").json()

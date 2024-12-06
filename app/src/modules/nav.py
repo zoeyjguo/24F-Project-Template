@@ -28,7 +28,7 @@ def get_nav_config(show_home=False):
             "padding": "0 1rem",
         },
         "div": {
-            "max-width": "32rem",
+            "max-width": "48rem",
         },
         "span": {
             "border-radius": "0.5rem",

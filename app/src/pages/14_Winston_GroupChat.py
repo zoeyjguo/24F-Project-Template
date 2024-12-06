@@ -229,4 +229,7 @@ with col2:
         submit_button = st.form_submit_button("Send")
 
         if submit_button:
-            send_message_with_image(new_message, new_image_url, selected_chat_id)
+            if not new_image_url:
+                send_message(new_message, selected_chat_id)
+            else:
+                send_message_with_image(new_message, new_image_url, selected_chat_id)

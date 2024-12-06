@@ -14,7 +14,7 @@ management = Blueprint('management', __name__)
 @management.route('/reports', methods=['GET'])
 def get_reports():
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT u.FirstName, u.LastName, r.Title, r.Description, r.TimeReported, r.ReportId FROM Report r JOIN User u ON u.UserId = r.Reporter')
+    cursor.execute('SELECT u.FirstName, u.LastName, u.UserId, r.Title, r.Description, r.TimeReported, r.ReportId FROM Report r JOIN User u ON u.UserId = r.Reporter')
     
     theData = cursor.fetchall()
     

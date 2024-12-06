@@ -45,7 +45,7 @@ for badge in fetch_badge_data:
     })
 
 # display title
-st.markdown("## User Badge Ranking")
+st.markdown("## User Badge Data")
 
 # create a grid layout for the badges
 columns = st.columns(4) 

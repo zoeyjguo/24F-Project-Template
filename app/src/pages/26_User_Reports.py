@@ -74,7 +74,7 @@ with col2:
          <div style="background-color: rgb(255, 255, 255); padding: 20px; border-radius: 10px;">
                 <p style="font-size: 36px; "font-weight: bold;">{report['Title']}</p>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px">
-                    <p style="margin: 0;">By {report['FirstName']} {report['LastName']}</p>
+                    <p style="margin: 0;">By {report['FirstName']} {report['LastName']}, UserId: {report['UserId']}</p>
                     <p style="margin: 0;">Posted: {report['TimeReported']}</p>
                 </div>
                 <p>{report['Description']}</p><br>
@@ -90,8 +90,5 @@ with col2:
 
     st.write("")  # Add an empty line for spacing
 
-    # Add the delete button functionality in Streamlit
     if st.button("Resolve Report"):
         delete_report(report["ReportId"])
-    else:
-        st.warning("No flagged reports available.")

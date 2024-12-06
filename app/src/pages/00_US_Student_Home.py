@@ -32,6 +32,9 @@ if st.button('View another user\'s profile',
              use_container_width=True) or page == "View Other Profile":
   st.switch_page('pages/04_View_Other_Profile.py')
 
+if page == "Group Chat":
+  st.switch_page('pages/001_Kali_GroupChat.py')
+
 if page == "Logout":
   del st.session_state["role"]
   del st.session_state["authenticated"]

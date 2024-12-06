@@ -141,7 +141,7 @@ def get_user_events(userId):
 def get_user_posts(userId):
 
     cursor = db.get_db().cursor()
-    cursor.execute('SELECT Title FROM Post WHERE CreatedBy = {0}'.format(userId))
+    cursor.execute('SELECT Title, PostId FROM Post WHERE CreatedBy = {0}'.format(userId))
     
     theData = cursor.fetchall()
     
@@ -210,7 +210,7 @@ def update_user_location(userId):
 
     query = f'''
         UPDATE User
-        SET Latitude = '{lat}', Longitude = '{lon}'
+        SET Latitude = {lat}, Longitude = {lon}
         WHERE UserId = {str(userId)}
     '''
 
@@ -356,7 +356,7 @@ def get_user_groupchats_info(userId):
 def get_post_creators():
 
     cursor = db.get_db().cursor()
-    query = f'''SELECT p.CreatedBy, u.FirstName, u.LastName
+    query = f'''SELECT p.PostId, p.CreatedBy, u.FirstName, u.LastName
                 FROM User u 
                 JOIN Post p ON p.CreatedBy = u.UserId
     '''

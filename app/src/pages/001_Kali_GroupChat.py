@@ -207,8 +207,8 @@ with col2:
                               "content": message["Text"],
                               "image": message["ImageLink"]})
     for msg in messages_data:
-        align = "flex-end" if msg["sender"] == "Winston Church" else "flex-start"
-        bg_color = "#e0f7fa" if msg["sender"] == "Winston Church" else "#ffffff"
+        align = "flex-end" if msg["sender"] == "Kali Linux" else "flex-start"
+        bg_color = "#e0f7fa" if msg["sender"] == "Kali Linux" else "#ffffff"
         
         # Render message with optional image
         content_html = f"""
@@ -231,4 +231,7 @@ with col2:
         submit_button = st.form_submit_button("Send")
 
         if submit_button:
-            send_message_with_image(new_message, new_image_url, selected_chat_id)
+            if not new_image_url:
+                send_message(new_message, selected_chat_id)
+            else:
+                send_message_with_image(new_message, new_image_url, selected_chat_id)

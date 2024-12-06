@@ -44,11 +44,11 @@ df = pd.DataFrame(data)
 st.markdown(
     """
     <div>
-        <h3 style="color: black; text-align: center;">Interest Ranking</h3>
+        <h3 style="color: black; text-align: center;">User Interest Data</h3>
         <div style="height: 100px;"></div> 
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-st.bar_chart(df.set_index('Interests'))
+st.bar_chart(df.set_index('Interests'), y_label='Number of Students', x_label='Interests')
