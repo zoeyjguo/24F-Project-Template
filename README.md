@@ -6,7 +6,9 @@ CoLink is a data-driven application focused on improving the experiential learni
 
 Our app satisfies the need for community among Northeastern students on co-op by creating tailored opportunities to meet others with similar personal and professional interests, backgrounds, and experiences. Our platform emphasizes highly personalized, data-driven engagement, allowing users to set up profiles detailing interests and goals to form a curated feed of interest-based events. In particular, users can join groups, attend events, and even create posts to find others interested in joining activities. Users also have their point system where you can earn badges based on how many events you plan and attend! Key features like curated For You Pages (FYP) based on user interests, event posts with group chat integration, app-generated recommendations, and point system based on event attendance empower students to build a support network while they are on co-op. Our platform ensures that our members stay connected to the Northeastern student community no matter where they are around the world.
 
-Accessing our app is very simple! As a user, you are able to look at your home page, create posts or even join group chats related to each post! Additionally, users are able to look at a list of suggested users who they can add as friends. Users are able to access their own profiles showcasing their basic information along with their posts and group chats, and they are able to see similar information for other users as well. Aside from student users, we also have a system administrator that maintains the platform. Administrators can look at reports, flag messages, and delete group chats as needed. Finally, we have a data analyst in charge of collected user information to see how digital application can impact students experimental learning. Data analysts are able to view the most popular interests among students, user badge rankings, and the profile and ranking of a specific user.
+Accessing our app is very simple! As a user, you are able to look at your home page, create posts or even join group chats related to each post! Additionally, users are able to look at a list of suggested users who they can add as friends. Users are able to access their own profiles showcasing their basic information along with their posts and group chats, and they are able to see similar information for other users as well. Aside from student users, we also have a system administrator that maintains the platform. Administrators can look at reports, flag messages, and delete group chats as needed.
+
+Finally, we have a data analyst in charge of collected user information to see how digital application can impact students experimental learning. Data analysts are able to view the most popular interests among students, user badge rankings, and the profile and ranking of a specific user.
 
 ### Handling User Role Access and Control
 
@@ -55,11 +57,19 @@ docker compose up -d
 Wait until the logs of the `mysql_db` container indicate that all the .sql files in the `./database-files` directory have been executed.
 
 - View the application on [your machine's port 8501](http://localhost:8501)
+  docker compose up -d
+
+```
+
+Wait until the logs of the `mysql_db` container indicate that all the .sql files in the `./database-files` directory have been executed.
+
+- View the application on [your machine's port 8501](http://localhost:8501)
 
 ## Authors
 
-[Amy Wang](https://github.com/amywng)  
-[Sarah Zhang](https://github.com/Sarah-Zhang1)  
-[Zoey Guo](https://github.com/zoeyjguo)  
-[Deborah He](https://github.com/deborahhe2493)  
+[Amy Wang](https://github.com/amywng)
+[Sarah Zhang](https://github.com/Sarah-Zhang1)
+[Zoey Guo](https://github.com/zoeyjguo)
+[Deborah He](https://github.com/deborahhe2493)
 [Julia Tan](https://github.com/juliaatan)
+```
