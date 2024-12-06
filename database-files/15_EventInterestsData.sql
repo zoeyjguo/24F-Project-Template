@@ -3013,7 +3013,7 @@ insert into EventInterests (EventId, InterestId, PostId) values (1002, 8, 1002);
 insert into EventInterests (EventId, InterestId, PostId) values (1002, 12, 1002);
 insert into EventInterests (EventId, InterestId, PostId) values (1003, 14, 1003);
 insert into EventInterests (EventId, InterestId, PostId) values (1003, 17, 1003);
-insert into EventInterests (EventId, InterestId, PostId) values (1003, 21, 1003);
+insert into EventInterests (EventId, InterestId, PostId) values (1003, 19, 1003);
 insert into EventInterests (EventId, InterestId, PostId) values (1004, 9, 1004);
 insert into EventInterests (EventId, InterestId, PostId) values (1005, 14, 1005);
 insert into EventInterests (EventId, InterestId, PostId) values (1005, 19, 1005);
