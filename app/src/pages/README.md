@@ -1,7 +1,5 @@
 # `pages` Folder
 
-This folder contains all the pages that will be part of the application. Details on required numbers will be provided in the Phase 3 documentation.
+The `pages` folder holds all the Streamlit pages to support 4 user personas - two student users, a data analyst, and a system administrator. The two students are Kali Linux, a student co-oping in the US, and Winston Church, a student co-oping abroad. Joey White is the data analyst who works with Northeastern to better Northeastern's experiential learning program, and Chloe Lane is the system administrator in charge of the technical maintenance and content moderation of our app. For more information about the user personas and their associated user stories, visit [our design document](https://docs.google.com/document/d/1--nKEpSDYTH4XWoh41kPC2KDfK8REOfJ59kPu0QYkjo/edit?usp=sharing).
 
-These pages are meant to show you an example of some of the features of Streamlit and the way we will limit functionality access by role/persona. It is not meant to represent a complete application.
-
-TODO: Describe the pages folder and include link to documentation. Don't forget about ordering of pages.
+The pages in this folder are organized by Role. Pages that start with a `0` are related to the *US Co-op Student* role. Pages that start with a `1` are related to the *Abroad Co-op Student* role. Pages that start with a `2` are related to the *System Administrator* role. And, pages that start with a `3` are related to the *Data Analyst* role. The number after the starting identifier represents which corresponding user story it addresses, e.g. `03` represents the page addressing Kali's (the US Co-op Student's) third user story.
