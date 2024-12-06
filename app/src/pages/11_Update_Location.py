@@ -30,12 +30,14 @@ if page == "Logout":
 
 st.header("Update Your Location")
 
+# Fetch previous location
 location = requests.get("http://api:4000/u/users/1002/location").json()
 latitude = location[0]['Latitude']
 longitude = location[0]['Longitude']
 if 'user_location' not in st.session_state:
    st.session_state["user_location"] = (latitude, longitude)
 
+# Create map given previous location
 m = folium.Map(location=[latitude,longitude], zoom_start=14)
 folium.Marker(
     location=[latitude, longitude],
@@ -44,6 +46,7 @@ folium.Marker(
     icon=Icon(icon="map-marker", prefix="fa", color="purple")
 ).add_to(m)
 
+# Formatting
 col1, col2, col3 = st.columns([1, 8, 1])
 with col1:
    st.write("")
@@ -52,11 +55,13 @@ with col2:
 with col3:
    st.write("")
 
+# Update location based on moved clicker
 if map_output["last_clicked"]:
     lat = map_output["last_clicked"]["lat"]
     lng = map_output["last_clicked"]["lng"]
     st.session_state["user_location"] = (lat, lng)
 
+# Update new location to database
 if st.button("Save", use_container_width=True):
     if "user_location" in st.session_state:
         lat, lng = st.session_state["user_location"]
