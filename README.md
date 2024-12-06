@@ -36,7 +36,8 @@ Our project has three major components which will each run in their own Docker C
 To download our program,
 
 - Clone this repository
-- Add and/or update an .env file. Below is an example of what this .env file should contain:
+- Add an `.env` file to the `./api` directory.  
+   Below is an example of what this `.env` file should contain:
 
 ```
 SECRET_KEY=someCrazyS3cR3T!Key.!
@@ -47,12 +48,20 @@ DB_NAME=CoLink
 MYSQL_ROOT_PASSWORD={enter_password_here}
 ```
 
-- Run the following commands in the terminal:
+- Run the following command in the terminal:
 
 ```
-docker compose build
-docker compose up
+docker compose up -d
 ```
+
+Wait until the logs of the `mysql_db` container indicate that all the .sql files in the `./database-files` directory have been executed.
+
+- View the application on [your machine's port 8501](http://localhost:8501)
+  docker compose up -d
+
+```
+
+Wait until the logs of the `mysql_db` container indicate that all the .sql files in the `./database-files` directory have been executed.
 
 - View the application on [your machine's port 8501](http://localhost:8501)
 
@@ -63,3 +72,4 @@ docker compose up
 [Zoey Guo](https://github.com/zoeyjguo)
 [Deborah He](https://github.com/deborahhe2493)
 [Julia Tan](https://github.com/juliaatan)
+```
