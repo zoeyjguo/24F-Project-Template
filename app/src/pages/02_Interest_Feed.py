@@ -260,46 +260,35 @@ with btw2:
 
 # Column 3: Suggested for You
 def add_friend(friend_id):
-  data = {
-        "FriendId": friend_id
-  }
-  try:
-      response = requests.post('http://api:4000/u/users/1001/friends', json=data)
-      if response.status_code == 200:
-          logger.info("Friend added successfully!")
-          try:
-             response = requests.delete('http://api:4000/u/users/1001/suggestions', json=data)
-          except requests.exceptions.RequestException as e:
-             logger.error(f"Error connecting to server: {str(e)}")
-      else:
-          logger.error(f"Error adding friend: {response.text}")
-  except requests.exceptions.RequestException as e:
-      logger.error(f"Error connecting to server: {str(e)}")
+    data = {"FriendId": friend_id}
+    try:
+        response = requests.post(f'http://api:4000/u/users/1001/friends', json=data)
+        if response.status_code == 200:
+            logger.info("Friend added successfully!")
+            # Remove from suggestions after adding
+            requests.delete(f'http://api:4000/u/users/1001/suggestions', json=data)
+        else:
+            logger.error(f"Error adding friend: {response.text}")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error connecting to server: {str(e)}")
 
 if 'button_states' not in st.session_state:
     st.session_state['button_states'] = {profile: False for profile in suggestions}
 
 with col3:
-  suggested = st.container(border = True)
-  st.write("#### Suggested for you")
-  st.write("")
-  scol1, scol2 = st.columns([1,1])
-  with scol1:
-     for profile in suggestions:
-        st.write(f"**{profile}**")
-        st.write("")
-  with scol2:
+    st.write("#### Suggested for you")
+    st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
+
     for index, profile in enumerate(suggestions):
-      
-      friend_id = next(user[1] for user in users if user[0] == profile)
+        friend_id = next(user[1] for user in users if user[0] == profile)
 
-      # Button text based on current state
-      button_text = 'Friend Added' if st.session_state['button_states'][profile] else 'Add Friend'
+        col1, col2 = st.columns([1.5, 1.5])
+        with col1:
+            st.write(f"**{profile}**")
+        with col2:
+            button_text = 'Friend Added' if st.session_state['button_states'][profile] else 'Add Friend'
+            if st.button(button_text, key=f'friend_button_{profile}'):
+                if not st.session_state['button_states'][profile]:
+                    add_friend(friend_id)
+                    st.session_state['button_states'][profile] = True
 
-      # Button functionality
-      if st.button(button_text, key=f'friend_button_{profile}'):
-          if not st.session_state['button_states'][profile]:
-              # Call the add_friend function only when the button is in 'Add Friend' state
-              add_friend(friend_id)
-              # Change the button text to 'Friend Added' after clicking
-              st.session_state['button_states'][profile] = True

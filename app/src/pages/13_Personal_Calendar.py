@@ -89,17 +89,22 @@ for event in events_fetch:
     start_date = datetime.strptime(start_datetime_string, "%a, %d %b %Y %H:%M:%S %Z")
     end_date = datetime.strptime(end_datetime_string, "%a, %d %b %Y %H:%M:%S %Z") if end_datetime_string else start_date
 
-    current_date = start_date
-    while current_date <= end_date:
-        event_day = int(current_date.strftime("%d"))
+    if start_date.month == 12:
+        current_date = start_date
+        while current_date <= end_date and current_date.month == 12:
+            event_day = int(current_date.strftime("%d"))
 
-        if event_day not in events:
-            events[event_day] = []
+            if event_day not in events:
+                events[event_day] = []
 
-        events[event_day].append({"day": event_day,"name": event.get("Title"),"color": event.get("color", "#AEC6CF")})
+            events[event_day].append({
+                "day": event_day,
+                "name": event.get("Title"),
+                "color": event.get("color", "#AEC6CF")
+            })
 
-        # increment to the next day
-        current_date += timedelta(days=1)
+            # increment to the next day
+            current_date += timedelta(days=1)
 
 
 # create columns for layout
