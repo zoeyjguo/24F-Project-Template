@@ -1000,3 +1000,16 @@ insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (9
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (998, 998, NULL, 'World of Photography', 75);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (999, 999, NULL, 'Photography Workshop', 77);
 insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1000, 1000, NULL, 'International Photography Meetup', 22);
+
+
+
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1001, 1001, 1, 'Photography Park', 18);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1002, 1002, 230, 'Workout @ Gym', 56);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1003, 1003, 534, 'Cooking Lesson', 64);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1004, 1004, 739, 'Cafe Brunch', 76);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1005, 1005, 983, 'Local Takeout', 14);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1006, 1006, 132, 'Pride Parade', 39);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1007, 1007, 14, 'Morning Run', 32);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1008, 1008, 95, 'Walk through Museum', 65);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1009, 1009, 294, 'Photoshoot at College', 11);
+insert into Post (EventId, GroupChatId, CreatedBy, Title, PointsWorth) values (1010, 1010, 999, 'Pride Club', 75);

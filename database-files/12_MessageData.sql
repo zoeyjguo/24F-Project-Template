@@ -4999,3 +4999,77 @@ insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) va
 
 
 
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (1, 1001, 1001, 'Hello!', null, '2023-12-19 10:16:38');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (2, 1001, 1001, 'Hello', null, '2023-12-19 10:30:38');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (1, 1001, 1001, 'How are you!', null, '2023-12-19 10:50:38');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (2, 1001, 1001, 'Good! How about you?', null, '2023-12-19 11:16:38');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (1, 1001, 1001, 'Same', null, '2023-12-19 11:23:38');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (456, 1001, 1001, 'So whats the plan?', null, '2023-12-19 11:45:38');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (345, 1001, 1001, 'I was thinking we could walk there', null, '2023-12-19 11:57:38');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (890, 1001, 1001, 'Do you live close by?', null, '2023-12-19 13:16:38');
+
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (442, 1002, 1002, 'Lets plan something fun', null, '2024-04-26 15:35:58');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (342, 1002, 1002, 'Yes! I agree', null, '2024-04-26 16:35:58');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (452, 1002, 1002, 'Ok, what do you want to do?', null, '2024-04-26 16:45:58');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (676, 1002, 1002, 'There is a lot of things in the area', null, '2024-04-26 17:32:58');
+
+
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (325, 1003, 1003, 'That is major!', null, '2024-04-26 15:35:58');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (436, 1003, 1003, 'Yes! There is no way that true!', null, '2024-04-27 16:35:58');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (324, 1003, 1003, 'But it is true!', null, '2024-04-28 16:45:58');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (253, 1003, 1003, 'Tell me more about it!', null, '2024-04-29 17:32:58');
+
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (445, 1004, 1004, 'This is a dub!', null, '2024-01-07 23:08:40');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (235, 1004, 1004, 'Yes! I cant believe this is happening!', null, '2024-01-07 23:08:40');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (573, 1004, 1004, 'We really lucked out!', null, '2024-01-08 13:24:40');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (425, 1004, 1004, 'Lets go fast then', null, '2024-01-09 12:45:23');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (445, 1004, 1004, 'Yes, before its over', null, '2024-01-09 13:08:40');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (432, 1004, 1004, 'Okay, see you there!', null, '2024-01-09 14:08:40');
+
+
+
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (834, 1005, 1005, 'Im busy tomorrow', null, '2024-04-13 09:16:04');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (324, 1005, 1005, 'Okay how about the day after tomorrow', null, '2024-04-13 09:17:04');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (546, 1005, 1005, 'What about this coming weekend', null, '2024-04-13 09:17:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (465, 1005, 1005, 'Yea, I can do that', null, '2024-04-13 09:18:23');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (425, 1005, 1005, 'Me too', null, '2024-04-13 09:18:34');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (890, 1005, 1005, 'Me three', null, '2024-04-13 09:19:24');
+
+
+
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (914, 1006, 1006, 'Can I swing by later?', null, '2024-10-21 20:38:42');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (9, 1007, 1007, 'Thanks for your help!', null, '2024-01-16 13:36:11');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (217, 1008, 1008, 'Bless up!', null, '2024-02-09 16:24:24');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (67, 1009, 1009, 'Do you have any recommendations?', 'https://example.com/image91.jpg', '2024-04-04 23:11:57');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (217, 1010, 1010, 'Do you have any recommendations?', null, '2024-04-18 09:55:30');
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (31, 1010, 1010, 'I think I can make it', null, '2024-05-01 19:03:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (5, 1010, 1010, 'Im almost there!', null, '2024-06-11 17:13:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (78, 1010, 1010, 'Wait, I think I can', null, '2024-10-21 12:16:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (123, 1010, 1010, 'I am in the black shirt', null, '2024-08-24 09:56:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (34, 1010, 1010, 'How is your day?', null, '2024-07-13 11:27:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (980, 1010, 1010, 'but Im on my way', null, '2024-12-14 15:16:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (102, 1010, 1010, 'You got this', null, '2024-11-26 16:13:14');
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (6, 1009, 1009, 'This is great', null, '2024-05-17 22:12:14');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (7, 1009, 1009, 'I love it', null, '2024-04-19 20:13:12');
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (12, 1008, 1008, 'How can you do this?', null, '2024-03-23 05:13:07');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (17, 1008, 1008, 'I am outside the building', null, '2024-02-26 12:03:09');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (19, 1008, 1008, 'Where are you?', null, '2024-01-12 11:46:13');
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (512, 1007, 1007, 'I cannot find you', null, '2024-12-01 16:32:12');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (215, 1007, 1007, 'OMG', null, '2024-10-01 17:43:36');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (125, 1007, 1007, 'This is crazy', null, '2024-09-21 09:56:24');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (654, 1007, 1007, 'I cannot do this', null, '2024-02-12 07:12:01');
+
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (12, 1006, 1006, 'This is insane', null, '2024-03-30 06:11:59');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (78, 1006, 1006, 'I am almost there! Wait for me', null, '2024-04-15 13:15:09');
+insert into Message (Sender, GroupChatId, EventId, Text, ImageLink, TimeSent) values (59, 1006, 1006, 'That was a good one', null, '2024-06-04 17:13:12’');
+
+

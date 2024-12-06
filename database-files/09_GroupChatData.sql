@@ -1000,3 +1000,15 @@ insert into GroupChat (EventId, Monitor, Name) values (997, 26, 'Dynamic Digits'
 insert into GroupChat (EventId, Monitor, Name) values (998, 67, 'Giggle Gang');
 insert into GroupChat (EventId, Monitor, Name) values (999, 60, 'The Avengers of Chatting');
 insert into GroupChat (EventId, Monitor, Name) values (1000, 40, 'Hot Cheetos & Takis');
+
+
+insert into GroupChat (EventId, Monitor, Name) values (1001, 1, 'Loving Life');
+insert into GroupChat (EventId, Monitor, Name) values (1002, 3, 'Slay Squad');
+insert into GroupChat (EventId, Monitor, Name) values (1003, 4, 'Happy Hour');
+insert into GroupChat (EventId, Monitor, Name) values (1004, 9, 'Big Brainers');
+insert into GroupChat (EventId, Monitor, Name) values (1005, 7, 'Database Bosses');
+insert into GroupChat (EventId, Monitor, Name) values (1006, 19, 'Live Love Laugh');
+insert into GroupChat (EventId, Monitor, Name) values (1007, 11, 'Morning Runners');
+insert into GroupChat (EventId, Monitor, Name) values (1008, 14, 'Fast Coders');
+insert into GroupChat (EventId, Monitor, Name) values (1009, 16, 'Crazy Gang');
+insert into GroupChat (EventId, Monitor, Name) values (1010, 17, 'Amazing Group');
