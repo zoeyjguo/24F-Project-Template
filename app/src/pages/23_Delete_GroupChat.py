@@ -21,10 +21,9 @@ if page == "Logout":
     del st.session_state["authenticated"]
     st.switch_page("Home.py")
 
-
 # Function to call the DELETE API route
 def delete_gc(group_chat_id):
-    api_url = f"http://api:4000/g/groupchats/{group_chat_id}"  # Replace with your API URL
+    api_url = f"http://api:4000/g/groupchats/{group_chat_id}" 
 
     try:
         response = requests.delete(api_url)
@@ -39,12 +38,12 @@ def delete_gc(group_chat_id):
 
 # Fetch group chat data from the API
 def fetch_group_chats():
-    api_url = "http://api:4000/g/tenGroupchats"  # Replace with your API URL for fetching group chats
+    api_url = "http://api:4000/g/tenGroupchats"  
 
     try:
         response = requests.get(api_url)
         if response.status_code == 200:
-            return response.json()  # Assuming the API returns a JSON array of group chats
+            return response.json() 
         else:
             st.error(f"Failed to fetch group chats. Error: {response.status_code}")
             return []
@@ -52,14 +51,11 @@ def fetch_group_chats():
         st.error(f"Error connecting to the server: {e}")
         return []
 
-# Page Title
 st.title("Delete Group Chats")
 
-# Fetch group chats dynamically
 group_chats = fetch_group_chats()
 
 if group_chats:
-    # Display group chats with a delete button for each
     for gc in group_chats:
         col1, col2 = st.columns([8, 1])
         with col1:
