@@ -282,7 +282,7 @@ with col3:
     for index, profile in enumerate(suggestions):
         friend_id = next(user[1] for user in users if user[0] == profile)
 
-        col1, col2 = st.columns([1.5, 1.5])
+        col1, col2 = st.columns([1.5, 1])
         with col1:
             st.write(f"**{profile}**")
         with col2:
