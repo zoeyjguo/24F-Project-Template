@@ -6,6 +6,9 @@ from streamlit_navigation_bar import st_navbar
 import requests
 from datetime import datetime
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 # Setup navigation
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Feed", styles=styles, logo_path=logo, options=options)

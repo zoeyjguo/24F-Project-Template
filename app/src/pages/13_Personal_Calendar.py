@@ -9,6 +9,9 @@ import calendar
 
 logger = logging.getLogger(__name__)
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 # \navigation bar setup
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Calendar", styles=styles, logo_path=logo, options=options)

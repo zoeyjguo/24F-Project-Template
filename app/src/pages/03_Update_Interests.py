@@ -5,6 +5,9 @@ from modules.nav import get_nav_config
 from streamlit_navigation_bar import st_navbar
 import requests
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 st.set_page_config(page_title="Profile Page", layout="wide")
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Update Interests", styles=styles, logo_path=logo, options=options)

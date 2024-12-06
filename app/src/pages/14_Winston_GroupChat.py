@@ -9,6 +9,9 @@ from datetime import date, timedelta
 import calendar
 from PIL import Image
 
+if "authenticated" not in st.session_state:
+    st.switch_page("Home.py")
+
 # navigation bar
 pages, styles, logo, options = get_nav_config(show_home=False)
 page = st_navbar(pages, selected="Group Chat", styles=styles, logo_path=logo, options=options)
