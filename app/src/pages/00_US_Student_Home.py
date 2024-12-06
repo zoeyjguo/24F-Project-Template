@@ -14,7 +14,7 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('View your personalized feed for the "Pets" interest category', 
+if st.button('View your personalized feed', 
              type='primary',
              use_container_width=True) or page == "Feed":
   st.switch_page('pages/02_Interest_Feed.py')

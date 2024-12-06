@@ -15,6 +15,11 @@ if page == "Feed":
 if page == "Update Interests":
   st.switch_page('pages/03_Update_Interests.py')
 
+if page == "Group Chat":
+    del st.session_state["role"]
+    del st.session_state["authenticated"]
+    st.switch_page("pages/001_Kali_GroupChat.py")
+
 if page == "Logout":
   del st.session_state["role"]
   del st.session_state["authenticated"]

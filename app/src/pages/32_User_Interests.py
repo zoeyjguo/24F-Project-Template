@@ -18,8 +18,8 @@ if page == "Logout":
   del st.session_state["authenticated"]
   st.switch_page("Home.py")
 
-interests_fetch = requests.get("http://api:4000/simple//interests").json()
-interest_count = requests.get("http://api:4000/simple//interests/counts").json()
+interests_fetch = requests.get("http://api:4000/m/interests").json()
+interest_count = requests.get("http://api:4000/m/interests/counts").json()
 
 all_interests = []
 count = []
@@ -28,7 +28,7 @@ for interest in interests_fetch:
   all_interests.append(interest["Name"])
 
 for interest in interest_count: 
-  count.append(interest["COUNT(DISTINCT UserId)"])
+  count.append(interest["NumStudents"])
 
 
 data = {
