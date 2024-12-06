@@ -1000,3 +1000,14 @@ insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerif
 insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (-7.2893545, -34.8403408, '2024-12-17 14:45:54', '2024-12-17 16:31:54', 65, false);
 insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (57.6947552, 11.8194902, '2025-08-06 06:22:18', '2025-08-06 07:07:18', 11, false);
 insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (51.0069155, 90.2135806, '2025-04-15 19:41:40', '2025-04-15 21:38:40', 39, false);
+
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.170, 118.140, '2025-03-15 19:41:40', '2025-04-15 21:38:40', 10, false);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.171, 118.141, '2025-02-10 12:45:00', '2025-02-10 21:38:40', 10, true);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.172, 118.143, '2025-02-10 8:45:00', '2025-02-10 9:45:00', 15, false);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.173, 118.144, '2025-01-23 15:45:00', '2025-01-23 21:38:40', 15, true);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.174, 118.148, '2025-03-18 1:00:00', '2025-03-19 1:00:00', 20, true);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.175, 118.146, '2025-03-10 12:45:00', '2025-04-15 21:38:40', 20, true);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.171, 118.141, '2025-02-10 12:45:00', '2025-04-15 21:38:40', 25, false);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.176, 118.143, '2025-01-10 18:30:00', '2025-01-10 19:30:00', 25, true);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.182, 118.150, '2025-05-15 15:00:00', '2025-05-15 20:30:00', 30, false);
+insert into Event (Latitude, Longitude, StartTime, EndTime, PointsWorth, IsVerified) values (34.178, 118.140, '2025-02-27 17:40:00', '2025-02-27 20:30:00', 30, true);
