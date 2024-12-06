@@ -57,13 +57,6 @@ docker compose up -d
 Wait until the logs of the `mysql_db` container indicate that all the .sql files in the `./database-files` directory have been executed.
 
 - View the application on [your machine's port 8501](http://localhost:8501)
-  docker compose up -d
-
-```
-
-Wait until the logs of the `mysql_db` container indicate that all the .sql files in the `./database-files` directory have been executed.
-
-- View the application on [your machine's port 8501](http://localhost:8501)
 
 ## Authors
 
@@ -72,4 +65,3 @@ Wait until the logs of the `mysql_db` container indicate that all the .sql files
 [Zoey Guo](https://github.com/zoeyjguo)
 [Deborah He](https://github.com/deborahhe2493)
 [Julia Tan](https://github.com/juliaatan)
-```
