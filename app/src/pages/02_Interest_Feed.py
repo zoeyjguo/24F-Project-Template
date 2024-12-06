@@ -180,16 +180,16 @@ with col2:
                 
         date_col, time_col = st.columns([1, 1])
         with date_col:
-            date = st.date_input("Add Date", label_visibility="collapsed")  # Date picker
+            date = st.date_input("Add Date", label_visibility="visible")  # Date picker
         with time_col:
-            time = st.time_input("Add Time", label_visibility="collapsed")
+            time = st.time_input("Add Time", label_visibility="visible")
         lat_col, long_col = st.columns([1, 1])
         with lat_col:
-            lat = st.text_input("Add Latitude", placeholder="Post Latitude")
+            lat = st.text_input("Add Latitude", placeholder="Event Latitude")
         with long_col:
-            long = st.text_input("Add Longitude", placeholder="Post Longitude")
+            long = st.text_input("Add Longitude", placeholder="Event Longitude")
 
-        points = st.text_input("Points Worth", placeholder="Post Points Worth")
+        points = st.text_input("Points Worth", placeholder="Event Points Worth")
                 
         description = st.text_area("Add Description", placeholder="Event Description")
             
